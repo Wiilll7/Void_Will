@@ -1,0 +1,15 @@
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://c7l0q2xthypv5"]
+
+[ext_resource type="FontFile" uid="uid://cwm2pkkemlxt3" path="res://fonts/base_font.ttf" id="1_ou5md"]
+[ext_resource type="Texture2D" uid="uid://c70g5thyisc7b" path="res://fundo botoes/black box.png" id="2_jfokg"]
+
+[sub_resource type="FontVariation" id="FontVariation_ou5md"]
+base_font = ExtResource("1_ou5md")
+baseline_offset = 0.08
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_g0u5y"]
+texture = ExtResource("2_jfokg")
+
+[resource]
+Button/fonts/font = SubResource("FontVariation_ou5md")
+Button/styles/normal = SubResource("StyleBoxTexture_g0u5y")

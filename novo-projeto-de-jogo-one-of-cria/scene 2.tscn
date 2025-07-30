@@ -1,0 +1,61 @@
+[gd_scene load_steps=5 format=3 uid="uid://dyd20i1hjkb7l"]
+
+[ext_resource type="Script" uid="uid://viedlkhgteth" path="res://scene_2.gd" id="1_fn31u"]
+[ext_resource type="Texture2D" uid="uid://ft55a8rfvksb" path="res://WhatsApp Image 2023-02-04 at 16.20.30.jpeg" id="1_l3ywq"]
+[ext_resource type="Theme" uid="uid://c7l0q2xthypv5" path="res://fundo botoes/black theme.tres" id="3_ip4sm"]
+[ext_resource type="Texture2D" uid="uid://dc0msjpy08xeb" path="res://icon/White_Chicken.png" id="4_3c3ki"]
+
+[node name="Node2D" type="Node2D" node_paths=PackedStringArray("chicken")]
+scale = Vector2(1.76362, 2.13301)
+script = ExtResource("1_fn31u")
+chicken = NodePath("WhiteChicken")
+
+[node name="WhatsAppImage2023-02-04At16_20_30" type="Sprite2D" parent="."]
+position = Vector2(327.169, 151.664)
+scale = Vector2(0.451412, 0.313355)
+texture = ExtResource("1_l3ywq")
+
+[node name="WhiteChicken" type="Sprite2D" parent="."]
+position = Vector2(316.019, 149.509)
+scale = Vector2(1.12608, 0.861384)
+texture = ExtResource("4_3c3ki")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+offset_left = 0.567017
+offset_top = 0.937643
+offset_right = 653.567
+offset_bottom = 300.938
+
+[node name="Settings" type="VBoxContainer" parent="."]
+visible = false
+offset_left = 257.0
+offset_top = 72.0
+offset_right = 396.0
+offset_bottom = 232.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = 255.0
+offset_top = 117.0
+offset_right = 400.0
+offset_bottom = 185.0
+
+[node name="Resume" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_ip4sm")
+text = "Resume"
+
+[node name="Settings" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_ip4sm")
+text = "Settings"
+
+[node name="Back_to_Menu" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_ip4sm")
+text = "Back to Menu"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[connection signal="pressed" from="VBoxContainer/Resume" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="VBoxContainer/Back_to_Menu" to="." method="_on_back_to_menu_pressed"]
