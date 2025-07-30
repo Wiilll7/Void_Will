@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://cot8vevaokf0o"]
+
+[ext_resource type="Script" uid="uid://dolsj5hsunfoi" path="res://assets/scripts/bullet.gd" id="1_togti"]
+[ext_resource type="Texture2D" uid="uid://gipplxoxi1g4" path="res://assets/ghaphics/bullet.png" id="2_togti"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_togti"]
+radius = 5.0
+
+[node name="Bullet" type="Node2D" node_paths=PackedStringArray("kill_timer")]
+script = ExtResource("1_togti")
+kill_timer = NodePath("Kill")
+
+[node name="Icon" type="Sprite2D" parent="."]
+texture = ExtResource("2_togti")
+
+[node name="Kill" type="Timer" parent="."]
+one_shot = true
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_togti")
+
+[connection signal="timeout" from="Kill" to="." method="_on_kill_timeout"]
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

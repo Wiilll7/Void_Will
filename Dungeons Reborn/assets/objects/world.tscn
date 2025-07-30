@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://dvc11inh1ronf"]
+
+[ext_resource type="PackedScene" uid="uid://6txsw0e151os" path="res://assets/objects/player.tscn" id="1_h62we"]
+[ext_resource type="PackedScene" uid="uid://1f61lumqvqwm" path="res://assets/objects/entity.tscn" id="2_qkxaf"]
+
+[node name="World" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_h62we")]
+position = Vector2(358, 124)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+
+[node name="Entity" parent="." node_paths=PackedStringArray("target") instance=ExtResource("2_qkxaf")]
+position = Vector2(110, 74)
+target = NodePath("../Player")
+
+[node name="Entity4" parent="." node_paths=PackedStringArray("target") instance=ExtResource("2_qkxaf")]
+position = Vector2(309, 167)
+target = NodePath("../Player")
+
+[node name="Entity2" parent="." node_paths=PackedStringArray("target") instance=ExtResource("2_qkxaf")]
+position = Vector2(326, 69)
+target = NodePath("../Player")
+
+[node name="Entity3" parent="." node_paths=PackedStringArray("target") instance=ExtResource("2_qkxaf")]
+position = Vector2(146, 198)
+target = NodePath("../Player")

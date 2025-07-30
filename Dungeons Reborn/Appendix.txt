@@ -1,0 +1,244 @@
+imperfect ideas
+	main objective: make a good minecraft dungeons
+	
+	what is minecraft dungeons
+		a dungeon crawler
+		you explore
+		you refine items
+		you fight
+	
+	in exploration you
+		traverse a procedurally generated dungeon
+		you find chests
+		you find merchants
+		you find currencies and loot
+		
+		you search always for more, loot and enemies
+			interesting, powerful, risk // reward, no wasting time
+	
+	in looting you
+		seek better gear by chests
+		by enemies
+		by crafting
+		
+		you always seek the most perfect definition of power
+			personal // modular, mechanic-changing, risk // reward
+			by the most interesting (preferably) or fast way <- [you can control that]
+	
+	in fighting
+		want to feel a challenge to get better items
+		or <- [you can create a good balance]
+		want to feel nice about ahnihilating one or two cities with style
+		
+		either way, you want to destroy, and only that
+			predictable but hard, outstanding music (of course), disbalanced (takes one aspect of fighting and elevates to the absolute)
+	
+	what dungeons does good?
+		list:
+			specific weapons change the way of fighting
+				lifesteal // potion barrier ignores health and focuses on always be hitting something
+				bows dessecrate loads of enemies for the price of being vulnerable
+				summonables are the sacrifice to enemy hits, making your health more stable
+				all area effect explosions are centered on you, forcing you to jump on the enemies, tanking hits and then disintegrating everything
+				some artifacts gives buffs, but force you to being in an certain area
+			some weapons feel really powerful because it is disbalanced (daggers and double axes)
+			you can focus all in movement if you want to skip the entire level
+		conclusion:
+			make mechanic/movement changing gear
+			purposefully disbalance weapons towards certain goals and make them excel at it
+	
+	what dungeons does bad? (makes the impression, at least)
+		list:
+			nearly all the enchants are bad in early game, barely helping at all, most notable on armor
+			all loot are random and the dozens of levels have abyssal loot pools (1:10 good gear)
+			feels all the same after some time
+			the progression is really slow, just speeding up by pure gambling, speculation and exploits (stronghold skip)
+			not all types of weapons can carry on the game, most are slow and not powerful, comparing to the goats
+			grind is really boring, for a dungeon crawler this is absurd
+			the enchant reroll and level upgrade is really expensive and boring
+			the inventory becomes really messy really fast
+			the map is above the gameplay (literally unplayable)
+		conclusion:
+			make enchants meaningful, quality over quantity
+			make some hard levels with minimal, direct loot pools
+			make procedural generated levels feel new (somehow)
+			focus on the fun of exploring, looting and fighting
+			make inventory more organized
+			map at the bottom or top, simple
+
+Vigorous mechanics:
+	cost // difficulty // risk // reward // progression
+	
+	exploration
+		cost: time
+		difficulty: terrain, enemies
+		risk: losing items, death
+		reward: loot, enemies, currency, lore
+		progression: rare pathways that lead to new areas
+	
+	item management
+		cost: items, currency
+		difficulty: game modifiers, aspect combination knowledge
+		risk: transforming good items in bad items, having difficult game modifiers
+		reward: powerful items
+		progression: always get xp from using, that can be used to modify the luck // rng
+	
+	fighting
+		cost: exploring, items // currency, time
+		difficulty: dodge, attack, defend, preserve health, terrain
+		risk: death
+		reward: loot, items
+		progression: scaling difficulty, variety and quantity
+
+Execution:
+	terrain
+	items
+		weapon
+			health: lifesteal // scythe
+			attack: critical // axe
+			speed: daggers
+		armor
+			health: all in // tank
+			attack: all in // scorching
+			speed: all in // winged
+		shield
+			health: absorption
+			attack: deflection
+			speed: boost
+	stats
+		health
+		attack
+		speed
+	inventory
+		equip area (multiple sets // builds that can be switched)
+		backpack area
+		currency
+		item refining
+			stats
+			aspects
+			
+
+Ascended
+
+Supreme
+
+mechanics
+	enemies
+		attack
+		movement
+			get player if near
+			go to player
+			how:
+				jump in a straight line
+				dashes circulating
+				walks normal and dash backwards
+			
+	player
+		attack
+		defense
+		movement
+			normal wasd
+			jump: move up
+			crouch: brief inv
+			combos:
+				normal+jump: large dash, target to nearby enemy
+				normal+crouch: medium roll, inv
+				jump+crouch: increases crouch momentum
+				crouch+jump: increases jump height
+				jump+normal: airborne movement
+				crouch+normal: slow movement
+				
+				normal = move to 8 directions
+				jump = goes airborne, add momentum in the first frames, goes back to ground 
+				crouch = goes to lower ground, add momentum in the first frames, slow down movement afterwards
+				
+				momentum = adds to next input, it dissipates if no movement
+				
+			dash (normal+input)
+				jump: large move, 
+				crouch: medium move, inv
+				jump + crouch: large move, slide to nearby enemy, inv
+	world
+		maze spawn ✔
+			recursive maze ✔
+				add tile ✔
+				do this until no ramifications left ✔
+					add possible ramification ✔
+						for all 4 directions ✔
+						if no out of bounds and no filled cell ✔
+					test next ramification, with the possible array ✔
+						add tile at this ramification ✔
+						add ramification to path array ✔
+				transform path array into sprite ✔
+				add the path type and tile type to the map array ✔
+		room spawn
+		enemy spawn
+		shop spawn
+	power ups
+
+
+goals:
+	inputs for movement, attack and parry
+		move:
+			wasd for basic move
+				change velocity to another direction
+			space for dash
+				lock velocity changes mid-dash
+				increase drastically the velocity on the last inputed direction
+		attack: j
+			spawn a slash bullet (depend on item)
+			deals damage only on enemies
+			small knockback on enemy and player
+			doenst lock movement
+			charge for different attack
+		defense: k
+			lock movement
+			on any time, takes less damage
+			on perfect input, negate all damage and destroy bullet
+				auto remove shield after parry without cooldown
+			small cooldown after releasing the shield
+	
+	bullets:
+		wait for a condition -> send function to all inside of hitbox
+			touch and break, cooldown, await hit frame, etc
+			destroy itself after touch or cooldown
+		movement:
+			predetermined on spawn
+			presets: (later)
+				movement based on function
+	
+	enemies
+		
+		multishoot (spiral knives)
+			spawn 8 knives in a spiral circle
+				for loop 8
+				PI/4 * i + get_angle_to(target.position)
+			based on player movement
+			ai
+				goes away from the player slowly
+				attacks more frequently when near
+		sniper (aims and does hitscan attack 3 times)
+			awaits 5 sec
+			lock target
+			await 1 sec - fire
+			when near, hides and goes invisible
+			dont move
+		knight (defend and dash attack)
+			ai
+				if player is away - move
+				if player is near
+					is directly going towards? - defend
+						takes less damage
+						cooldown after using shield
+					is trying to escape? more or less in range? - dash attack
+						lock target and moves rapidly
+						create a bullet
+		boss -- (mix of all)
+
+
+
+✔
+checkpoints
+	27/7 - Basic bullet creation
+	28/7 - Bullet basic pattern and summon function, behaviour or Multishoot, Sniper and Knight
+	29/7

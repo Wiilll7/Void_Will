@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3 uid="uid://6txsw0e151os"]
+
+[ext_resource type="Script" uid="uid://dmr5fv458vlat" path="res://assets/scripts/player.gd" id="1_ikdab"]
+[ext_resource type="PackedScene" uid="uid://cot8vevaokf0o" path="res://assets/objects/bullet.tscn" id="2_jg13i"]
+[ext_resource type="Texture2D" uid="uid://cl8e5ijidhkep" path="res://assets/ghaphics/player.png" id="2_jssbp"]
+[ext_resource type="Script" uid="uid://c2e5ggshywg2d" path="res://assets/scripts/bullet_spawner.gd" id="3_jg13i"]
+[ext_resource type="Script" uid="uid://bwcdnl4wj8rik" path="res://assets/scripts/body_component.gd" id="5_6r1sy"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6r1sy"]
+radius = 5.0
+
+[node name="Player" type="Node2D" node_paths=PackedStringArray("body", "spawner", "defense_cooldown", "dash_cooldown", "attack_cooldown")]
+script = ExtResource("1_ikdab")
+body = NodePath("Hitbox")
+spawner = NodePath("Spawner")
+defense_cooldown = NodePath("Defense")
+dash_cooldown = NodePath("Dash")
+attack_cooldown = NodePath("Attack")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_jssbp")
+hframes = 2
+vframes = 3
+
+[node name="Spawner" type="Node" parent="."]
+script = ExtResource("3_jg13i")
+bullet = ExtResource("2_jg13i")
+
+[node name="Defense" type="Timer" parent="."]
+one_shot = true
+
+[node name="Dash" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[node name="Attack" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="Hitbox" type="Area2D" parent="." node_paths=PackedStringArray("main_node")]
+collision_mask = 12
+script = ExtResource("5_6r1sy")
+main_node = NodePath("..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_6r1sy")
+
+[node name="ProgressBar" type="ProgressBar" parent="Hitbox"]
+offset_left = -45.0
+offset_top = -40.0
+offset_right = 45.0
+offset_bottom = -13.0
