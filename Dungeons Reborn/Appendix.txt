@@ -178,6 +178,35 @@ mechanics
 
 
 goals:
+	world
+		rooms
+			general
+				map generation
+					get room presets (normal box), size
+					get preset entrances (normal box) and, by an algorithm, select the next room (normal box)
+					after deciding, construct the entire room and map
+					generate pathfinding on creation
+				normal square room
+					box (4 sides, no obstacles, one enemy)
+			battle
+			upgrade
+			savepoint
+		droppables
+	inventory
+		items
+			modifiers
+	animation
+	music
+	
+	hitbox algorithm
+		list all possible colisions (enemies, drops, walls, player, bullets)
+		fragment them into a grid (managed by the room script)
+			for all player and entity, locate in grid
+				if nothing else is in the grid, skip
+				if something other is in the grid:
+					test for all hitboxes (find by raycasting the intersection beetween the hitboxes)
+					if hitboxes matches, send function to both hitboxes
+	
 	inputs for movement, attack and parry
 		move:
 			wasd for basic move
@@ -197,7 +226,6 @@ goals:
 			on perfect input, negate all damage and destroy bullet
 				auto remove shield after parry without cooldown
 			small cooldown after releasing the shield
-	
 	bullets:
 		wait for a condition -> send function to all inside of hitbox
 			touch and break, cooldown, await hit frame, etc
@@ -206,9 +234,7 @@ goals:
 			predetermined on spawn
 			presets: (later)
 				movement based on function
-	
 	enemies
-		
 		multishoot (spiral knives)
 			spawn 8 knives in a spiral circle
 				for loop 8
@@ -233,7 +259,7 @@ goals:
 					is trying to escape? more or less in range? - dash attack
 						lock target and moves rapidly
 						create a bullet
-		boss -- (mix of all)
+	boss -- (mix of all)
 
 
 
@@ -241,4 +267,5 @@ goals:
 checkpoints
 	27/7 - Basic bullet creation
 	28/7 - Bullet basic pattern and summon function, behaviour or Multishoot, Sniper and Knight
-	29/7
+	29/7 - Basic inputs for attack, defense, dash and movement and basic health // damage implementation
+	31/7 - 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://6txsw0e151os"]
+[gd_scene load_steps=6 format=3 uid="uid://6txsw0e151os"]
 
 [ext_resource type="Script" uid="uid://dmr5fv458vlat" path="res://assets/scripts/player.gd" id="1_ikdab"]
 [ext_resource type="PackedScene" uid="uid://cot8vevaokf0o" path="res://assets/objects/bullet.tscn" id="2_jg13i"]
@@ -6,14 +6,12 @@
 [ext_resource type="Script" uid="uid://c2e5ggshywg2d" path="res://assets/scripts/bullet_spawner.gd" id="3_jg13i"]
 [ext_resource type="Script" uid="uid://bwcdnl4wj8rik" path="res://assets/scripts/body_component.gd" id="5_6r1sy"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_6r1sy"]
-radius = 5.0
-
-[node name="Player" type="Node2D" node_paths=PackedStringArray("body", "spawner", "defense_cooldown", "dash_cooldown", "attack_cooldown")]
+[node name="Player" type="Node2D" node_paths=PackedStringArray("body", "spawner", "defense_cooldown", "parry_time", "dash_cooldown", "attack_cooldown")]
 script = ExtResource("1_ikdab")
-body = NodePath("Hitbox")
+body = NodePath("Body")
 spawner = NodePath("Spawner")
 defense_cooldown = NodePath("Defense")
+parry_time = NodePath("Defense/Parry")
 dash_cooldown = NodePath("Dash")
 attack_cooldown = NodePath("Attack")
 
@@ -29,6 +27,10 @@ bullet = ExtResource("2_jg13i")
 [node name="Defense" type="Timer" parent="."]
 one_shot = true
 
+[node name="Parry" type="Timer" parent="Defense"]
+wait_time = 0.5
+one_shot = true
+
 [node name="Dash" type="Timer" parent="."]
 wait_time = 0.3
 one_shot = true
@@ -37,16 +39,13 @@ one_shot = true
 wait_time = 0.5
 one_shot = true
 
-[node name="Hitbox" type="Area2D" parent="." node_paths=PackedStringArray("main_node")]
-collision_mask = 12
-script = ExtResource("5_6r1sy")
-main_node = NodePath("..")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-shape = SubResource("CircleShape2D_6r1sy")
-
-[node name="ProgressBar" type="ProgressBar" parent="Hitbox"]
+[node name="ProgressBar" type="ProgressBar" parent="."]
 offset_left = -45.0
 offset_top = -40.0
 offset_right = 45.0
 offset_bottom = -13.0
+
+[node name="Body" type="Node2D" parent="."]
+script = ExtResource("5_6r1sy")
+
+[connection signal="timeout" from="Defense/Parry" to="." method="_on_parry_timeout"]

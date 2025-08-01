@@ -1,4 +1,5 @@
 extends Node2D
+class_name Entity
 
 @export var body:BodyComponent
 @export var spawner:Spawner

@@ -1,75 +1,86 @@
 extends Node2D
+class_name Player
 
+var room:Room
 @export var body:BodyComponent
 @export var spawner:Spawner
 @export var defense_cooldown:Timer
+@export var parry_time:Timer
 @export var dash_cooldown:Timer
 @export var attack_cooldown:Timer
 
-var move_lock:bool
-var defending:bool
-var parry:bool
+var states:Dictionary = {
+	"Dash" = false,
+	"Attack" = false,
+	"Idle" = true,
+	"Defend" = false,
+	"Parry" = false,
+	"Moving" = false
+}
+var current_state:String = "Idle"
+func change_state(new_state:String):
+	states[current_state] = false
+	states[new_state] = true
+	current_state = new_state
+
 
 func _process(delta:float):
-	if not move_lock:
+	if room != null: room.test_hitbox(body)
+	
+	if current_state == "Moving" or current_state == "Idle":
 		body.direction = Input.get_vector("left","right","up","down")
+		$Sprite2D.frame = 0 # remove
 	
 	if Input.is_action_just_pressed("defend") and defense_cooldown.is_stopped():
 		body.direction = Vector2(0,0)
-		if not defending:
-			defending = true
-			parry = true
-			$Sprite2D.frame = 2 # remove
-			await get_tree().create_timer(0.5).timeout
-			$Sprite2D.frame = 3 # remove
-			parry = false
-	
-	elif Input.is_action_just_released("defend"):
-		defending = false
-		move_lock = false
+		body.momentum = Vector2(0,0)
+		change_state("Defend")
+		states["Parry"] = true
+		parry_time.start()
+		$Sprite2D.frame = 2 # remove
+	elif Input.is_action_just_released("defend") and defense_cooldown.is_stopped():
 		defense_cooldown.start()
-		$Sprite2D.frame = 0 # remove
+		parry_time.stop()
+		change_state("Idle")
 	
 	elif Input.is_action_just_pressed("dash") and dash_cooldown.is_stopped():
 		dash_cooldown.start()
-		move_lock = true
-		body.direction *= 2.5
+		body.direction = body.last_direction * 3
+		change_state("Dash")
+		await get_tree().create_timer(0.1).timeout
+		body.momentum += body.last_direction * 30
+		change_state("Idle")
 		$Sprite2D.frame = 4 # remove
-		await get_tree().create_timer(0.25).timeout
-		$Sprite2D.frame = 4 # remove
-		move_lock = false
-		
 	
 	elif Input.is_action_just_pressed("attack") and attack_cooldown.is_stopped():
 		attack_cooldown.start()
 		spawner.summon_bullet(body.attack,body.direction*10,4,Vector2(0,0),0,delta,"Throw",body)
+		body.direction = Vector2(0,0)
+		body.momentum += body.last_direction * 100
 		$Sprite2D.frame = 1 # remove
 	
 	position += body.move(delta)
-	$Hitbox/ProgressBar.value = body.health
+	$ProgressBar.value = body.health
 
-
-"""
-defense: k
-	lock movement
-	on any time, takes less damage
-	on perfect input, negate all damage and destroy bullet
-		auto remove shield after parry without cooldown
-	small cooldown after releasing the shield
-"""
 
 func hit(bullet:Bullet):
-	if parry:
+	if states["Parry"]:
 		bullet.direction *= -1
 		bullet.connection = self
 		bullet.damage /= 2
 		# Parry cooldown recovery
-		parry = false
-		defending = false
+		change_state("Idle")
+		parry_time.stop()
+		states["Parry"] = false
 		defense_cooldown.stop()
-	elif defending:
+	elif current_state == "Defend":
 		body.health -= bullet.damage / 2
 		bullet.queue_free()
 	else:
 		body.health -= bullet.damage
 		bullet.queue_free()
+
+func _on_parry_timeout() -> void:
+	states["Parry"] = false
+	if current_state == "Defend":
+		$Sprite2D.frame = 3 # remove

@@ -8,6 +8,10 @@ var type:String
 var connection:Node
 @export var kill_timer:Timer
 
+# Hitbox
+@export var hitbox_radius:float = 5
+@export_enum("Circle","Box") var hitbox_type:String = "Circle"
+
 var damage:float
 
 # Lifetime of bullet

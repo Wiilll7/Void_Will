@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dnj5nhq60j68o"]
+
+[ext_resource type="Texture2D" uid="uid://cy7nfghpo22tj" path="res://assets/ghaphics/tiles.png" id="1_l5pha"]
+[ext_resource type="Script" uid="uid://kfd746insdu5" path="res://assets/scripts/tiles.gd" id="2_b84jj"]
+
+[node name="Tiles" type="Sprite2D"]
+texture = ExtResource("1_l5pha")
+vframes = 2
+script = ExtResource("2_b84jj")
+hitbox_radius = 12.0
+hitbox_type = "Box"
