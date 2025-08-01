@@ -25,8 +25,10 @@ func create_room(type:String,size:Vector2i,pos:Vector2) -> Room:
 						new_room.add_object(create_tile(1,Vector2(i,j) * tile_size),true)
 					else:
 						if i == 6 and j == 6:
-							new_room.add_object(create_entity("Multishoot",Vector2(i,j) * tile_size).body,true)
-						new_room.add_object(create_tile(0,Vector2(i,j) * tile_size),false)
+							var new_entity:Entity = create_entity("Multishoot",Vector2(i,j) * tile_size)
+							new_room.add_entity(new_entity)
+							new_entity.target = player
+						new_room.add_object(create_tile(0,Vector2(i,j) * tile_size),true)
 	return new_room
 func create_tile(type:int,pos:Vector2) -> Node:
 	var new_tile:Sprite2D = tile.instantiate()

@@ -5,7 +5,6 @@ var time:float = 0.0
 var offset:Vector2 = Vector2(0,0)
 var direction:Vector2
 var type:String
-var connection:Node
 @export var kill_timer:Timer
 
 # Hitbox

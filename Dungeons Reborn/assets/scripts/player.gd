@@ -23,8 +23,7 @@ func change_state(new_state:String):
 	states[new_state] = true
 	current_state = new_state
 
-
-func _process(delta:float):
+func _physics_process(delta: float) -> void:
 	if room != null: room.test_hitbox(body)
 	
 	if current_state == "Moving" or current_state == "Idle":

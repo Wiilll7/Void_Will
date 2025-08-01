@@ -7,7 +7,7 @@ class_name Entity
 
 @export var type:String = "Multishoot"
 
-
+var room:Room
 var active:bool = true
 
 func _process(delta: float) -> void:
@@ -19,7 +19,7 @@ func _process(delta: float) -> void:
 					for j in range(3):
 						var target_angle:float = get_angle_to(target.position)
 						for i in range(8):
-							spawner.summon_bullet(body.attack,Vector2(0,0),1,100*Vector2(cos(PI/4 * i + target_angle),sin(PI/4 * i + target_angle)),0,5,"Throw",body)
+							spawner.summon_bullet(body.attack,position,1,100*Vector2(cos(PI/4 * i + target_angle),sin(PI/4 * i + target_angle)),0,5,"Throw",room)
 						await get_tree().create_timer(0.5).timeout
 					await get_tree().create_timer(4).timeout
 					active = true
@@ -31,7 +31,7 @@ func _process(delta: float) -> void:
 				if active:
 					active = false
 					for i in range(3):
-						spawner.summon_bullet(body.attack,Vector2(0,0),1,500*(target.position-position).normalized(),0,2,"Throw",body)
+						spawner.summon_bullet(body.attack,position,1,500*(target.position-position).normalized(),0,2,"Throw",room)
 						await get_tree().create_timer(0.1).timeout
 					await get_tree().create_timer(5).timeout
 					active = true
@@ -46,7 +46,7 @@ func _process(delta: float) -> void:
 						var temporary_target:Vector2 = (target.position - position).normalized()
 						await get_tree().create_timer(0.5).timeout
 						body.direction = temporary_target * 4
-						spawner.summon_bullet(body.attack,Vector2(0,0),2,Vector2(0,0),0,1.5,"Throw",body)
+						spawner.summon_bullet(body.attack,position,2,Vector2(0,0),0,1.5,"Throw",room)
 						await get_tree().create_timer(0.5).timeout
 						active = true
 					elif active:
