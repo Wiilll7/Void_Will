@@ -1,16 +1,24 @@
-[gd_scene load_steps=3 format=3 uid="uid://cot8vevaokf0o"]
+[gd_scene load_steps=4 format=3 uid="uid://cot8vevaokf0o"]
 
 [ext_resource type="Script" uid="uid://dolsj5hsunfoi" path="res://assets/scripts/bullet.gd" id="1_togti"]
 [ext_resource type="Texture2D" uid="uid://gipplxoxi1g4" path="res://assets/ghaphics/bullet.png" id="2_togti"]
+[ext_resource type="Script" uid="uid://ce7p6c6hpeqtv" path="res://assets/scripts/hitbox.gd" id="3_iqghb"]
 
-[node name="Bullet" type="Node2D" node_paths=PackedStringArray("kill_timer")]
+[node name="Bullet" type="Node2D" node_paths=PackedStringArray("hitbox")]
 script = ExtResource("1_togti")
-kill_timer = NodePath("Kill")
+hitbox = NodePath("Hitbox")
 
 [node name="Icon" type="Sprite2D" parent="."]
 texture = ExtResource("2_togti")
 
 [node name="Kill" type="Timer" parent="."]
+process_callback = 0
 one_shot = true
+
+[node name="Hitbox" type="Node2D" parent="."]
+script = ExtResource("3_iqghb")
+radius = 5.0
+type = "Circle"
+metadata/_custom_type_script = "uid://ce7p6c6hpeqtv"
 
 [connection signal="timeout" from="Kill" to="." method="_on_kill_timeout"]

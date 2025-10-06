@@ -1,11 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://dnj5nhq60j68o"]
+[gd_scene load_steps=4 format=3 uid="uid://dnj5nhq60j68o"]
 
 [ext_resource type="Texture2D" uid="uid://cy7nfghpo22tj" path="res://assets/ghaphics/tiles.png" id="1_l5pha"]
 [ext_resource type="Script" uid="uid://kfd746insdu5" path="res://assets/scripts/tiles.gd" id="2_b84jj"]
+[ext_resource type="Script" uid="uid://ce7p6c6hpeqtv" path="res://assets/scripts/hitbox.gd" id="3_u08x5"]
 
-[node name="Tiles" type="Sprite2D"]
+[node name="Tiles" type="Sprite2D" node_paths=PackedStringArray("hitbox")]
 texture = ExtResource("1_l5pha")
 vframes = 2
 script = ExtResource("2_b84jj")
-hitbox_radius = 12.0
-hitbox_type = "Box"
+hitbox = NodePath("Hitbox")
+
+[node name="Hitbox" type="Node2D" parent="."]
+script = ExtResource("3_u08x5")
+radius = 12.0
+type = "Box"
+metadata/_custom_type_script = "uid://ce7p6c6hpeqtv"

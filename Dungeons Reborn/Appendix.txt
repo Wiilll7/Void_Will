@@ -1,4 +1,4 @@
-imperfect ideas
+Imperfect ideas
 	main objective: make a good minecraft dungeons
 	
 	what is minecraft dungeons
@@ -13,7 +13,7 @@ imperfect ideas
 		you find merchants
 		you find currencies and loot
 		
-		you search always for more, loot and enemies
+		you always search for more, it being loot or enemies
 			interesting, powerful, risk // reward, no wasting time
 	
 	in looting you
@@ -28,7 +28,7 @@ imperfect ideas
 	in fighting
 		want to feel a challenge to get better items
 		or <- [you can create a good balance]
-		want to feel nice about ahnihilating one or two cities with style
+		want to feel nice about annihilating one or two hordes with style
 		
 		either way, you want to destroy, and only that
 			predictable but hard, outstanding music (of course), disbalanced (takes one aspect of fighting and elevates to the absolute)
@@ -36,8 +36,8 @@ imperfect ideas
 	what dungeons does good?
 		list:
 			specific weapons change the way of fighting
-				lifesteal // potion barrier ignores health and focuses on always be hitting something
-				bows dessecrate loads of enemies for the price of being vulnerable
+				lifesteal // potion barrier makes you ignore health and focus on always be hitting something
+				bows desintegrate loads of enemies for the price of being vulnerable
 				summonables are the sacrifice to enemy hits, making your health more stable
 				all area effect explosions are centered on you, forcing you to jump on the enemies, tanking hits and then disintegrating everything
 				some artifacts gives buffs, but force you to being in an certain area
@@ -65,7 +65,6 @@ imperfect ideas
 			focus on the fun of exploring, looting and fighting
 			make inventory more organized
 			map at the bottom or top, simple
-
 Vigorous mechanics:
 	cost // difficulty // risk // reward // progression
 	
@@ -89,7 +88,6 @@ Vigorous mechanics:
 		risk: death
 		reward: loot, items
 		progression: scaling difficulty, variety and quantity
-
 Execution:
 	terrain
 	items
@@ -116,12 +114,6 @@ Execution:
 		item refining
 			stats
 			aspects
-			
-
-Ascended
-
-Supreme
-
 mechanics
 	enemies
 		attack
@@ -198,6 +190,7 @@ goals:
 	animation
 	music
 	
+	
 	hitbox algorithm ✔
 		list all possible colisions (enemies, drops, walls, player, bullets) ✔
 		fragment them into a grid (managed by the room script) ✔
@@ -206,6 +199,13 @@ goals:
 				if something other is in the grid: ✔
 					test for all hitboxes (find by raycasting the intersection beetween the hitboxes) ✔
 					if hitboxes matches, send function to both hitboxes ✔
+	
+	hitbox movement integration:
+		make hitbox work for all types of movement
+			for bullets
+				
+			for entities and players
+				if wall
 	
 	inputs for movement, attack and parry ✔ +-
 		move:
@@ -268,4 +268,4 @@ checkpoints
 	27/7 - Basic bullet creation
 	28/7 - Bullet basic pattern and summon function, behaviour or Multishoot, Sniper and Knight
 	29/7 - Basic inputs for attack, defense, dash and movement and basic health // damage implementation
-	31/7 - 
+	31/7 // 1/8 - Basic [box] and [circle] hitbox working inside a room, basic room creation

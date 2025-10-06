@@ -1,14 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://6txsw0e151os"]
+[gd_scene load_steps=4 format=3 uid="uid://6txsw0e151os"]
 
 [ext_resource type="Script" uid="uid://dmr5fv458vlat" path="res://assets/scripts/player.gd" id="1_ikdab"]
 [ext_resource type="Texture2D" uid="uid://cl8e5ijidhkep" path="res://assets/ghaphics/player.png" id="2_jssbp"]
-[ext_resource type="Script" uid="uid://ce7p6c6hpeqtv" path="res://assets/scripts/hitbox.gd" id="4_jssbp"]
 [ext_resource type="Script" uid="uid://bwcdnl4wj8rik" path="res://assets/scripts/body_component.gd" id="5_6r1sy"]
 
-[node name="Player" type="Node2D" node_paths=PackedStringArray("body", "hitbox", "defense_cooldown", "parry_time", "dash_cooldown", "attack_cooldown")]
+[node name="Player" type="Node2D" node_paths=PackedStringArray("body", "defense_cooldown", "parry_time", "dash_cooldown", "attack_cooldown")]
 script = ExtResource("1_ikdab")
 body = NodePath("Body")
-hitbox = NodePath("Hitbox")
 defense_cooldown = NodePath("Defense")
 parry_time = NodePath("Defense/Parry")
 dash_cooldown = NodePath("Dash")
@@ -40,14 +38,7 @@ offset_top = -40.0
 offset_right = 45.0
 offset_bottom = -13.0
 
-[node name="Body" type="Node2D" parent="." node_paths=PackedStringArray("main_node")]
+[node name="Body" type="Node2D" parent="."]
 script = ExtResource("5_6r1sy")
-main_node = NodePath("..")
-
-[node name="Hitbox" type="Node2D" parent="."]
-script = ExtResource("4_jssbp")
-radius = 6.0
-type = "Circle"
-metadata/_custom_type_script = "uid://ce7p6c6hpeqtv"
 
 [connection signal="timeout" from="Defense/Parry" to="." method="_on_parry_timeout"]

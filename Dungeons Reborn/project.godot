@@ -15,6 +15,10 @@ run/main_scene="uid://dvc11inh1ronf"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="uid://ddtjam21waatv"
 
+[debug]
+
+gdscript/warnings/integer_division=0
+
 [display]
 
 window/size/viewport_width=640

@@ -1,4 +1,4 @@
 extends Sprite2D
+class_name Tile
 
-@export var hitbox_radius:float = 5
-@export_enum("Circle","Box") var hitbox_type:String = "Circle"
+@export var hitbox:Hitbox

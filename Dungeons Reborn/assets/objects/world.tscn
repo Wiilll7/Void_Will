@@ -1,20 +1,37 @@
-[gd_scene load_steps=5 format=3 uid="uid://dvc11inh1ronf"]
+[gd_scene load_steps=6 format=3 uid="uid://dvc11inh1ronf"]
 
 [ext_resource type="PackedScene" uid="uid://6txsw0e151os" path="res://assets/objects/player.tscn" id="1_h62we"]
 [ext_resource type="Script" uid="uid://bjvdbdvanviny" path="res://assets/scripts/world.gd" id="1_tc7et"]
 [ext_resource type="PackedScene" uid="uid://dnj5nhq60j68o" path="res://assets/objects/tiles.tscn" id="2_fr8g2"]
 [ext_resource type="PackedScene" uid="uid://1f61lumqvqwm" path="res://assets/objects/entity.tscn" id="2_qkxaf"]
+[ext_resource type="PackedScene" uid="uid://cot8vevaokf0o" path="res://assets/objects/bullet.tscn" id="4_tc7et"]
 
-[node name="World" type="Node2D" node_paths=PackedStringArray("player", "room_list")]
+[node name="World" type="Node2D" node_paths=PackedStringArray("player", "solid_tile_list", "tile_list", "entity_list", "player_bullet_list", "entity_bullet_list")]
 script = ExtResource("1_tc7et")
-tile = ExtResource("2_fr8g2")
+tile_base = ExtResource("2_fr8g2")
 enemy = ExtResource("2_qkxaf")
+bullet_base = ExtResource("4_tc7et")
 player = NodePath("Player")
-room_list = NodePath("Rooms")
+solid_tile_list = NodePath("Tiles/Solid")
+tile_list = NodePath("Tiles")
+entity_list = NodePath("Entities")
+player_bullet_list = NodePath("Bullets/Player")
+entity_bullet_list = NodePath("Bullets/Entity")
 
-[node name="Rooms" type="Node2D" parent="."]
+[node name="Tiles" type="Node" parent="."]
 
-[node name="Player" parent="." instance=ExtResource("1_h62we")]
+[node name="Solid" type="Node" parent="Tiles"]
+
+[node name="Entities" type="Node" parent="."]
+
+[node name="Bullets" type="Node" parent="."]
+
+[node name="Player" type="Node" parent="Bullets"]
+
+[node name="Entity" type="Node" parent="Bullets"]
+
+[node name="Player" parent="." node_paths=PackedStringArray("world") instance=ExtResource("1_h62we")]
 position = Vector2(358, 124)
+world = NodePath("..")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
