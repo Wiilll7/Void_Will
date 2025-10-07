@@ -1,3 +1,5 @@
+package Socket;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,19 +28,23 @@ public class Server {
 			do {
 				
 				String texto = entrada.readLine();
-				Evento evento = new Evento(texto);
 				
 				if (texto.equals("data")) {
 					
 					texto = entrada.readLine();
+					String resposta = "";
 					for (int i = 0; i < eventos.size(); i++) {
 						if (texto.equals(eventos.get(i).getFuso())) {
-							saida.println(eventos.get(i).toString());
+							resposta += eventos.get(i).toString() + ";";
 						}
 					}
 					
+					saida.println(resposta);
+					
 				} else {
-				
+					
+					Evento evento = new Evento(texto);
+					
 					boolean v = true;
 					
 					for (int i = 0; i < eventos.size(); i++) {
@@ -52,7 +58,6 @@ public class Server {
 					
 					if (v) {	
 						eventos.add(evento);
-						saida.println(evento);
 					}
 					
 					for (int i = 0; i < eventos.size(); i++) {
