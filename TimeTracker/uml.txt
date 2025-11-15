@@ -1,0 +1,50 @@
+@startuml
+
+Class Tarefa {
+- Tempo:tempo
+- String:titulo
+- String:descricao
+- LocalDateTime:data_entrega
+- String:tipo_atividade [enum]
+- String:estado [enum]
+- String:dificuldade [enum]
+}
+
+
+Class GerenciadorTarefas {
++ alterar_contagem(Tarefa:tarefa):Tempo
++ mover_tarefa(Tarefa:tarefa,ListaTarefa:tarefas):void
+}
+
+
+Class Tempo {
+- LocalDateTime:data_inicial
+
++ terminar_tempo():void
+}
+
+
+Class ListaTarefa{
+- List<Tarefa>:tarefas
+
++ adicionar_tarefa(Tarefa:tarefa,int:id):void
+}
+
+
+Class Calendario {
+- ListaTarefa[mes]:dias
+
++ coletar_tarefas(int:mes):void
+}
+
+
+Class Analise {
+- analisar(List<Tarefa>):???
+}
+
+
+Class Grafico {
+- 
+}
+
+@enduml
