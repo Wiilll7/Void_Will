@@ -1,50 +1,91 @@
 @startuml
 
-Class Tarefa {
-- Tempo:tempo
-- String:titulo
-- String:descricao
-- LocalDateTime:data_entrega
-- String:tipo_atividade [enum]
-- String:estado [enum]
-- String:dificuldade [enum]
+
+Class Usuario {
+- nome: String
+- senha: String
+- tipo: TipoUsuario
+- tarefas_habilitadas: List<Tarefa>
 }
 
+Enum TipoUsuario {
+ADMIN
+FUNCIONARIO
+}
+
+Class Tarefa {
+- tempos: List<Tempo>
+- titulo: String
+- descricao: String
+- comentario: String
+- data_entrega: LocalDateTime
+- tipo_atividade: TipoAtividade
+- estado: Estado
+- dificuldade: Dificuldade
+}
+
+Enum Dificuldade {
+FACIL
+MEDIO
+DIFICIL
+}
+
+Enum Estado {
+PENDENTE
+EM_ATIVIDADE
+CONCLUIDO
+NA_LIXEIRA
+}
+
+Class TipoAtividade {
+- nome: String
+- descricao: String
+}
 
 Class GerenciadorTarefas {
-+ alterar_contagem(Tarefa:tarefa):Tempo
-+ mover_tarefa(Tarefa:tarefa,ListaTarefa:tarefas):void
++ alterar_contagem(tarefa: Tarefa):Tempo
++ mover_tarefa(tarefa: Tarefa, ListaTarefa: tarefas): void
++ criar_tarefa(titulo: String, descricao: String, data_entrega: LocalDateTime, tipo_atividade: TipoAtividade, dificuldade: Dificuldade): Tarefa
++ modificar_tarefa(titulo: String, descricao: String, comentario: String, data_entrega: LocalDateTime, tipo_atividade: TipoAtividade, estado: Estado, dificuldade: Dificuldade): Tarefa
 }
 
+Class GerenciadorUsuario {
++ criar_usuario(nome: String, senha: String, tipo: TipoUsuario):Usuario
++ modificar_usuario(usuario, String, nome: String, senha: String, tipo, TipoUsuario): void
++ deletar_usuario(): void
+}
 
 Class Tempo {
-- LocalDateTime:data_inicial
+- data_inicial: LocalDateTime
+- data_final: LocalDateTime
 
-+ terminar_tempo():void
-}
-
-
-Class ListaTarefa{
-- List<Tarefa>:tarefas
-
-+ adicionar_tarefa(Tarefa:tarefa,int:id):void
++ terminar_tempo(): void
 }
 
 
 Class Calendario {
-- ListaTarefa[mes]:dias
+- dias: ListaTarefa[mes]
 
-+ coletar_tarefas(int:mes):void
++ coletar_tarefas(mes: int): void
 }
 
 
-Class Analise {
-- analisar(List<Tarefa>):???
-}
+Tarefa *-- TipoAtividade
+Tarefa *-- Dificuldade
+Tarefa *-- Estado
+Usuario *-- TipoUsuario
+
+GerenciadorTarefas <-- Tarefa
+GerenciadorTarefas <-- Dificuldade
+GerenciadorTarefas <-- Estado
+GerenciadorTarefas <-- TipoAtividade
+GerenciadorTarefas <-- Tempo
+
+GerenciadorUsuario <-- Usuario
+GerenciadorUsuario <-- TipoUsuario
 
 
-Class Grafico {
-- 
-}
+Tarefa *-- Tempo
+Usuario o-- Tarefa
 
 @enduml
