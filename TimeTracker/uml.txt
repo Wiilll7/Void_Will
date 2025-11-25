@@ -1,91 +1,50 @@
 @startuml
 
-
-Class Usuario {
-- nome: String
-- senha: String
-- tipo: TipoUsuario
-- tarefas_habilitadas: List<Tarefa>
-}
-
-Enum TipoUsuario {
-ADMIN
-FUNCIONARIO
-}
-
 Class Tarefa {
-- tempos: List<Tempo>
-- titulo: String
-- descricao: String
-- comentario: String
-- data_entrega: LocalDateTime
-- tipo_atividade: TipoAtividade
-- estado: Estado
-- dificuldade: Dificuldade
+- Tempo:tempo
+- String:titulo
+- String:descricao
+- LocalDateTime:data_entrega
+- String:tipo_atividade [enum]
+- String:estado [enum]
+- String:dificuldade [enum]
 }
 
-Enum Dificuldade {
-FACIL
-MEDIO
-DIFICIL
-}
-
-Enum Estado {
-PENDENTE
-EM_ATIVIDADE
-CONCLUIDO
-NA_LIXEIRA
-}
-
-Class TipoAtividade {
-- nome: String
-- descricao: String
-}
 
 Class GerenciadorTarefas {
-+ alterar_contagem(tarefa: Tarefa):Tempo
-+ mover_tarefa(tarefa: Tarefa, ListaTarefa: tarefas): void
-+ criar_tarefa(titulo: String, descricao: String, data_entrega: LocalDateTime, tipo_atividade: TipoAtividade, dificuldade: Dificuldade): Tarefa
-+ modificar_tarefa(titulo: String, descricao: String, comentario: String, data_entrega: LocalDateTime, tipo_atividade: TipoAtividade, estado: Estado, dificuldade: Dificuldade): Tarefa
++ alterar_contagem(Tarefa:tarefa):Tempo
++ mover_tarefa(Tarefa:tarefa,ListaTarefa:tarefas):void
 }
 
-Class GerenciadorUsuario {
-+ criar_usuario(nome: String, senha: String, tipo: TipoUsuario):Usuario
-+ modificar_usuario(usuario, String, nome: String, senha: String, tipo, TipoUsuario): void
-+ deletar_usuario(): void
-}
 
 Class Tempo {
-- data_inicial: LocalDateTime
-- data_final: LocalDateTime
+- LocalDateTime:data_inicial
 
-+ terminar_tempo(): void
++ terminar_tempo():void
+}
+
+
+Class ListaTarefa{
+- List<Tarefa>:tarefas
+
++ adicionar_tarefa(Tarefa:tarefa,int:id):void
 }
 
 
 Class Calendario {
-- dias: ListaTarefa[mes]
+- ListaTarefa[mes]:dias
 
-+ coletar_tarefas(mes: int): void
++ coletar_tarefas(int:mes):void
 }
 
 
-Tarefa *-- TipoAtividade
-Tarefa *-- Dificuldade
-Tarefa *-- Estado
-Usuario *-- TipoUsuario
-
-GerenciadorTarefas <-- Tarefa
-GerenciadorTarefas <-- Dificuldade
-GerenciadorTarefas <-- Estado
-GerenciadorTarefas <-- TipoAtividade
-GerenciadorTarefas <-- Tempo
-
-GerenciadorUsuario <-- Usuario
-GerenciadorUsuario <-- TipoUsuario
+Class Analise {
+- analisar(List<Tarefa>):???
+}
 
 
-Tarefa *-- Tempo
-Usuario o-- Tarefa
+Class Grafico {
+- 
+}
 
 @enduml
