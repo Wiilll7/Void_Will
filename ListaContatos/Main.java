@@ -33,8 +33,22 @@ public class Main {
 				System.out.println("Arquivo criado");
 			}
 			break;
+		case 4:
+			contatos.setListaContatos(FileManager.readJson());	
+			
+			System.out.println(contatos.getListaContatos());
+			break;
+		case 5:
+			if (FileManager.createYaml(contatos)) {
+				System.out.println("Arquivo criado");
+			}
+			break;
+		case 6:
+			contatos.setListaContatos(FileManager.readYaml());	
+			
+			System.out.println(contatos.getListaContatos());
+			break;
 		}
-		
 		
 		
 		in.close();
