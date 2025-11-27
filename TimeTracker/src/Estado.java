@@ -1,6 +1,0 @@
-
-public enum Estado {
-
-	PENDENTE, CONCLUIDO, NA_LIXEIRA, EM_ATIVIDADE;
-	
-}

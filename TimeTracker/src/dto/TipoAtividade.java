@@ -2,16 +2,21 @@ package dto;
 
 public class TipoAtividade {
 	// Attributes
-	String nome;
-	String descricao;
+	private int id;
+	private String nome;
+	private String descricao;
 	
 	// Constructor
-	public TipoAtividade(String nome, String descricao) {
+	public TipoAtividade(int id,String nome, String descricao) {
+		setId(id);
 		setNome(nome);
 		setDescricao(descricao);
 	}
 	
 	// Getters
+	public int getId() {
+		return id;
+	}
 	public String getNome() {
 		return nome;
 	}
@@ -20,6 +25,9 @@ public class TipoAtividade {
 	}
 	
 	// Setters
+	public void setId(int id) {
+		this.id = id;
+	}
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
