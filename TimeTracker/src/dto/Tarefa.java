@@ -1,35 +1,35 @@
 package dto;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class Tarefa {
 	// Attributes
-	Tempo tempo;
-	String titulo;
-	String descricao;
-	String comentario;
-	LocalDateTime data_entrega;
-	TipoAtividade tipo_atividade;
-	Estado estado;
-	Dificuldade dificuldade;
+	private int id;
+	private String titulo;
+	private String descricao;
+	private LocalDateTime data_entrega;
+	private Estado estado;
+	private Dificuldade dificuldade;
+	private TipoAtividade tipo_atividade;
 	
 	
+
+
 	// Constructor
-	public Tarefa(Tempo tempo, String titulo, String descricao, String comentario, LocalDateTime data_entrega, TipoAtividade tipo_atividade, Estado estado, Dificuldade dificuldade) {
-		setTempo(tempo);
+	public Tarefa(int id, String titulo, String descricao, LocalDateTime data_entrega, Estado estado, Dificuldade dificuldade, TipoAtividade tipo_atividade) {
+		setId(id);
 		setTitulo(titulo);
 		setDescricao(descricao);
-		setData_entrega(data_entrega);
-		setTipo_atividade(tipo_atividade);
+		setDataEntrega(data_entrega);
 		setEstado(estado);
 		setDificuldade(dificuldade);
+		setTipoAtividade(tipo_atividade);
 	}
 
 	
 	// Getters
-	public Tempo getTempo() {
-		return tempo;
+	public int getId() {
+		return id;
 	}
 	public String getTitulo() {
 		return titulo;
@@ -37,14 +37,8 @@ public class Tarefa {
 	public String getDescricao() {
 		return descricao;
 	}
-	public String getComentario() {
-		return comentario;
-	}
-	public LocalDateTime getData_entrega() {
+	public LocalDateTime getDataEntrega() {
 		return data_entrega;
-	}
-	public TipoAtividade getTipo_atividade() {
-		return tipo_atividade;
 	}
 	public Estado getEstado() {
 		return estado;
@@ -52,11 +46,14 @@ public class Tarefa {
 	public Dificuldade getDificuldade() {
 		return dificuldade;
 	}
-
+	public TipoAtividade getTipoAtividade() {
+		return tipo_atividade;
+	}
+	
 	
 	// Setters
-	public void setTempo(Tempo tempo) {
-		this.tempo = tempo;
+	public void setId(int id) {
+		this.id = id;
 	}
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
@@ -64,19 +61,16 @@ public class Tarefa {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	public void setComentario(String comentario) {
-		this.comentario = comentario;
-	}
-	public void setData_entrega(LocalDateTime data_entrega) {
+	public void setDataEntrega(LocalDateTime data_entrega) {
 		this.data_entrega = data_entrega;
-	}
-	public void setTipo_atividade(TipoAtividade tipo_atividade) {
-		this.tipo_atividade = tipo_atividade;
 	}
 	public void setEstado(Estado estado) {
 		this.estado = estado;
 	}
 	public void setDificuldade(Dificuldade dificuldade) {
 		this.dificuldade = dificuldade;
+	}
+	public void setTipoAtividade(TipoAtividade tipo_atividade) {
+		this.tipo_atividade = tipo_atividade;
 	}
 }

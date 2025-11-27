@@ -40,6 +40,8 @@ public class ComentarioDAO {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             List<Comentario> lista = createListFromSelect(rs);
+            ps.close();
+            conn.close();
             if (lista.size() > 0) {
                 return lista.get(0);
             } else {
@@ -58,6 +60,8 @@ public class ComentarioDAO {
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             List<Comentario> lista = createListFromSelect(rs);
+            ps.close();
+            conn.close();
             return lista;
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,6 +77,8 @@ public class ComentarioDAO {
             ps.setInt(1, tarefaId);
             ResultSet rs = ps.executeQuery();
             List<Comentario> lista = createListFromSelect(rs);
+            ps.close();
+            conn.close();
             return lista;
         } catch (Exception e) {
             e.printStackTrace();

@@ -46,6 +46,8 @@ public class TempoDAO {
 
             ResultSet rs = ps.executeQuery();
             List<Tempo> lista = createListFromSelect(rs);
+            ps.close();
+            conn.close();
 
             if (lista.size() > 0) {
                 return lista.get(0);
@@ -66,8 +68,9 @@ public class TempoDAO {
             ResultSet rs = ps.executeQuery();
 
             List<Tempo> lista = createListFromSelect(rs);
+            ps.close();
+            conn.close();
             return lista;
-
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -81,8 +84,14 @@ public class TempoDAO {
             ps.setInt(1, tarefaId);
 
             ResultSet rs = ps.executeQuery();
-            return createListFromSelect(rs);
-
+            List<Tempo> lista = createListFromSelect(rs);
+			ps.close();
+            conn.close();
+			if (lista.size() > 0) {
+				return lista;
+			} else {
+				return null;
+			}
         } catch (Exception e) {
             e.printStackTrace();
             return null;
