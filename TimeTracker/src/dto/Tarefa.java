@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Tarefa {
 	// Attributes
-	List<Tempo> tempo;
+	Tempo tempo;
 	String titulo;
 	String descricao;
 	String comentario;
@@ -16,7 +16,7 @@ public class Tarefa {
 	
 	
 	// Constructor
-	public Tarefa(List<Tempo> tempo, String titulo, String descricao, String comentario, LocalDateTime data_entrega, TipoAtividade tipo_atividade, Estado estado, Dificuldade dificuldade) {
+	public Tarefa(Tempo tempo, String titulo, String descricao, String comentario, LocalDateTime data_entrega, TipoAtividade tipo_atividade, Estado estado, Dificuldade dificuldade) {
 		setTempo(tempo);
 		setTitulo(titulo);
 		setDescricao(descricao);
@@ -28,7 +28,7 @@ public class Tarefa {
 
 	
 	// Getters
-	public List<Tempo> getTempo() {
+	public Tempo getTempo() {
 		return tempo;
 	}
 	public String getTitulo() {
@@ -55,7 +55,7 @@ public class Tarefa {
 
 	
 	// Setters
-	public void setTempo(List<Tempo> tempo) {
+	public void setTempo(Tempo tempo) {
 		this.tempo = tempo;
 	}
 	public void setTitulo(String titulo) {

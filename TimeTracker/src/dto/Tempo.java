@@ -4,28 +4,44 @@ import java.time.LocalDateTime;
 
 public class Tempo {
 	// Attributes
-	LocalDateTime data_inicial;
-	LocalDateTime data_final;
+	private int id;
+	private int tarefa_id;
+	private LocalDateTime data_inicial;
+	private LocalDateTime data_final;
 
 	// Constructor
-	public Tempo(LocalDateTime data_inicial, LocalDateTime data_final) {
-		setData_inicial(data_inicial);
-		setData_final(data_final);
+	public Tempo(int id,int tarefa_id,LocalDateTime data_inicial, LocalDateTime data_final) {
+		setId(id);
+		setTarefaId(tarefa_id);
+		setDataInicial(data_inicial);
+		setDataFinal(data_final);
 	}
 	
 	// Getters
-	public LocalDateTime getData_inicial() {
+	public int getId() {
+		return id;
+	}
+	public int getTarefaId() {
+		return tarefa_id;
+	}
+	public LocalDateTime getDataInicial() {
 		return data_inicial;
 	}
-	public LocalDateTime getData_final() {
+	public LocalDateTime getDataFinal() {
 		return data_final;
 	}
 	
 	// Setters
-	public void setData_inicial(LocalDateTime data_inicial) {
+	public void setId(int id) {
+		this.id = id;
+	}
+	public void setTarefaId(int tarefa_id) {
+		this.tarefa_id = tarefa_id;
+	}
+	public void setDataInicial(LocalDateTime data_inicial) {
 		this.data_inicial = data_inicial;
 	}
-	public void setData_final(LocalDateTime data_final) {
+	public void setDataFinal(LocalDateTime data_final) {
 		this.data_final = data_final;
 	}
 }
