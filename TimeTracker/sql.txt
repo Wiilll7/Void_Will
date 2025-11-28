@@ -1,0 +1,132 @@
+CREATE TABLE `acesso` (
+  `id` int(11) NOT NULL,
+  `id_tarefa` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+CREATE TABLE `dificuldade` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+INSERT INTO `dificuldade` (`id`, `nome`) VALUES
+(1, 'FACIL'),
+(2, 'MEDIO'),
+(3, 'DIFICIL');
+
+
+CREATE TABLE `estado` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `estado` (`id`, `nome`) VALUES
+(1, 'NA_LIXEIRA'),
+(2, 'PENDENTE'),
+(3, 'EM_ATIVIDADE'),
+(4, 'CONCLUIDA');
+
+
+CREATE TABLE `tarefa` (
+  `id` int(11) NOT NULL,
+  `titulo` varchar(30) NOT NULL,
+  `descricao` text NOT NULL,
+  `data_entrega` timestamp NULL DEFAULT NULL,
+  `id_estado` int(11) NOT NULL,
+  `id_dificuldade` int(11) NOT NULL,
+  `id_tipo_atividade` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+CREATE TABLE `tipoatividade` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(30) NOT NULL,
+  `descricao` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+CREATE TABLE `tipousuario` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `tipousuario` (`id`, `nome`) VALUES
+(1, 'ADMIN'),
+(2, 'FUNCIONARIO');
+
+
+CREATE TABLE `usuario` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(30) NOT NULL,
+  `senha` varchar(30) NOT NULL,
+  `id_tipo_usuario` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
+ALTER TABLE `acesso`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_tarefa` (`id_tarefa`),
+  ADD KEY `id_usuario` (`id_usuario`);
+
+ALTER TABLE `dificuldade`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `estado`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `tarefa`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_dificuldade` (`id_dificuldade`),
+  ADD KEY `id_estado` (`id_estado`),
+  ADD KEY `id_tipo_atividade` (`id_tipo_atividade`);
+
+ALTER TABLE `tipoatividade`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `nome` (`nome`);
+
+ALTER TABLE `tipousuario`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_tipo_usuario` (`id_tipo_usuario`);
+
+
+
+ALTER TABLE `acesso`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `dificuldade`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+ALTER TABLE `estado`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+ALTER TABLE `tarefa`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `tipoatividade`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+ALTER TABLE `tipousuario`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+ALTER TABLE `usuario`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+
+
+ALTER TABLE `acesso`
+  ADD CONSTRAINT `acesso_ibfk_1` FOREIGN KEY (`id_tarefa`) REFERENCES `tarefa` (`id`),
+  ADD CONSTRAINT `acesso_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`);
+
+ALTER TABLE `tarefa`
+  ADD CONSTRAINT `tarefa_ibfk_1` FOREIGN KEY (`id_dificuldade`) REFERENCES `dificuldade` (`id`),
+  ADD CONSTRAINT `tarefa_ibfk_2` FOREIGN KEY (`id_estado`) REFERENCES `estado` (`id`),
+  ADD CONSTRAINT `tarefa_ibfk_3` FOREIGN KEY (`id_tipo_atividade`) REFERENCES `tipoatividade` (`id`);
+
+ALTER TABLE `usuario`
+  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`id_tipo_usuario`) REFERENCES `tipousuario` (`id`);

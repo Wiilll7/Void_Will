@@ -12,8 +12,6 @@ public class Tarefa {
 	private Dificuldade dificuldade;
 	private TipoAtividade tipo_atividade;
 	
-	
-
 
 	// Constructor
 	public Tarefa(int id, String titulo, String descricao, LocalDateTime data_entrega, Estado estado, Dificuldade dificuldade, TipoAtividade tipo_atividade) {

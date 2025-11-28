@@ -1,25 +1,27 @@
 package dto;
 
-import java.util.List;
 
 public class Usuario {
 	// Attributes
-	String nome;
-	String senha;
-	TipoUsuario tipo;
-	List<Tarefa> tarefas_habilitadas;
+	private int id;
+	private String nome;
+	private String senha;
+	private TipoUsuario tipo;
 	
 	
 	// Constructor
-	public Usuario(String nome, String senha, TipoUsuario tipo, List<Tarefa> tarefas_habilitadas) {
+	public Usuario(int id,String nome, String senha, TipoUsuario tipo) {
+		setId(id);
 		setNome(nome);
 		setSenha(senha);
 		setTipo(tipo);
-		setTarefas_habilitadas(tarefas_habilitadas);
 	}
 
 
 	// Getters
+	public int getId() {
+		return id;
+	}
 	public String getNome() {
 		return nome;
 	}
@@ -29,12 +31,12 @@ public class Usuario {
 	public TipoUsuario getTipo() {
 		return tipo;
 	}
-	public List<Tarefa> getTarefas_habilitadas() {
-		return tarefas_habilitadas;
-	}
 
 
 	// Setters
+	public void setId(int id) {
+		this.id = id;
+	}
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
@@ -43,8 +45,5 @@ public class Usuario {
 	}
 	public void setTipo(TipoUsuario tipo) {
 		this.tipo = tipo;
-	}
-	public void setTarefas_habilitadas(List<Tarefa> tarefas_habilitadas) {
-		this.tarefas_habilitadas = tarefas_habilitadas;
 	}
 }

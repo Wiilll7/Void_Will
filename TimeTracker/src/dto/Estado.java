@@ -1,7 +1,7 @@
 package dto;
 
 public enum Estado {
-	NA_LIXEIRA(1),PENDENTE(2),EM_ATIVIDADE(3),CONCLUIDO(4);
+	NA_LIXEIRA(1),PENDENTE(2),EM_ATIVIDADE(3),CONCLUIDA(4);
 	
 	private int id;
 	private Estado(int id) {
