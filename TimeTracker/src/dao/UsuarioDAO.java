@@ -141,8 +141,7 @@ public class UsuarioDAO {
     public boolean update(Usuario usuario) {
         try {
             Connection conn = Conexao.conectar();
-            String sql = "UPDATE " + TABELA +
-                    " SET nome = ?, senha = ?, id_tipo_usuario = ? WHERE id = ?;";
+            String sql = "UPDATE " + TABELA + " SET nome = ?, senha = ?, id_tipo_usuario = ? WHERE id = ?;";
 
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, usuario.getNome());

@@ -34,23 +34,23 @@ public class TempoBO {
     }
     
     public Tempo toggleCounting(Tempo tempo,int tarefa_id) {
-	    	TempoDAO dao = new TempoDAO();
-	    	
-	    	if (tempo.getDataFinal() == null) {
-	    		tempo = new Tempo(tempo.getId(),tempo.getTarefaId(),tempo.getDataInicial(),LocalDateTime.now());
-	    		if (dao.update(tempo)) {
-	    			return tempo;
-	    		} else {
-	    			return null;
-	    		}
-	    	} else {
-	    		tempo = new Tempo(tempo.getId(),tempo.getTarefaId(),LocalDateTime.now(),null);
-	    		if (dao.create(tempo)) {
-	    			return tempo;
-	    		} else {
-	    			return null;
-	    		}
-	    	}
+    	TempoDAO dao = new TempoDAO();
+    	
+    	if (tempo.getDataFinal() == null) {
+    		tempo = new Tempo(tempo.getId(),tempo.getTarefaId(),tempo.getDataInicial(),LocalDateTime.now());
+    		if (dao.update(tempo)) {
+    			return tempo;
+    		} else {
+    			return null;
+    		}
+    	} else {
+    		tempo = new Tempo(tempo.getId(),tempo.getTarefaId(),LocalDateTime.now(),null);
+    		if (dao.create(tempo)) {
+    			return tempo;
+    		} else {
+    			return null;
+    		}
+    	}
     }
 
     public boolean deleteById(int id) {
