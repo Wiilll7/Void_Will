@@ -44,7 +44,20 @@ public class TarefaBO {
 
     public boolean update(Tarefa tarefa) {
         TarefaDAO dao = new TarefaDAO();
-        return dao.update(tarefa);
+        
+        List<Tarefa> lista = readAll();
+        boolean allow = true;
+        for (Tarefa t : lista) {
+        	if (t.getTitulo().equals(tarefa.getTitulo())) {
+        		allow = false;
+        		break;
+        	}
+        }
+        if (allow) {
+        	return dao.update(tarefa);
+        } else {
+        	return false;
+        }
     }
 
     public boolean delete(int id) {

@@ -52,7 +52,21 @@ public class UsuarioBO {
 
     public boolean update(Usuario usuario) {
         UsuarioDAO dao = new UsuarioDAO();
-        return dao.update(usuario);
+        
+        
+        List<Usuario> lista = readAll();
+        boolean allow = true;
+        for (Usuario u : lista) {
+        	if (u.getNome().equals(usuario.getNome())) {
+        		allow = false;
+        		break;
+        	}
+        }
+        if (allow) {
+        	return dao.update(usuario);
+        } else {
+        	return false;
+        }
     }
 
     public boolean delete(int id) {
