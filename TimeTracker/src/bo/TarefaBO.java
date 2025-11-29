@@ -3,15 +3,28 @@ package bo;
 import java.util.List;
 
 import dao.TarefaDAO;
+import dao.UsuarioDAO;
 import dto.Tarefa;
+import dto.Usuario;
 
 public class TarefaBO {
 
     public boolean create(Tarefa tarefa) {
         TarefaDAO dao = new TarefaDAO();
         
-        
-        return dao.create(tarefa);
+        List<Tarefa> lista = readAll();
+        boolean allow = true;
+        for (Tarefa t : lista) {
+        	if (t.getTitulo() == tarefa.getTitulo()) {
+        		allow = false;
+        		break;
+        	}
+        }
+        if (allow) {
+        	return dao.create(tarefa);
+        } else {
+        	return false;
+        }
     }
 
     public Tarefa readById(int id) {

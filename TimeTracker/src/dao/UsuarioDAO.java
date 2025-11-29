@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import connection.Conexao;
+import dto.Tarefa;
 import dto.TipoUsuario;
 import dto.Usuario;
 
@@ -25,6 +26,27 @@ public class UsuarioDAO {
             ps.setString(1, usuario.getNome());
             ps.setString(2, usuario.getSenha());
             ps.setInt(3, usuario.getTipo().getId());
+
+            ps.executeUpdate();
+            ps.close();
+            conn.close();
+
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean addTarefa(Usuario usuario,Tarefa tarefa) {
+    	try {
+            Connection conn = Conexao.conectar();
+            String sql = "INSERT INTO 'acesso' (id_tarefa, id_usuario) VALUES (?,?);";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, tarefa.getId());
+            ps.setInt(2, usuario.getId());
 
             ps.executeUpdate();
             ps.close();
@@ -181,6 +203,26 @@ public class UsuarioDAO {
                 return false;
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean removeTarefa(Usuario usuario,Tarefa tarefa) {
+        try {
+            Connection conn = Conexao.conectar();
+            String sql = "DELETE FROM 'acesso' WHERE id_tarefa = ? AND id_usuario = ?;";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, tarefa.getId());
+            ps.setInt(2, usuario.getId());
+            ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

@@ -3,13 +3,32 @@ package bo;
 import java.util.List;
 
 import dao.UsuarioDAO;
+import dto.Tarefa;
 import dto.Usuario;
 
 public class UsuarioBO {
 	public boolean create(Usuario usuario) {
         UsuarioDAO dao = new UsuarioDAO();
-        return dao.create(usuario);
+        
+        List<Usuario> lista = readAll();
+        boolean allow = true;
+        for (Usuario u : lista) {
+        	if (u.getNome() == usuario.getNome()) {
+        		allow = false;
+        		break;
+        	}
+        }
+        if (allow) {
+        	return dao.create(usuario);
+        } else {
+        	return false;
+        }
     }
+	
+	public boolean addTarefa(Usuario usuario,Tarefa tarefa) {
+		UsuarioDAO dao = new UsuarioDAO();
+		return dao.addTarefa(usuario, tarefa);
+	}
 
 	public Usuario readBySenha(String nome, String senha) {
         UsuarioDAO dao = new UsuarioDAO();
@@ -35,4 +54,9 @@ public class UsuarioBO {
         UsuarioDAO dao = new UsuarioDAO();
         return dao.delete(id);
     }
+    
+    public boolean removeTarefa(Usuario usuario,Tarefa tarefa) {
+		UsuarioDAO dao = new UsuarioDAO();
+		return dao.removeTarefa(usuario, tarefa);
+	}
 }
