@@ -8,7 +8,6 @@ import bo.UsuarioBO;
 import dto.TipoUsuario;
 import bo.TarefaBO;
 import dto.Tarefa;
-
 import java.time.LocalDateTime;
 import dto.Estado;
 import dto.Dificuldade;
@@ -33,18 +32,13 @@ public class Main {
         Estado pendente = Estado.PENDENTE;
         Dificuldade medio = Dificuldade.MEDIO;
         
-        //TipoAtividade interfaceJava = new TipoAtividade(1, "InterfaceJava", "Voce deve realizar uma interface em java");
         TipoAtividadeBO taBO = new TipoAtividadeBO();
-        //taBO.create(interfaceJava);
-        TipoAtividade interfaceJava = taBO.readById(4);
         
-        Tarefa t = new Tarefa(1, "Tarefa de Teste", "Esta tarefa esta sendo usada para testes apenas", ldt, pendente, medio, interfaceJava);
+        
+        Tarefa t = new Tarefa(1, "Tarefa de Teste", "Esta tarefa esta sendo usada para testes apenas", ldt, pendente, medio, taBO.readById(4));
         TarefaBO tarefaBO = new TarefaBO();
         tarefaBO.create(t);
-        
-        Tarefa t2 = tarefaBO.readById(2);
-        System.out.print("\n"+t2.getTitulo()+"\n"+t2.getDescricao());
-        
+
     }
         
 }

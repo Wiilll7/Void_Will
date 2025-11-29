@@ -15,7 +15,7 @@ public class TarefaRenderer extends JPanel implements ListCellRenderer<Tarefa> {
 
     private JLabel lblTitulo = new JLabel();
     private JLabel lblData = new JLabel();
-    private JLabel lblStatus = new JLabel();
+    private JLabel lblDificuldade = new JLabel();
 
     public TarefaRenderer() {
         setLayout(new GridLayout(3, 1));
@@ -24,18 +24,16 @@ public class TarefaRenderer extends JPanel implements ListCellRenderer<Tarefa> {
 
         add(lblTitulo);
         add(lblData);
-        add(lblStatus);
+        add(lblDificuldade);
     }
 
     @Override
     public Component getListCellRendererComponent(JList<? extends Tarefa> list, Tarefa tarefa, int index, boolean isSelected, boolean cellHasFocus) {
         
-        lblTitulo.setText("Checking: " + tarefa.getTitulo());
+        lblTitulo.setText(tarefa.getTitulo());
         lblTitulo.setFont(lblTitulo.getFont().deriveFont(java.awt.Font.BOLD, 14f));
-        
         lblData.setText("Data: " + tarefa.getDataEntrega().toString());
-        
-        lblStatus.setText("Status: " + tarefa.getEstado().name());
+        lblDificuldade.setText("Dificuldade: " + tarefa.getDificuldade().name());
 
         if (isSelected) {
             setBackground(list.getSelectionBackground());
