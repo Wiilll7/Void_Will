@@ -3,7 +3,8 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,17 @@ import dto.TipoAtividade;
 public class TarefaDAO {
     final String TABELA = "Tarefa";
 
+    // Date solver
+    static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public static String dateToString(LocalDateTime date) {
+        return date.format(formatter);
+    }
+    public static LocalDateTime stringToDate(String date) {
+    	System.out.println(date);
+    	String[] separate_ms = date.split("\\.");
+    	return LocalDateTime.parse(separate_ms[0],formatter);
+    }
+    
     // Create
     public boolean create(Tarefa tarefa) {
         try {
@@ -25,7 +37,7 @@ public class TarefaDAO {
 
             ps.setString(1, tarefa.getTitulo());
             ps.setString(2, tarefa.getDescricao());
-            ps.setTimestamp(3, Timestamp.valueOf(tarefa.getDataEntrega()));
+            ps.setString(3, dateToString(tarefa.getDataEntrega()));
             ps.setInt(4, tarefa.getTipoAtividade().getId());
             ps.setInt(5, tarefa.getEstado().getId());
             ps.setInt(6, tarefa.getDificuldade().getId());
@@ -41,6 +53,27 @@ public class TarefaDAO {
     }
 
     // Read
+    public Tarefa readByUsuarioId(int id) {
+        try {
+            Connection conn = Conexao.conectar();
+            String sql = "SELECT * FROM " + TABELA + " WHERE id_usuario = ?;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            List<Tarefa> lista = createListFromSelect(rs);
+            ps.close();
+            conn.close();
+            if (lista.size() > 0) {
+				return lista.get(0);
+			} else {
+				return null;
+			}
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     public Tarefa readById(int id) {
         try {
             Connection conn = Conexao.conectar();
@@ -91,7 +124,7 @@ public class TarefaDAO {
 
             ps.setString(1, tarefa.getTitulo());
             ps.setString(2, tarefa.getDescricao());
-            ps.setTimestamp(3, Timestamp.valueOf(tarefa.getDataEntrega()));
+            ps.setString(3, dateToString(tarefa.getDataEntrega()));
             ps.setInt(4, tarefa.getTipoAtividade().getId());
             ps.setInt(5, tarefa.getEstado().getId());
             ps.setInt(6, tarefa.getDificuldade().getId());
@@ -118,7 +151,7 @@ public class TarefaDAO {
             	Tarefa tarefa = new Tarefa(rs.getInt(1),
                 		rs.getString("titulo"),
                 		rs.getString("descricao"),
-                		rs.getTimestamp("data_entrega").toLocalDateTime(),
+                		stringToDate(rs.getString("data_entrega")),
                 		Estado.getFromId(rs.getInt("id_estado")),
                 		Dificuldade.getFromId(rs.getInt("id_dificuldade")),
                 		tipoAtv
@@ -139,19 +172,19 @@ public class TarefaDAO {
  		try {
              if (readById(id) != null) {
              	Connection conn = Conexao.conectar();
-                 String sql = "DELETE FROM " + TABELA + " WHERE id = ?;";
+                String sql = "DELETE FROM " + TABELA + " WHERE id = ?;";
              	PreparedStatement ps = conn.prepareStatement(sql);
-                 ps.setInt(1, id);
-                 ps.executeUpdate();
-                 ps.close();
-                 conn.close();
-                 return true;
+                ps.setInt(1, id);
+                ps.executeUpdate();
+                ps.close();
+                conn.close();
+                return true;
              } else {
              	return false;
              }
          } catch (Exception e) {
          	 e.printStackTrace();
-              return false;
+             return false;
          }
  	}
 }
