@@ -13,7 +13,7 @@ public class UsuarioBO {
         List<Usuario> lista = readAll();
         boolean allow = true;
         for (Usuario u : lista) {
-        	if (u.getNome() == usuario.getNome()) {
+        	if (u.getNome().equals(usuario.getNome())) {
         		allow = false;
         		break;
         	}
