@@ -17,7 +17,7 @@ public class ComentarioDAO {
     public boolean create(Comentario comentario) {
         try {
             Connection conn = Conexao.conectar();
-            String sql = "INSERT INTO " + TABELA + " (tarefa_id, descricao) VALUES (?,?);";
+            String sql = "INSERT INTO " + TABELA + " (id_tarefa, descricao) VALUES (?,?);";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, comentario.getTarefaId());
             ps.setString(2, comentario.getDescricao());
@@ -72,7 +72,7 @@ public class ComentarioDAO {
     public List<Comentario> readByTarefaId(int tarefaId) {
         try {
             Connection conn = Conexao.conectar();
-            String sql = "SELECT * FROM " + TABELA + " WHERE tarefa_id = ?;";
+            String sql = "SELECT * FROM " + TABELA + " WHERE id_tarefa = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, tarefaId);
             ResultSet rs = ps.executeQuery();
@@ -93,7 +93,7 @@ public class ComentarioDAO {
             while (rs.next()) {
                 Comentario comentario = new Comentario(
                     rs.getInt("id"),
-                    rs.getInt("tarefa_id"),
+                    rs.getInt("id_tarefa"),
                     rs.getString("descricao")
                 );
                 lista.add(comentario);
@@ -109,7 +109,7 @@ public class ComentarioDAO {
     public boolean update(Comentario comentario) {
         try {
             Connection conn = Conexao.conectar();
-            String sql = "UPDATE " + TABELA + " SET tarefa_id = ?, descricao = ? WHERE id = ?;";
+            String sql = "UPDATE " + TABELA + " SET id_tarefa = ?, descricao = ? WHERE id = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, comentario.getTarefaId());
             ps.setString(2, comentario.getDescricao());

@@ -64,6 +64,13 @@ CREATE TABLE `usuario` (
   `id_tipo_usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE `tempo` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `id_tarefa` INT NOT NULL ,
+  `data_inicial` DATETIME NOT NULL ,
+  `data_final` DATETIME NOT NULL ,
+  PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 ALTER TABLE `acesso`
@@ -130,3 +137,8 @@ ALTER TABLE `tarefa`
 
 ALTER TABLE `usuario`
   ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`id_tipo_usuario`) REFERENCES `tipousuario` (`id`);
+
+ALTER TABLE `tempo`
+  ADD FOREIGN KEY (`id_tarefa`) REFERENCES `tarefa`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
