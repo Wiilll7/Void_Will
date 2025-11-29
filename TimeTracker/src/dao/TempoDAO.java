@@ -3,7 +3,8 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,16 +14,35 @@ import dto.Tempo;
 public class TempoDAO {
 
     final String TABELA = "Tempo";
+    
+    static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    
+    public static String dateToString(LocalDateTime date) {
+    	if (date != null) {
+    		return date.format(formatter);
+    	} else {
+    		return null;
+    	}
+    }
+    public static LocalDateTime stringToDate(String date) {
+    	if (date != null) {
+	    	System.out.println(date);
+	    	String[] separate_ms = date.split("\\.");
+	    	return LocalDateTime.parse(separate_ms[0],formatter);
+    	} else {
+    		return null;
+    	}
+    }
 
     // Create
     public boolean create(Tempo tempo) {
         try {
             Connection conn = Conexao.conectar();
-            String sql = "INSERT INTO " + TABELA + " (data_inicial, data_final, tarefa_id) VALUES (?,?,?);";
+            String sql = "INSERT INTO " + TABELA + " (data_inicial, data_final, id_tarefa) VALUES (?,?,?);";
             PreparedStatement ps = conn.prepareStatement(sql);
 
-            ps.setTimestamp(1, Timestamp.valueOf(tempo.getDataInicial()));
-            ps.setTimestamp(2, Timestamp.valueOf(tempo.getDataFinal()));
+            ps.setString(1, dateToString(tempo.getDataInicial()));
+            ps.setString(2, dateToString(tempo.getDataFinal()));
             ps.setInt(3, tempo.getTarefaId());
 
             ps.executeUpdate();
@@ -79,7 +99,7 @@ public class TempoDAO {
     public List<Tempo> readByTarefaId(int tarefaId) {
         try {
             Connection conn = Conexao.conectar();
-            String sql = "SELECT * FROM " + TABELA + " WHERE tarefa_id = ?;";
+            String sql = "SELECT * FROM " + TABELA + " WHERE id_tarefa = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, tarefaId);
 
@@ -89,6 +109,27 @@ public class TempoDAO {
             conn.close();
 			if (lista.size() > 0) {
 				return lista;
+			} else {
+				return null;
+			}
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public Tempo readLastAdded(int tarefaId) {
+    	try {
+            Connection conn = Conexao.conectar();
+            String sql = "SELECT * FROM " + TABELA + " WHERE id_tarefa = ? ORDER BY id DESC LIMIT 1;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, tarefaId);
+
+            ResultSet rs = ps.executeQuery();
+            List<Tempo> lista = createListFromSelect(rs);
+			ps.close();
+            conn.close();
+			if (lista.size() > 0) {
+				return lista.get(0);
 			} else {
 				return null;
 			}
@@ -107,10 +148,9 @@ public class TempoDAO {
 
                 Tempo tempo = new Tempo(
                     rs.getInt("id"),
-                    rs.getInt("tarefa_id"),
-                    rs.getTimestamp("data_inicial").toLocalDateTime(),
-                    rs.getTimestamp("data_final").toLocalDateTime()
-                    
+                    rs.getInt("id_tarefa"),
+                    stringToDate(rs.getString("data_inicial")),
+                    stringToDate(rs.getString("data_final"))
                 );
 
                 lista.add(tempo);
@@ -128,11 +168,12 @@ public class TempoDAO {
     public boolean update(Tempo tempo) {
         try {
             Connection conn = Conexao.conectar();
-            String sql = "UPDATE " + TABELA + " SET data_inicial = ?, data_final = ?, tarefa_id = ? WHERE id = ?;";
+            String sql = "UPDATE " + TABELA + " SET data_inicial = ?, data_final = ?, id_tarefa = ? WHERE id = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
 
-            ps.setTimestamp(1, Timestamp.valueOf(tempo.getDataInicial()));
-            ps.setTimestamp(2, Timestamp.valueOf(tempo.getDataFinal()));
+            ps.setString(1, dateToString(tempo.getDataInicial()));
+            ps.setString(2, dateToString(tempo.getDataFinal()));
+            
             ps.setInt(3, tempo.getTarefaId());
             ps.setInt(4, tempo.getId());
 
