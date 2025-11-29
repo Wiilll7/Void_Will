@@ -50,8 +50,10 @@ public class UserControl extends javax.swing.JFrame {
         txtNomeUsuario.addActionListener(this::txtNomeUsuarioActionPerformed);
 
         chbExibeSenha.setText("Exibir Senha");
+        chbExibeSenha.addActionListener(this::chbExibeSenhaActionPerformed);
 
         chbExibeConfirmarSenha.setText("Exibir Senha");
+        chbExibeConfirmarSenha.addActionListener(this::chbExibeConfirmarSenhaActionPerformed);
 
         btnConfirmarAdd.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         btnConfirmarAdd.setText("Confirmar");
@@ -238,6 +240,22 @@ public class UserControl extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnConfirmarAddActionPerformed
+
+    private void chbExibeSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbExibeSenhaActionPerformed
+        if (chbExibeSenha.isSelected()) {
+            pswSenha.setEchoChar((char)0);
+        } else {
+            pswSenha.setEchoChar('*');
+        }
+    }//GEN-LAST:event_chbExibeSenhaActionPerformed
+
+    private void chbExibeConfirmarSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbExibeConfirmarSenhaActionPerformed
+        if (chbExibeConfirmarSenha.isSelected()) {
+            pswConfirmaSenha.setEchoChar((char)0);
+        } else {
+            pswConfirmaSenha.setEchoChar('*');
+        }
+    }//GEN-LAST:event_chbExibeConfirmarSenhaActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
