@@ -13,6 +13,8 @@ public class TelaLogin extends javax.swing.JFrame {
     public TelaLogin() {
         initComponents();
     }
+    
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -114,9 +116,9 @@ public class TelaLogin extends javax.swing.JFrame {
         Usuario us = userBO.readBySenha(usuario, senha);
         if (us != null) {
             if (us.getTipo() == TipoUsuario.ADMIN) {
-                TelaAdmin ta = new TelaAdmin();
-                ta.setVisible(true);
-                this.dispose();
+                //TelaFuncionario ta = new TelaFuncionario();
+                //ta.setVisible(true);
+                //this.dispose();
             } else if (us.getTipo() == TipoUsuario.FUNCIONARIO) {
                 TelaFuncionario tf = new TelaFuncionario();
                 tf.setVisible(true);
