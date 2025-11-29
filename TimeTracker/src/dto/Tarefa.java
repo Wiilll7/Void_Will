@@ -23,6 +23,9 @@ public class Tarefa {
 		setDificuldade(dificuldade);
 		setTipoAtividade(tipo_atividade);
 	}
+        public Tarefa() {
+            
+	}
 
 	
 	// Getters

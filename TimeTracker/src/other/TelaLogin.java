@@ -3,6 +3,8 @@ package other;
 import dto.Usuario;
 import bo.UsuarioBO;
 import dto.TipoUsuario;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 public class TelaLogin extends javax.swing.JFrame {
     
@@ -20,8 +22,9 @@ public class TelaLogin extends javax.swing.JFrame {
         titleUsuario = new javax.swing.JLabel();
         titleSenha = new javax.swing.JLabel();
         txtUsuario = new javax.swing.JTextField();
-        txtSenha = new javax.swing.JTextField();
         btnEntrar = new javax.swing.JButton();
+        chbMostrarSenha = new javax.swing.JCheckBox();
+        pswSenha = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -40,6 +43,11 @@ public class TelaLogin extends javax.swing.JFrame {
         btnEntrar.setText("Entrar");
         btnEntrar.addActionListener(this::btnEntrarActionPerformed);
 
+        chbMostrarSenha.setText("Mostrar senha");
+        chbMostrarSenha.addActionListener(this::chbMostrarSenhaActionPerformed);
+
+        pswSenha.addActionListener(this::pswSenhaActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -51,35 +59,42 @@ public class TelaLogin extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(63, 63, 63)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(titleUsuario)
-                            .addComponent(titleSenha))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtUsuario)
-                            .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(116, 116, 116)
+                        .addComponent(btnEntrar))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(117, 117, 117)
-                        .addComponent(btnEntrar)))
-                .addContainerGap(78, Short.MAX_VALUE))
+                        .addGap(58, 58, 58)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(75, 75, 75)
+                                .addComponent(chbMostrarSenha))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(titleUsuario)
+                                    .addComponent(titleSenha))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtUsuario)
+                                    .addComponent(pswSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE))))))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(titleLogin)
-                .addGap(45, 45, 45)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(titleUsuario)
                     .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(titleSenha)
-                    .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
+                    .addComponent(pswSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chbMostrarSenha)
+                .addGap(26, 26, 26)
                 .addComponent(btnEntrar)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addGap(47, 47, 47))
         );
 
         pack();
@@ -92,7 +107,8 @@ public class TelaLogin extends javax.swing.JFrame {
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
         String usuario = txtUsuario.getText();
-        String senha = txtSenha.getText();
+        char[] senhaArray = pswSenha.getPassword();
+        String senha = new String(senhaArray);
         
         UsuarioBO userBO = new UsuarioBO();
         Usuario us = userBO.readBySenha(usuario, senha);
@@ -105,17 +121,36 @@ public class TelaLogin extends javax.swing.JFrame {
                 TelaFuncionario tf = new TelaFuncionario();
                 tf.setVisible(true);
                 this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, 
+                "Tipo do usuário indefinido.", 
+                "Aviso", 
+                JOptionPane.PLAIN_MESSAGE
+            );
             }
             
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                "Usuário e/ou senha incorretos.", 
+                "Aviso", 
+                JOptionPane.PLAIN_MESSAGE
+            );
         }
     }//GEN-LAST:event_btnEntrarActionPerformed
 
+    private void chbMostrarSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbMostrarSenhaActionPerformed
+        if (chbMostrarSenha.isSelected()) {
+            pswSenha.setEchoChar((char)0);
+        } else {
+            pswSenha.setEchoChar('*');
+        }
+    }//GEN-LAST:event_chbMostrarSenhaActionPerformed
+
+    private void pswSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pswSenhaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pswSenhaActionPerformed
+
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -126,17 +161,17 @@ public class TelaLogin extends javax.swing.JFrame {
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
         java.awt.EventQueue.invokeLater(() -> new TelaLogin().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEntrar;
+    private javax.swing.JCheckBox chbMostrarSenha;
+    private javax.swing.JPasswordField pswSenha;
     private javax.swing.JLabel titleLogin;
     private javax.swing.JLabel titleSenha;
     private javax.swing.JLabel titleUsuario;
-    private javax.swing.JTextField txtSenha;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }
