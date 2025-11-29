@@ -33,7 +33,6 @@ public class Main {
         Dificuldade medio = Dificuldade.MEDIO;
         
         TipoAtividadeBO taBO = new TipoAtividadeBO();
-        TipoAtividade interfaceJava = new TipoAtividade(1, "InterfaceJava", "Voce deve realizar uma interface em java");
         
         
         Tarefa t = new Tarefa(1, "Tarefa de Teste", "Esta tarefa esta sendo usada para testes apenas", ldt, pendente, medio, taBO.readById(4));
