@@ -14,7 +14,6 @@ public class TelaAdmin extends javax.swing.JFrame {
     }
 
     public void atualizarTitulo(String nomeDaTarefa) {
-        // O width: 250px deve ser ajustado para a largura do seu painel cinza
         String textoFormatado = "<html><div style='text-align: center; width: 115px;'>" 
                                 + nomeDaTarefa + "</div></html>";
 
@@ -23,15 +22,11 @@ public class TelaAdmin extends javax.swing.JFrame {
     
     private void carregarListas() {
         TarefaBO bo = new TarefaBO();
-        List<Tarefa> todasTarefas = bo.readAll(); // Seu método já pronto!
-
-        // Cria modelos para as listas (são baldes onde jogamos os dados)
+        List<Tarefa> todasTarefas = bo.readAll();
         DefaultListModel<Tarefa> modeloAFazer = new DefaultListModel<>();
         DefaultListModel<Tarefa> modeloConcluidas = new DefaultListModel<>();
 
         for (Tarefa t : todasTarefas) {
-            // Lógica simples: Se ID do estado for Concluido (ajuste o ID conforme seu Enum)
-            // Supondo que ID 3 seja concluído, por exemplo.
             if (t.getEstado().getId() == 3) { 
                 modeloConcluidas.addElement(t);
             } else {
@@ -39,11 +34,9 @@ public class TelaAdmin extends javax.swing.JFrame {
             }
         }
 
-        // Aplica os modelos nas listas da tela
         listaAFazer.setModel(modeloAFazer);
         listaConcluidas.setModel(modeloConcluidas);
 
-        // A MÁGICA: Aplica o desenhista (Renderer) que criamos no Passo 2
         listaAFazer.setCellRenderer(new TarefaRenderer());
         listaConcluidas.setCellRenderer(new TarefaRenderer());
     }
@@ -146,10 +139,6 @@ public class TelaAdmin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public static void main(String args[]) {
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -160,7 +149,6 @@ public class TelaAdmin extends javax.swing.JFrame {
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         java.awt.EventQueue.invokeLater(() -> new TelaAdmin().setVisible(true));
     }
 

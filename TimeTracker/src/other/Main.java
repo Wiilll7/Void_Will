@@ -32,11 +32,11 @@ public class Main {
         Estado pendente = Estado.PENDENTE;
         Dificuldade medio = Dificuldade.MEDIO;
         
-        TipoAtividade interfaceJava = new TipoAtividade(1, "InterfaceJava", "Voce deve realizar uma interface em java");
         TipoAtividadeBO taBO = new TipoAtividadeBO();
-        taBO.create(interfaceJava);
+        TipoAtividade interfaceJava = new TipoAtividade(1, "InterfaceJava", "Voce deve realizar uma interface em java");
         
-        Tarefa t = new Tarefa(1, "Tarefa de Teste", "Esta tarefa esta sendo usada para testes apenas", ldt, pendente, medio, interfaceJava);
+        
+        Tarefa t = new Tarefa(1, "Tarefa de Teste", "Esta tarefa esta sendo usada para testes apenas", ldt, pendente, medio, taBO.readById(4));
         TarefaBO tarefaBO = new TarefaBO();
         tarefaBO.create(t);
 
