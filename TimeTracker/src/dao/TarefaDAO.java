@@ -53,10 +53,10 @@ public class TarefaDAO {
     }
 
     // Read
-    public Tarefa readByUsuarioId(int id) {
+    public List<Tarefa> readByUsuarioId(int id) {
         try {
             Connection conn = Conexao.conectar();
-            String sql = "SELECT * FROM " + TABELA + " WHERE id_usuario = ?;";
+            String sql = "SELECT * FROM 'acesso' WHERE id_usuario = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -65,7 +65,7 @@ public class TarefaDAO {
             ps.close();
             conn.close();
             if (lista.size() > 0) {
-				return lista.get(0);
+				return lista;
 			} else {
 				return null;
 			}

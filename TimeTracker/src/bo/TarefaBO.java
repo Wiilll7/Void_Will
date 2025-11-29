@@ -32,7 +32,7 @@ public class TarefaBO {
         return dao.readById(id);
     }
     
-    public Tarefa readByUsuarioId(int usuario_id) {
+    public List<Tarefa> readByUsuarioId(int usuario_id) {
         TarefaDAO dao = new TarefaDAO();
         return dao.readByUsuarioId(usuario_id);
     }

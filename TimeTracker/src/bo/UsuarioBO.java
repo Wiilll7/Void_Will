@@ -39,6 +39,11 @@ public class UsuarioBO {
         UsuarioDAO dao = new UsuarioDAO();
         return dao.readById(id);
     }
+    
+    public List<Usuario> readByTarefaId(int tarefa_id) {
+    	UsuarioDAO dao = new UsuarioDAO();
+        return dao.readByTarefaId(tarefa_id);
+    }
 
     public List<Usuario> readAll() {
         UsuarioDAO dao = new UsuarioDAO();

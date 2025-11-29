@@ -60,7 +60,7 @@ public class UsuarioDAO {
         }
     }
 
-    // Read by ID
+    // Read
     public Usuario readById(int id) {
         try {
             Connection conn = Conexao.conectar();
@@ -108,6 +108,28 @@ public class UsuarioDAO {
                 return null;
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public List<Usuario> readByTarefaId(int tarefa_id) {
+        try {
+            Connection conn = Conexao.conectar();
+            String sql = "SELECT * FROM 'acesso' WHERE id_tarefa = ?;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, tarefa_id);
+            ResultSet rs = ps.executeQuery();
+
+            List<Usuario> lista = createListFromSelect(rs);
+            ps.close();
+            conn.close();
+            if (lista.size() > 0) {
+				return lista;
+			} else {
+				return null;
+			}
         } catch (Exception e) {
             e.printStackTrace();
             return null;
