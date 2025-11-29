@@ -18,6 +18,11 @@ public class TarefaBO {
         TarefaDAO dao = new TarefaDAO();
         return dao.readById(id);
     }
+    
+    public Tarefa readByUsuarioId(int usuario_id) {
+        TarefaDAO dao = new TarefaDAO();
+        return dao.readByUsuarioId(usuario_id);
+    }
 
     public List<Tarefa> readAll() {
         TarefaDAO dao = new TarefaDAO();
