@@ -9,9 +9,10 @@ import java.util.List;
 
 import bo.TarefaBO;
 import bo.TempoBO;
+import bo.TipoAtividadeBO;
+import dto.Tarefa;
 import dto.Tempo;
 
-import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public class Desempenho {
@@ -36,12 +37,12 @@ public class Desempenho {
     }
 	
     // Tempo total / Dia
-    public static CategoryDataset getTempoTotalPorDia() {
+    public static DefaultCategoryDataset getTempoTotalPorDia() {
 
         TempoBO tempoBO = new TempoBO();
         List<Tempo> tempos = tempoBO.readAll();
         List<String> datas = new ArrayList<String>();
-        List<Integer> tempo_gasto = new ArrayList<Integer>();
+        List<Double> tempo_gasto = new ArrayList<Double>();
 
         if (tempos != null) {
             for (Tempo t : tempos) {
@@ -52,12 +53,12 @@ public class Desempenho {
                     String data = datas.get(i);
 
                     if (data.equals(data_tempo)) {
-                            exists = i;
-                            break;
+                        exists = i;
+                        break;
                     }
                 }
 
-                int time_count = (int) Duration.between(t.getDataInicial(), t.getDataFinal()).toSeconds();
+                double time_count = Duration.between(t.getDataInicial(), t.getDataFinal()).toSeconds();
 
                 if (exists != -1) {
                         tempo_gasto.set(exists, tempo_gasto.get(exists) + time_count);
@@ -73,49 +74,138 @@ public class Desempenho {
                 return null;
         }
     }
-	/*
+	
 	// Tempo total / TipoAtividade
-	public static CategoryDataset getTempoTotalPorDia() {
-		
-		TempoBO tempoBO = new TempoBO();
-		List<Tempo> tempos = tempoBO.readAll();
-		List<String> tiposAtividade = new ArrayList<String>();
-		List<Integer> tempo_gasto = new ArrayList<Integer>();
-		
-		TarefaBO tarefaBO = new TarefaBO();
-		if (tempos != null) {
-			for (Tempo t : tempos) {
-				int exists = -1;
-				String tipo = (tarefaBO.readById(t.getTarefaId()).getTipoAtividade());
-				
-				for (int i = 0; i < datas.size(); i++) {
-					String data = datas.get(i);
-					
-					if (data.equals(data_tempo)) {
-						exists = i;
-						break;
-					}
-				}
-				
-				int time_count = (int) Duration.between(t.getDataInicial(), t.getDataFinal()).toSeconds();
-				
-				if (exists != -1) {
-					tempo_gasto.set(1, tempo_gasto.get(exists) + time_count);
-				} else {
-					datas.add(data_tempo);
-					tempo_gasto.add(time_count);
-				}
-			}
-			
-			return arraysToDataset(tempo_gasto,datas);
-			
-		} else {
-			return null;
-		}
-	}
-	*/
+    public static DefaultCategoryDataset getTempoTotalPorTipoAtividade() {
+
+        TempoBO tempoBO = new TempoBO();
+        TarefaBO taBO = new TarefaBO();
+        List<Tempo> tempos = tempoBO.readAll();
+        List<String> tipo_atvs = new ArrayList<String>();
+        List<Double> tempo_gasto = new ArrayList<Double>();
+
+        if (tempos != null) {
+            for (Tempo t : tempos) {
+                int exists = -1;
+                String tipo_atv_tempo = taBO.readById(t.getTarefaId()).getTipoAtividade().getNome();
+
+                for (int i = 0; i < tipo_atvs.size(); i++) {
+                    String tipo_atv = tipo_atvs.get(i);
+
+                    if (tipo_atv.equals(tipo_atv_tempo)) {
+                        exists = i;
+                        break;
+                    }
+                }
+
+                double time_count = Duration.between(t.getDataInicial(), t.getDataFinal()).toSeconds();
+
+                if (exists != -1) {
+                        tempo_gasto.set(exists, tempo_gasto.get(exists) + time_count);
+                } else {
+                        tipo_atvs.add(tipo_atv_tempo);
+                        tempo_gasto.add(time_count);
+                }
+            }
+
+            return arraysToDataset(tempo_gasto,tipo_atvs);
+
+        } else {
+            return null;
+        }
+    }
+	
+    // DificuldadeMedia / Dia
+    public static DefaultCategoryDataset getDificuldadeMediaPorDia() {
+
+        TarefaBO tarefaBO = new TarefaBO();
+        TempoBO tempoBO = new TempoBO();
+        List<Tarefa> tarefas = tarefaBO.readAll();
+        List<String> datas = new ArrayList<String>();
+        List<Double> dificuldade_media = new ArrayList<Double>();
+
+        if (tarefas != null) {
+            for (Tarefa t : tarefas) {
+                int exists = -1;
+                Tempo tarefa_tempo = tempoBO.readByTarefaId(t.getId()).get(0);
+                String data_tarefa = dateToString(tarefa_tempo.getDataInicial());
+
+                for (int i = 0; i < datas.size(); i++) {
+                    String data = datas.get(i);
+
+                    if (data.equals(data_tarefa)) {
+                            exists = i;
+                            break;
+                    }
+                }
+
+                double dificuldade_parcial = t.getDificuldade().getId();
+
+                if (exists != -1) {
+                	dificuldade_media.set(exists, dificuldade_media.get(exists) + dificuldade_parcial);
+                } else {
+                    datas.add(data_tarefa);
+                    dificuldade_media.add(dificuldade_parcial);
+                }
+            }
+            
+            for (int i = 0; i < dificuldade_media.size(); i++) {
+            	dificuldade_media.set(i, dificuldade_media.get(i) / dificuldade_media.size());
+            }
+
+            return arraysToDataset(dificuldade_media,datas);
+
+        } else {
+                return null;
+        }
+    }
+    
+    // DificuldadeMedia / TipoAtividade
+    public static DefaultCategoryDataset getDificuldadeMediaPorDia() {
+
+        TarefaBO tarefaBO = new TarefaBO();
+        List<Tarefa> tarefas = tarefaBO.readAll();
+        List<String> tipo_atvs = new ArrayList<String>();
+        List<Double> dificuldade_media = new ArrayList<Double>();
+
+        if (tarefas != null) {
+            for (Tarefa t : tarefas) {
+            	int exists = -1;
+                String tipo_atv_tarefa = t.getTipoAtividade().getNome();
+
+                for (int i = 0; i < tipo_atvs.size(); i++) {
+                    String tipo_atv = tipo_atvs.get(i);
+
+                    if (tipo_atv.equals(tipo_atv_tarefa)) {
+                        exists = i;
+                        break;
+                    }
+                }
+            	
+                
+	            double dificuldade_parcial = t.getDificuldade().getId();
+	
+	            if (exists != -1) {
+	            	dificuldade_media.set(exists, dificuldade_media.get(exists) + dificuldade_parcial);
+	            } else {
+	                tipo_atvs.add(tipo_atv_tarefa);
+	                dificuldade_media.add(dificuldade_parcial);
+	            }
+            }
+            
+            for (int i = 0; i < dificuldade_media.size(); i++) {
+            	dificuldade_media.set(i, dificuldade_media.get(i) / dificuldade_media.size());
+            }
+
+            return arraysToDataset(dificuldade_media,tipo_atvs);
+
+        } else {
+            return null;
+        }
+    }
+    
         
-    public static CategoryDataset arraysToDataset(List<Integer> values,List<String> categories) {
+    public static DefaultCategoryDataset arraysToDataset(List<Double> values,List<String> categories) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         
         for (int i = 0; i < categories.size(); i++) {
