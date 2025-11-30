@@ -181,7 +181,7 @@ public class TarefaDAO {
 
     // Delete
     public boolean delete(int id) {
- 		try {
+        try {
              if (readById(id) != null) {
              	Connection conn = Conexao.conectar();
                 String sql = "DELETE FROM " + TABELA + " WHERE id = ?;";

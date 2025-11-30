@@ -36,9 +36,6 @@ public class TelaFuncionario extends javax.swing.JFrame {
         carregarListas();
         mostrarPainelDetalhes(false);
         aplicarEstiloGlobal(this);
-        txtDescricao.setLineWrap(true);
-        txtDescricao.setWrapStyleWord(true);
-        aplicarEstiloGlobal(this);
         this.setSize(900, 700);
         
         timer = new Timer(1000, new ActionListener() {
@@ -57,6 +54,42 @@ public class TelaFuncionario extends javax.swing.JFrame {
                atualizarTempo();
            }
         } );
+        
+        telaCalendario.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentShown(java.awt.event.ComponentEvent e) {
+
+                areaCalendario.removeAll();
+                areaCalendario.setLayout(new java.awt.BorderLayout());
+
+                CalendarioPanel novoCalendario = new CalendarioPanel(usuarioLogado);
+
+                areaCalendario.add(novoCalendario, java.awt.BorderLayout.CENTER);
+
+                areaCalendario.revalidate();
+                areaCalendario.repaint();
+            }
+        });
+        
+        panelMiniCalendario.removeAll();
+        panelMiniCalendario.add(new MiniCalendarioPanel(), java.awt.BorderLayout.CENTER);
+        panelMiniCalendario.revalidate();
+        panelMiniCalendario.repaint();
+        
+        telaMenu.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentShown(java.awt.event.ComponentEvent e) {
+
+                panelMiniCalendario.removeAll();
+
+                panelMiniCalendario.setLayout(new java.awt.BorderLayout());
+
+                panelMiniCalendario.add(new MiniCalendarioPanel(), java.awt.BorderLayout.CENTER);
+
+                panelMiniCalendario.revalidate();
+                panelMiniCalendario.repaint();
+            }
+        });
     }
     
     private String formatarData(java.time.LocalDateTime data) {
@@ -155,10 +188,14 @@ public class TelaFuncionario extends javax.swing.JFrame {
         listaAFazer.setModel(modeloAFazer);
         listaConcluidas.setModel(modeloConcluidas);
         listaSelecionadas.setModel(modeloSelecionada);
+        listaSelecionadasMenu.setModel(modeloSelecionada);
+        listaPendentesMenu.setModel(modeloAFazer);
 
         listaAFazer.setCellRenderer(new TarefaRenderer());
         listaConcluidas.setCellRenderer(new TarefaRenderer());
         listaSelecionadas.setCellRenderer(new TarefaRenderer());
+        listaSelecionadasMenu.setCellRenderer(new TarefaRenderer());
+        listaPendentesMenu.setCellRenderer(new TarefaRenderer());
     }
     
     @SuppressWarnings("unchecked")
@@ -169,6 +206,25 @@ public class TelaFuncionario extends javax.swing.JFrame {
         telaMenu = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         btnTrabalho = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        listaSelecionadasMenu = new javax.swing.JList<>();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        listaPendentesMenu = new javax.swing.JList<>();
+        jPanel6 = new javax.swing.JPanel();
+        jButton7 = new javax.swing.JButton();
+        jPanel7 = new javax.swing.JPanel();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        btnCalendario = new javax.swing.JButton();
+        panelMiniCalendario = new javax.swing.JPanel();
+        jButton10 = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
         telaTarefas = new javax.swing.JPanel();
         jSplitPane2 = new javax.swing.JSplitPane();
         jSplitPane3 = new javax.swing.JSplitPane();
@@ -225,36 +281,207 @@ public class TelaFuncionario extends javax.swing.JFrame {
         labelCronometro = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        telaCalendario = new javax.swing.JPanel();
+        areaCalendario = new javax.swing.JPanel();
+        jButton8 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setLayout(new java.awt.CardLayout());
 
-        jButton1.setText("Tela Tarefas");
+        jButton1.setText("Ir para Tarefas");
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
-        btnTrabalho.setText("Tela Trabalho");
+        btnTrabalho.setText("Ir para Trabalho");
         btnTrabalho.addActionListener(this::btnTrabalhoActionPerformed);
+
+        jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel4.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Tarefas Selecionadas");
+
+        jScrollPane8.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        listaSelecionadasMenu.setModel(new javax.swing.DefaultListModel<dto.Tarefa>());
+        jScrollPane8.setViewportView(listaSelecionadasMenu);
+
+        jLabel5.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Tarefas Pendentes");
+
+        jScrollPane9.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        listaPendentesMenu.setModel(new javax.swing.DefaultListModel<dto.Tarefa>());
+        jScrollPane9.setViewportView(listaPendentesMenu);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jPanel6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 272, Short.MAX_VALUE)
+        );
+
+        jButton7.setText("Ir para Desempenho");
+
+        jPanel7.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jScrollPane10.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        jTextArea1.setEditable(false);
+        jTextArea1.setColumns(20);
+        jTextArea1.setLineWrap(true);
+        jTextArea1.setRows(5);
+        jTextArea1.setWrapStyleWord(true);
+        jScrollPane10.setViewportView(jTextArea1);
+
+        jLabel7.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Último Trabalho");
+
+        jLabel8.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("00:00:00");
+
+        jLabel9.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jLabel9.setText("Tempo total Decorrido:");
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7)
+                .addGap(4, 4, 4)
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel8)
+                .addGap(24, 24, 24))
+        );
+
+        btnCalendario.setText("Ir para Calendario");
+        btnCalendario.addActionListener(this::btnCalendarioActionPerformed);
+
+        panelMiniCalendario.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        panelMiniCalendario.setLayout(new java.awt.BorderLayout());
+
+        jButton10.setText("Sair");
+        jButton10.addActionListener(this::jButton10ActionPerformed);
+
+        jButton11.setText("Trocar Usuario");
+        jButton11.addActionListener(this::jButton11ActionPerformed);
 
         javax.swing.GroupLayout telaMenuLayout = new javax.swing.GroupLayout(telaMenu);
         telaMenu.setLayout(telaMenuLayout);
         telaMenuLayout.setHorizontalGroup(
             telaMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(telaMenuLayout.createSequentialGroup()
-                .addGap(269, 269, 269)
-                .addComponent(jButton1)
-                .addGap(90, 90, 90)
-                .addComponent(btnTrabalho)
-                .addContainerGap(382, Short.MAX_VALUE))
+                .addGap(24, 24, 24)
+                .addGroup(telaMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(telaMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(telaMenuLayout.createSequentialGroup()
+                        .addGroup(telaMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(telaMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnTrabalho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(telaMenuLayout.createSequentialGroup()
+                        .addGroup(telaMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(panelMiniCalendario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnCalendario, javax.swing.GroupLayout.DEFAULT_SIZE, 536, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(telaMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(22, 22, 22))
         );
         telaMenuLayout.setVerticalGroup(
             telaMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(telaMenuLayout.createSequentialGroup()
-                .addGap(324, 324, 324)
+                .addGap(13, 13, 13)
                 .addGroup(telaMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(btnTrabalho))
-                .addContainerGap(360, Short.MAX_VALUE))
+                    .addComponent(btnCalendario)
+                    .addComponent(jButton10))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(telaMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(telaMenuLayout.createSequentialGroup()
+                        .addGroup(telaMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(panelMiniCalendario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(telaMenuLayout.createSequentialGroup()
+                                .addComponent(jButton11)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(telaMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton7)
+                            .addComponent(btnTrabalho))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(telaMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
 
         jPanel1.add(telaMenu, "telaMenu");
@@ -313,6 +540,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
         jScrollPane5.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         txtDescricao.setColumns(20);
+        txtDescricao.setLineWrap(true);
         txtDescricao.setRows(5);
         txtDescricao.setWrapStyleWord(true);
         jScrollPane5.setViewportView(txtDescricao);
@@ -348,7 +576,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
         );
 
         btnLixeira.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        btnLixeira.setText("Lixeira");
+        btnLixeira.setText("Deletar");
         btnLixeira.addActionListener(this::btnLixeiraActionPerformed);
 
         btnSelecionar.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
@@ -459,7 +687,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
             .addGroup(ladoConcluidoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(ladoConcluidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
                     .addGroup(ladoConcluidoLayout.createSequentialGroup()
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -526,9 +754,9 @@ public class TelaFuncionario extends javax.swing.JFrame {
         telaTarefas.setLayout(telaTarefasLayout);
         telaTarefasLayout.setHorizontalGroup(
             telaTarefasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 910, Short.MAX_VALUE)
+            .addGap(0, 936, Short.MAX_VALUE)
             .addGroup(telaTarefasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jSplitPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 910, Short.MAX_VALUE))
+                .addComponent(jSplitPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 936, Short.MAX_VALUE))
         );
         telaTarefasLayout.setVerticalGroup(
             telaTarefasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -607,7 +835,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
             .addGroup(telaAvisoTrabalhoLayout.createSequentialGroup()
                 .addGap(138, 138, 138)
                 .addComponent(jLabel3)
-                .addContainerGap(147, Short.MAX_VALUE))
+                .addContainerGap(173, Short.MAX_VALUE))
         );
         telaAvisoTrabalhoLayout.setVerticalGroup(
             telaAvisoTrabalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -786,6 +1014,55 @@ public class TelaFuncionario extends javax.swing.JFrame {
 
         jPanel1.add(telaTrabalho, "telaTrabalho");
 
+        areaCalendario.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        javax.swing.GroupLayout areaCalendarioLayout = new javax.swing.GroupLayout(areaCalendario);
+        areaCalendario.setLayout(areaCalendarioLayout);
+        areaCalendarioLayout.setHorizontalGroup(
+            areaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        areaCalendarioLayout.setVerticalGroup(
+            areaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 603, Short.MAX_VALUE)
+        );
+
+        jButton8.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        jButton8.setText("Menu");
+        jButton8.addActionListener(this::jButton8ActionPerformed);
+
+        jButton9.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        jButton9.setText("Tarefas");
+        jButton9.addActionListener(this::jButton9ActionPerformed);
+
+        javax.swing.GroupLayout telaCalendarioLayout = new javax.swing.GroupLayout(telaCalendario);
+        telaCalendario.setLayout(telaCalendarioLayout);
+        telaCalendarioLayout.setHorizontalGroup(
+            telaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(telaCalendarioLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(telaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(areaCalendario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(telaCalendarioLayout.createSequentialGroup()
+                        .addComponent(jButton8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 793, Short.MAX_VALUE)
+                        .addComponent(jButton9)))
+                .addContainerGap())
+        );
+        telaCalendarioLayout.setVerticalGroup(
+            telaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(telaCalendarioLayout.createSequentialGroup()
+                .addGap(9, 9, 9)
+                .addGroup(telaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton8)
+                    .addComponent(jButton9))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(areaCalendario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(54, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(telaCalendario, "telaCalendario");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -851,19 +1128,15 @@ public class TelaFuncionario extends javax.swing.JFrame {
         if (tarefaSelecionadaTarefa.getEstado() != Estado.CONCLUIDA) {
             JFrame = new JFrame("Exit");
             
-            if (JOptionPane.showConfirmDialog(JFrame, "Você tem certeza que quer excluir a tarefa?\nVocê pode recuperar a tarefa acessando a lixeira.", "Atenção!",
+            if (JOptionPane.showConfirmDialog(JFrame, "Você tem certeza que quer deletar a tarefa?\nVocê não poderá recupera-la novamente.", "Atenção!",
                     JOptionPane.OK_OPTION) == JOptionPane.OK_OPTION) {
             
                 TarefaBO tBO = new TarefaBO();
-
-                Tarefa t = new Tarefa(tarefaSelecionadaTarefa.getId(), tarefaSelecionadaTarefa.getTitulo(), tarefaSelecionadaTarefa.getDescricao(),
-                tarefaSelecionadaTarefa.getDataEntrega(), Estado.NA_LIXEIRA, tarefaSelecionadaTarefa.getDificuldade(), 
-                tarefaSelecionadaTarefa.getTipoAtividade());
                 
-                if (tBO.update(t)) {
+                if (tBO.delete(tarefaSelecionadaTarefa.getId())) {
                     carregarListas();
                     JOptionPane.showMessageDialog(this, 
-                        "Tarefa movida para a Lixeira.", 
+                        "Tarefa deletada com sucesso.", 
                         "Aviso", 
                         JOptionPane.PLAIN_MESSAGE
                     );
@@ -1086,6 +1359,31 @@ public class TelaFuncionario extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void btnCalendarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalendarioActionPerformed
+        CardLayout cl = (CardLayout) jPanel1.getLayout();
+        cl.show(jPanel1, "telaCalendario");
+    }//GEN-LAST:event_btnCalendarioActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        CardLayout cl = (CardLayout) jPanel1.getLayout();
+        cl.show(jPanel1, "telaTarefas");
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        CardLayout cl = (CardLayout) jPanel1.getLayout();
+        cl.show(jPanel1, "telaMenu");
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        TelaLogin tl = new TelaLogin();
+        tl.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton10ActionPerformed
+
     private void atualizarTempo() {
         labelCronometro.setText(String.format("%02d:%02d:%02d", hor, min, seg));
     }
@@ -1113,7 +1411,9 @@ public class TelaFuncionario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel areaCalendario;
     private javax.swing.JPanel areaTitulo;
+    private javax.swing.JButton btnCalendario;
     private javax.swing.JButton btnDeixarPendente;
     private javax.swing.JButton btnLixeira;
     private javax.swing.JButton btnMenu;
@@ -1124,28 +1424,45 @@ public class TelaFuncionario extends javax.swing.JFrame {
     private javax.swing.JButton btnTrabalho;
     private javax.swing.JPanel centro;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JSplitPane jSplitPane3;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel labelCronometro;
     private javax.swing.JLabel labelTempoGasto;
     private javax.swing.JLabel labelTitulo;
@@ -1154,13 +1471,17 @@ public class TelaFuncionario extends javax.swing.JFrame {
     private javax.swing.JList<Tarefa> listaAFazer;
     private javax.swing.JList<Comentario> listaComentarios;
     private javax.swing.JList<Tarefa> listaConcluidas;
+    private javax.swing.JList<Tarefa> listaPendentesMenu;
     private javax.swing.JList<Tarefa> listaSelecionadas;
+    private javax.swing.JList<Tarefa> listaSelecionadasMenu;
     private javax.swing.JPanel painelAviso;
     private javax.swing.JPanel painelDescricao;
     private javax.swing.JPanel painelDetalhes;
     private javax.swing.JPanel panelComentarios;
+    private javax.swing.JPanel panelMiniCalendario;
     private javax.swing.JPanel panelTarefasSelecionadas;
     private javax.swing.JPanel telaAvisoTrabalho;
+    private javax.swing.JPanel telaCalendario;
     private javax.swing.JPanel telaCronometro;
     private javax.swing.JPanel telaDescricaoTarefa;
     private javax.swing.JPanel telaMenu;

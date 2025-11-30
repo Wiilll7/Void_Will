@@ -7,7 +7,7 @@ import dto.Tarefa;
 import dto.Usuario;
 
 public class UsuarioBO {
-	public boolean create(Usuario usuario) {
+    public boolean create(Usuario usuario) {
         UsuarioDAO dao = new UsuarioDAO();
         
         List<Usuario> lista = readAll();
@@ -25,12 +25,12 @@ public class UsuarioBO {
         }
     }
 	
-	public boolean addTarefa(Usuario usuario,Tarefa tarefa) {
+    public boolean addTarefa(Usuario usuario,Tarefa tarefa) {
 		UsuarioDAO dao = new UsuarioDAO();
 		return dao.addTarefa(usuario, tarefa);
 	}
 
-	public Usuario readBySenha(String nome, String senha) {
+    public Usuario readBySenha(String nome, String senha) {
         UsuarioDAO dao = new UsuarioDAO();
         return dao.readBySenha(nome,senha);
     }

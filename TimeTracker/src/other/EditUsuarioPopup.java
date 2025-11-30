@@ -271,6 +271,7 @@ public class EditUsuarioPopup extends javax.swing.JFrame {
                         pswConfirmaSenha1.setText(null);
                         titleRetorno1.setForeground(java.awt.Color.decode("#28a745"));
                         titleRetorno1.setText("Usuário editado com sucesso!");
+                        carregarUsuariosNoCombo();
                     } else {
                         titleRetorno1.setForeground(new java.awt.Color(200, 0, 0));
                         titleRetorno1.setText("Já existe outro usuário com esse login.");
@@ -286,6 +287,7 @@ public class EditUsuarioPopup extends javax.swing.JFrame {
                         pswConfirmaSenha1.setText(null);
                         titleRetorno1.setForeground(java.awt.Color.decode("#28a745"));
                         titleRetorno1.setText("Usuário editado com sucesso!");
+                        carregarUsuariosNoCombo() ;
                     } else {
                         titleRetorno1.setForeground(new java.awt.Color(200, 0, 0));
                         titleRetorno1.setText("Já existe outro usuário com esse login.");
