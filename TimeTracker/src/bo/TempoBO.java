@@ -2,6 +2,7 @@ package bo;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.time.Duration;
 
 import dao.TempoDAO;
 import dto.Tempo;
@@ -37,6 +38,29 @@ public class TempoBO {
     public List<Tempo> readByTarefaId(int tarefaId) {
         TempoDAO dao = new TempoDAO();
         return dao.readByTarefaId(tarefaId);
+    }
+    
+    public int[] readTotalTimeInTarefa(int tarefaId) {
+        TempoDAO dao = new TempoDAO();
+        
+        Duration total_time = Duration.ZERO;
+        int[] time_separated = {0,0,0};
+        List<Tempo> lista = readByTarefaId(tarefaId);
+        
+        if (lista != null) {
+        	for (Tempo t : lista) {
+            	Duration time = Duration.between(t.getDataInicial(), t.getDataFinal());
+            	total_time.plus(time);
+            }
+        	
+        	time_separated[0] = (int) total_time.toHours();
+        	time_separated[1] = total_time.toMinutesPart();
+        	time_separated[2] = total_time.toSecondsPart();
+        	
+        	return time_separated;
+        } else {
+        	return time_separated;
+        }
     }
 
     public boolean update(Tempo tempo) {
