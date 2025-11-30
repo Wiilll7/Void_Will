@@ -1,40 +1,127 @@
 package desempenho;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import bo.TarefaBO;
+import bo.TempoBO;
+import dto.Tempo;
+
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+
 public class Desempenho {
-	public static int[] getQuantities(Quantidades quant) {
-		switch (quant) {
-		case Quantidades.TEMPO_TOTAL:
-			
-			
-			
-			
-			
-			break;
-			
-		case Quantidades.DIFICULDADE_NIVEL:
-			
-			break;
-		}
+	
+	// String -- Date conversion
+	static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    public static String dateToString(LocalDateTime date) {
+    	if (date != null) {
+    		return date.format(formatter);
+    	} else {
+    		return null;
+    	}
+    }
+    public static LocalDateTime stringToDate(String date) {
+    	if (date != null) {
+	    	System.out.println(date);
+	    	String[] separate_ms = date.split("\\.");
+	    	return LocalDateTime.parse(separate_ms[0],formatter);
+    	} else {
+    		return null;
+    	}
+    }
+	
+	// Tempo total / Dia
+	public static CategoryDataset getTempoTotalPorDia() {
 		
-		int[] result = {0,0,0};
-		return result;
+		TempoBO tempoBO = new TempoBO();
+		List<Tempo> tempos = tempoBO.readAll();
+		List<String> datas = new ArrayList<String>();
+		List<Integer> tempo_gasto = new ArrayList<Integer>();
+		
+		if (tempos != null) {
+			for (Tempo t : tempos) {
+				int exists = -1;
+				String data_tempo = dateToString(t.getDataInicial());
+				
+				for (int i = 0; i < datas.size(); i++) {
+					String data = datas.get(i);
+					
+					if (data.equals(data_tempo)) {
+						exists = i;
+						break;
+					}
+				}
+				
+				int time_count = (int) Duration.between(t.getDataInicial(), t.getDataFinal()).toSeconds();
+				
+				if (exists != -1) {
+					tempo_gasto.set(1, tempo_gasto.get(exists) + time_count);
+				} else {
+					datas.add(data_tempo);
+					tempo_gasto.add(time_count);
+				}
+			}
+			
+			return arraysToDataset(tempo_gasto,datas);
+			
+		} else {
+			return null;
+		}
 	}
 	
-	public static String[] getCategories(Categorias cat) {
-		switch (cat) {
-		case Categorias.DIA:
-			
-			
-			
-			break;
-		case Categorias.TIPO_ATIVIDADE:
-			
-			
-			
-			break;
-		}
+	// Tempo total / TipoAtividade
+	public static CategoryDataset getTempoTotalPorDia() {
 		
-		String[] result = {"",""};
-		return result;
+		TempoBO tempoBO = new TempoBO();
+		List<Tempo> tempos = tempoBO.readAll();
+		List<String> tiposAtividade = new ArrayList<String>();
+		List<Integer> tempo_gasto = new ArrayList<Integer>();
+		
+		TarefaBO tarefaBO = new TarefaBO();
+		if (tempos != null) {
+			for (Tempo t : tempos) {
+				int exists = -1;
+				String tipo = (tarefaBO.readById(t.getTarefaId()).getTipoAtividade());
+				
+				for (int i = 0; i < datas.size(); i++) {
+					String data = datas.get(i);
+					
+					if (data.equals(data_tempo)) {
+						exists = i;
+						break;
+					}
+				}
+				
+				int time_count = (int) Duration.between(t.getDataInicial(), t.getDataFinal()).toSeconds();
+				
+				if (exists != -1) {
+					tempo_gasto.set(1, tempo_gasto.get(exists) + time_count);
+				} else {
+					datas.add(data_tempo);
+					tempo_gasto.add(time_count);
+				}
+			}
+			
+			return arraysToDataset(tempo_gasto,datas);
+			
+		} else {
+			return null;
+		}
+	}
+	
+	public static CategoryDataset arraysToDataset(int[] values,String[] categories) {
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		
+
+        for (int i = 0; i < categories.length; i++) {
+            dataset.addValue(values[i], "", categories[i]);
+        }
+
+        return dataset;
 	}
 }
