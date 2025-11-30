@@ -55,8 +55,8 @@ public class TarefaBO {
         }
         if (allow) {
         	return dao.update(tarefa);
-        } else {
-        	return false;
+        } else {   
+            return false;
         }
     }
 
