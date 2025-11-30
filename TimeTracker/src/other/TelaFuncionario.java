@@ -41,6 +41,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
         mostrarPainelDetalhes(false);
         aplicarEstiloGlobal(this);
         this.setSize(900, 700);
+        atualizarUltimaTarefa();
         
         timer = new Timer(1000, new ActionListener() {
             @Override
@@ -104,6 +105,20 @@ public class TelaFuncionario extends javax.swing.JFrame {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         return data.format(formatter);
+    }
+    
+    private void atualizarUltimaTarefa() {
+        
+        TarefaBO tBO = new TarefaBO();
+        Tarefa t = tBO.readLastAdded(usuarioLogado.getId());
+        int[] time = tempoBO.readTotalTimeInTarefa(t.getId());
+        labelTempoTotalMenu.setText(String.format("%02d:%02d:%02d", time[0], time[1], time[2]));
+        String dataBonita = formatarData(t.getDataEntrega());
+        textTarefaMenu.setText("Titulo: " + t.getTitulo() + "\n"
+                        + "Data Entrega: " + dataBonita + "\n"
+                        + "Estado: " + t.getEstado().name() + "\n"
+                        + "Dificuldade: " + t.getDificuldade().name() + "\n"
+                        + "Tipo da Tarefa: " + t.getTipoAtividade().getNome());
     }
     
     private void aplicarEstiloGlobal(java.awt.Container container) {
@@ -221,9 +236,9 @@ public class TelaFuncionario extends javax.swing.JFrame {
         jButton7 = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane10 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        textTarefaMenu = new javax.swing.JTextArea();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        labelTempoTotalMenu = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         btnCalendario = new javax.swing.JButton();
         panelMiniCalendario = new javax.swing.JPanel();
@@ -372,20 +387,20 @@ public class TelaFuncionario extends javax.swing.JFrame {
 
         jScrollPane10.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setLineWrap(true);
-        jTextArea1.setRows(5);
-        jTextArea1.setWrapStyleWord(true);
-        jScrollPane10.setViewportView(jTextArea1);
+        textTarefaMenu.setEditable(false);
+        textTarefaMenu.setColumns(20);
+        textTarefaMenu.setLineWrap(true);
+        textTarefaMenu.setRows(5);
+        textTarefaMenu.setWrapStyleWord(true);
+        jScrollPane10.setViewportView(textTarefaMenu);
 
         jLabel7.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("Último Trabalho");
 
-        jLabel8.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("00:00:00");
+        labelTempoTotalMenu.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+        labelTempoTotalMenu.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelTempoTotalMenu.setText("00:00:00");
 
         jLabel9.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jLabel9.setText("Tempo total Decorrido:");
@@ -399,7 +414,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(labelTempoTotalMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -415,7 +430,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel8)
+                .addComponent(labelTempoTotalMenu)
                 .addGap(24, 24, 24))
         );
 
@@ -1126,6 +1141,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
         CardLayout cl = (CardLayout) jPanel1.getLayout();
         mostrarPainelDetalhes(false);
         cl.show(jPanel1, "telaMenu");
+        atualizarUltimaTarefa();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnLixeiraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLixeiraActionPerformed
@@ -1217,6 +1233,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
                     "Aviso", 
                     JOptionPane.PLAIN_MESSAGE);
         }
+        atualizarUltimaTarefa();
     }//GEN-LAST:event_btnMenuActionPerformed
 
     private void btnTelaTarefasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTelaTarefasActionPerformed
@@ -1395,6 +1412,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         CardLayout cl = (CardLayout) jPanel1.getLayout();
         cl.show(jPanel1, "telaMenu");
+        atualizarUltimaTarefa();
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
@@ -1464,7 +1482,6 @@ public class TelaFuncionario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -1485,9 +1502,9 @@ public class TelaFuncionario extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JSplitPane jSplitPane3;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel labelCronometro;
     private javax.swing.JLabel labelTempoGasto;
+    private javax.swing.JLabel labelTempoTotalMenu;
     private javax.swing.JLabel labelTitulo;
     private javax.swing.JPanel ladoAFazer;
     private javax.swing.JPanel ladoConcluido;
@@ -1513,6 +1530,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
     private javax.swing.JPanel telaTrabalho;
     private javax.swing.JTextArea textDescricao;
     private javax.swing.JTextArea textDetalhes;
+    private javax.swing.JTextArea textTarefaMenu;
     private javax.swing.JLabel titleTarefasConcluidas;
     private javax.swing.JLabel titleTarefasPendentes;
     private javax.swing.JLabel titleTitulo;

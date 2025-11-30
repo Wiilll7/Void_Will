@@ -43,9 +43,6 @@ public class Main {
         if (uBO.addTarefa(u, t)) {
             System.out.println("concetada");
         }
-        
-        
-    	
     	
     }
         
