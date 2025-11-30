@@ -3,9 +3,9 @@ package bo;
 import java.util.List;
 
 import dao.TarefaDAO;
-import dao.UsuarioDAO;
+import dao.TempoDAO;
 import dto.Tarefa;
-import dto.Usuario;
+import dto.Tempo;
 
 public class TarefaBO {
 
@@ -30,6 +30,11 @@ public class TarefaBO {
     public Tarefa readById(int id) {
         TarefaDAO dao = new TarefaDAO();
         return dao.readById(id);
+    }
+    
+    public Tarefa readLastAdded(int usuarioId) {
+    	TarefaDAO dao = new TarefaDAO();
+    	return dao.readLastAdded(usuarioId);
     }
     
     public List<Tarefa> readByUsuarioId(int usuario_id) {
