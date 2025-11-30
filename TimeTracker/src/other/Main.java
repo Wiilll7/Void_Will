@@ -46,13 +46,17 @@ public class Main {
         //cBO.create(c);
         */
     	
-    	Usuario usuario = new Usuario(0,"Willian","1234",TipoUsuario.ADMIN);
     	UsuarioBO ubo = new UsuarioBO();
-    	if (ubo.create(usuario)) {
-    		System.out.print("oops");
-    	} else {
-    		System.out.print("yipee");
-    	}
+        TarefaBO tbo = new TarefaBO();
+        Usuario usuario = ubo.readById(1);
+        Tarefa tarefa = tbo.readById(28);
+        
+        List<Usuario> lista = ubo.readByTarefaId(28);
+        
+        for (Usuario taf : lista) {
+        	System.out.print("\n"+ taf.getNome() + "\n" + taf.getSenha() + "\n");
+        }
+        
     }
         
 }

@@ -42,7 +42,7 @@ public class UsuarioDAO {
     public boolean addTarefa(Usuario usuario,Tarefa tarefa) {
     	try {
             Connection conn = Conexao.conectar();
-            String sql = "INSERT INTO 'acesso' (id_tarefa, id_usuario) VALUES (?,?);";
+            String sql = "INSERT INTO acesso (id_tarefa, id_usuario) VALUES (?,?);";
 
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, tarefa.getId());
@@ -117,7 +117,16 @@ public class UsuarioDAO {
     public List<Usuario> readByTarefaId(int tarefa_id) {
         try {
             Connection conn = Conexao.conectar();
-            String sql = "SELECT * FROM 'acesso' WHERE id_tarefa = ?;";
+            String sql = "SELECT "
+            		+ "usuario.id AS id,"
+            		+ "usuario.nome AS nome,"
+            		+ "usuario.senha AS senha,"
+            		+ "usuario.id_tipo_usuario AS id_tipo_usuario"
+            		+ " FROM acesso"
+            		+ " JOIN usuario ON usuario.id = acesso.id_usuario"
+            		+ " WHERE acesso.id_tarefa = ?;";
+            
+            
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, tarefa_id);
             ResultSet rs = ps.executeQuery();
@@ -234,7 +243,7 @@ public class UsuarioDAO {
     public boolean removeTarefa(Usuario usuario,Tarefa tarefa) {
         try {
             Connection conn = Conexao.conectar();
-            String sql = "DELETE FROM 'acesso' WHERE id_tarefa = ? AND id_usuario = ?;";
+            String sql = "DELETE FROM acesso WHERE id_tarefa = ? AND id_usuario = ?;";
 
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, tarefa.getId());

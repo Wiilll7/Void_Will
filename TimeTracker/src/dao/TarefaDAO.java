@@ -56,11 +56,21 @@ public class TarefaDAO {
     public List<Tarefa> readByUsuarioId(int id) {
         try {
             Connection conn = Conexao.conectar();
-            String sql = "SELECT * FROM 'acesso' WHERE id_usuario = ?;";
+            String sql = "SELECT "
+            		+ "tarefa.id AS id,"
+            		+ "tarefa.titulo AS titulo,"
+            		+ "tarefa.descricao AS descricao,"
+            		+ "tarefa.data_entrega AS data_entrega,"
+            		+ "tarefa.id_estado AS id_estado,"
+            		+ "tarefa.id_dificuldade AS id_dificuldade,"
+            		+ "tarefa.id_tipo_atividade AS id_tipo_atividade"
+            		+ " FROM acesso"
+            		+ " JOIN tarefa ON tarefa.id = acesso.id_tarefa"
+            		+ " WHERE acesso.id_usuario = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-
+            
             List<Tarefa> lista = createListFromSelect(rs);
             ps.close();
             conn.close();
