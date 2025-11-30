@@ -75,16 +75,16 @@ public class TempoBO {
     public Tempo toggleCounting(Tempo tempo) {
     	TempoDAO dao = new TempoDAO();
     	
-    	if (tempo.getDataInicial() == null || tempo.getDataFinal() != null) {
-    		tempo = new Tempo(tempo.getId(),tempo.getTarefaId(),LocalDateTime.now(),null);
-    		if (dao.create(tempo)) {
+    	if (tempo.getDataInicial() != null && tempo.getDataFinal() == null) {
+    		tempo = new Tempo(tempo.getId(),tempo.getTarefaId(),tempo.getDataInicial(),LocalDateTime.now());
+    		if (dao.update(tempo)) {
     			return tempo;
     		} else {
     			return null;
     		}
     	} else {
-    		tempo = new Tempo(tempo.getId(),tempo.getTarefaId(),tempo.getDataInicial(),LocalDateTime.now());
-    		if (dao.update(tempo)) {
+    		tempo = new Tempo(tempo.getId(),tempo.getTarefaId(),LocalDateTime.now(),null);
+    		if (dao.create(tempo)) {
     			return tempo;
     		} else {
     			return null;
