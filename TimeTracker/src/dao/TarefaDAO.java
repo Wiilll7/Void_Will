@@ -56,6 +56,7 @@ public class TarefaDAO {
     public List<Tarefa> readByUsuarioId(int id) {
         try {
             Connection conn = Conexao.conectar();
+<<<<<<< Updated upstream
             String sql = "SELECT "
             		+ "tarefa.id AS id,"
             		+ "tarefa.titulo AS titulo,"
@@ -67,6 +68,9 @@ public class TarefaDAO {
             		+ " FROM acesso"
             		+ " JOIN tarefa ON tarefa.id = acesso.id_tarefa"
             		+ " WHERE acesso.id_usuario = ?;";
+=======
+            String sql = "SELECT * FROM acesso WHERE id_usuario = ?;";
+>>>>>>> Stashed changes
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();

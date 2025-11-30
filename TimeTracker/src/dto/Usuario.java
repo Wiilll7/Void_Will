@@ -16,6 +16,9 @@ public class Usuario {
 		setSenha(senha);
 		setTipo(tipo);
 	}
+        public Usuario() {
+            
+	}
 
 
 	// Getters

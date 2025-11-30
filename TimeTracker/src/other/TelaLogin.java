@@ -120,7 +120,7 @@ public class TelaLogin extends javax.swing.JFrame {
                 //ta.setVisible(true);
                 //this.dispose();
             } else if (us.getTipo() == TipoUsuario.FUNCIONARIO) {
-                TelaFuncionario tf = new TelaFuncionario();
+                TelaFuncionario tf = new TelaFuncionario(us);
                 tf.setVisible(true);
                 this.dispose();
             } else {
