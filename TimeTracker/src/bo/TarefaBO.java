@@ -48,7 +48,7 @@ public class TarefaBO {
         List<Tarefa> lista = readAll();
         boolean allow = true;
         for (Tarefa t : lista) {
-        	if (t.getTitulo().equals(tarefa.getTitulo())) {
+        	if (t.getTitulo().equals(tarefa.getTitulo()) && t.getId() != tarefa.getId()) {
         		allow = false;
         		break;
         	}

@@ -57,7 +57,7 @@ public class UsuarioBO {
         List<Usuario> lista = readAll();
         boolean allow = true;
         for (Usuario u : lista) {
-        	if (u.getNome().equals(usuario.getNome())) {
+        	if (u.getNome().equals(usuario.getNome()) && u.getId() != usuario.getId()) {
         		allow = false;
         		break;
         	}
