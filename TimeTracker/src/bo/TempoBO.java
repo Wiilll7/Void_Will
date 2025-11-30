@@ -54,7 +54,7 @@ public class TempoBO {
         		} else {
         			time = Duration.between(t.getDataInicial(), t.getDataFinal());
         		}
-            	total_time.plus(time);
+            	total_time = total_time.plus(time);
             }
         	
         	time_separated[0] = (int) total_time.toHours();
@@ -63,6 +63,7 @@ public class TempoBO {
         	
         	return time_separated;
         } else {
+                System.out.println("bo.TempoBO.readTotalTimeInTarefa()");
         	return time_separated;
         }
     }

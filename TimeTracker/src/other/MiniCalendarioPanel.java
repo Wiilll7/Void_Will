@@ -2,6 +2,7 @@ package other;
 
 import bo.TarefaBO;
 import dto.Tarefa;
+import dto.Usuario;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -15,8 +16,11 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 public class MiniCalendarioPanel extends JPanel {
-
-    public MiniCalendarioPanel() {
+    
+    Usuario usuarioLogado;
+    
+    public MiniCalendarioPanel(Usuario usuario) {
+        usuarioLogado = usuario;
         setLayout(new GridLayout(1, 4, 10, 0)); 
         setOpaque(false);
 
@@ -25,7 +29,7 @@ public class MiniCalendarioPanel extends JPanel {
 
     private void carregarDias() {
         TarefaBO bo = new TarefaBO();
-        List<Tarefa> todasTarefas = bo.readAll(); 
+        List<Tarefa> todasTarefas = bo.readByUsuarioId(usuarioLogado.getId()); 
 
         if (todasTarefas == null) {
             todasTarefas = new ArrayList<Tarefa>();

@@ -16,6 +16,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import bo.TempoBO;
+import dto.Tempo;
 
 public class TelaFuncionario extends javax.swing.JFrame {
     
@@ -29,6 +31,8 @@ public class TelaFuncionario extends javax.swing.JFrame {
     private Timer timer;
     private boolean rodando = false;
     private JFrame JFrame;
+    private TempoBO tempoBO = new TempoBO();
+    private Tempo tempoAux;
 
     public TelaFuncionario(Usuario usuario) {
         this.usuarioLogado = usuario;
@@ -39,20 +43,20 @@ public class TelaFuncionario extends javax.swing.JFrame {
         this.setSize(900, 700);
         
         timer = new Timer(1000, new ActionListener() {
-           @Override
-           public void actionPerformed(ActionEvent e) {
-               seg++;
-               if (seg == 60) {
-                   seg = 0;
-                   min++;
-               }
-               if (min == 60) {
-                   min = 0;
-                   hor++;
-               }
-               
-               atualizarTempo();
-           }
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                seg++;
+                if (seg == 60) {
+                    seg = 0;
+                    min++;
+                }
+                if (min == 60) {
+                    min = 0;
+                    hor++;
+                }
+
+                atualizarTempo();
+            }
         } );
         
         telaCalendario.addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -72,7 +76,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
         });
         
         panelMiniCalendario.removeAll();
-        panelMiniCalendario.add(new MiniCalendarioPanel(), java.awt.BorderLayout.CENTER);
+        panelMiniCalendario.add(new MiniCalendarioPanel(usuarioLogado), java.awt.BorderLayout.CENTER);
         panelMiniCalendario.revalidate();
         panelMiniCalendario.repaint();
         
@@ -84,7 +88,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
 
                 panelMiniCalendario.setLayout(new java.awt.BorderLayout());
 
-                panelMiniCalendario.add(new MiniCalendarioPanel(), java.awt.BorderLayout.CENTER);
+                panelMiniCalendario.add(new MiniCalendarioPanel(usuarioLogado), java.awt.BorderLayout.CENTER);
 
                 panelMiniCalendario.revalidate();
                 panelMiniCalendario.repaint();
@@ -1255,8 +1259,17 @@ public class TelaFuncionario extends javax.swing.JFrame {
                 labelTitulo.setText(tarefaSelecionada.getTitulo());
                 textDescricao.setText(tarefaSelecionada.getDescricao());
                 rodando = false;
-
+                
+                tempoAux = tempoBO.readLastAdded(tarefaSelecionada.getId());
+                
             }
+            
+            if (tarefaSelecionadaTrabalho != null) {
+                int[] time = tempoBO.readTotalTimeInTarefa(tarefaSelecionadaTrabalho.getId());
+                labelTempoGasto.setText(String.format("%02d:%02d:%02d", time[0], time[1], time[2]));
+                System.out.println(time[0] + time[1] + time[2]);
+            }
+            
         } else {
             JOptionPane.showMessageDialog(this, 
                     "Pause a Tarefa antes de Continuar!", 
@@ -1284,13 +1297,15 @@ public class TelaFuncionario extends javax.swing.JFrame {
 
     private void btnDeixarPendenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeixarPendenteActionPerformed
         if (rodando == false) {
+            
             seg = 0;
             min = 0;
             hor = 0;
+            
             atualizarTempo();
             
             TarefaBO tBO = new TarefaBO();
-
+            
             Tarefa t = new Tarefa(tarefaSelecionadaTrabalho.getId(), tarefaSelecionadaTrabalho.getTitulo(), tarefaSelecionadaTrabalho.getDescricao(),
             tarefaSelecionadaTrabalho.getDataEntrega(), Estado.PENDENTE, tarefaSelecionadaTrabalho.getDificuldade(), 
             tarefaSelecionadaTrabalho.getTipoAtividade());
@@ -1313,6 +1328,14 @@ public class TelaFuncionario extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDeixarPendenteActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        tempoAux = tempoBO.readLastAdded(tarefaSelecionadaTrabalho.getId());
+        
+        tempoAux = tempoBO.toggleCounting(tempoAux);
+        
+        if (tempoAux == null) {
+            System.out.println("other.TelaFuncionario.jButton5ActionPerformed()");
+        }
+        
         if (!rodando) {
             timer.start();
             rodando = !rodando;
@@ -1328,7 +1351,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
             
             if (JOptionPane.showConfirmDialog(JFrame, "Você tem certeza que quer concluir a tarefa?\nTarefas concluídas não podem ser alteradas.", "Atenção!",
                     JOptionPane.OK_OPTION) == JOptionPane.OK_OPTION) {
-            
+                
                 seg = 0;
                 min = 0;
                 hor = 0;
