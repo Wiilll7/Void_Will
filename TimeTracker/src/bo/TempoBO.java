@@ -41,7 +41,6 @@ public class TempoBO {
     }
     
     public int[] readTotalTimeInTarefa(int tarefaId) {
-        TempoDAO dao = new TempoDAO();
         
         Duration total_time = Duration.ZERO;
         int[] time_separated = {0,0,0};
@@ -49,7 +48,12 @@ public class TempoBO {
         
         if (lista != null) {
         	for (Tempo t : lista) {
-            	Duration time = Duration.between(t.getDataInicial(), t.getDataFinal());
+        		Duration time;
+        		if (t.getDataFinal() == null) {
+        			time = Duration.between(t.getDataInicial(), LocalDateTime.now());
+        		} else {
+        			time = Duration.between(t.getDataInicial(), t.getDataFinal());
+        		}
             	total_time.plus(time);
             }
         	

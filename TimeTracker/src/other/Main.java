@@ -20,15 +20,7 @@ public class Main {
     
     public static void main(String[] args) {
         
-        /*
-        TipoUsuario admin = TipoUsuario.ADMIN;
-        TipoUsuario funcionario = TipoUsuario.FUNCIONARIO;
-        Usuario user = new Usuario(1, "Willian", "1234", admin);
-        UsuarioBO userBO = new UsuarioBO();
-        userBO.create(user);
-        user = new Usuario(7, "Romulo", "4321", funcionario);
-        userBO.create(user);
-        */
+        
         LocalDateTime ldt = LocalDateTime.now();
         Estado pendente = Estado.PENDENTE;
         Dificuldade medio = Dificuldade.FACIL;
@@ -52,10 +44,6 @@ public class Main {
             System.out.println("concetada");
         }
         
-        
-        //Comentario c = new Comentario(1, 1, "Lucas encontrou uma pequena caixa brilhante caída no chão da praça. Ao abri-la, uma luz suave revelou um mapa misterioso apontando para um bosque próximo. Curioso, ele seguiu o caminho indicado. Lá, descobriu uma pedra antiga que pulsava como um coração. Quando a tocou, sentiu coragem e paz, percebendo que alguns tesouros existem apenas para transformar quem os encontra.");
-        //ComentarioBO cBO = new ComentarioBO();
-        //cBO.create(c);
         
     	
     	

@@ -46,8 +46,6 @@ public class UsuarioBO {
 		} else {
 			return dao.addTarefa(usuario, tarefa);
 		}
-		
-		
 	}
 
     public Usuario readBySenha(String nome, String senha) {
