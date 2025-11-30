@@ -11,13 +11,24 @@ import java.time.format.DateTimeFormatter;
 import dto.Usuario;
 import bo.UsuarioBO;
 import dto.Estado;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 public class TelaFuncionario extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaFuncionario.class.getName());
     private Usuario usuarioLogado;
     private Tarefa tarefaSelecionadaTarefa;
+    private Tarefa tarefaSelecionadaTrabalho;
+    private int seg;
+    private int min;
+    private int hor;
+    private Timer timer;
+    private boolean rodando = false;
+    private JFrame JFrame;
 
     public TelaFuncionario(Usuario usuario) {
         this.usuarioLogado = usuario;
@@ -29,7 +40,25 @@ public class TelaFuncionario extends javax.swing.JFrame {
         txtDescricao.setWrapStyleWord(true);
         aplicarEstiloGlobal(this);
         this.setSize(900, 700);
+        
+        timer = new Timer(1000, new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent e) {
+               seg++;
+               if (seg == 60) {
+                   seg = 0;
+                   min++;
+               }
+               if (min == 60) {
+                   min = 0;
+                   hor++;
+               }
+               
+               atualizarTempo();
+           }
+        } );
     }
+    
     private String formatarData(java.time.LocalDateTime data) {
         if (data == null) {
             return "Sem data";
@@ -64,12 +93,24 @@ public class TelaFuncionario extends javax.swing.JFrame {
             cl.show(centro, "painelAviso");
         }
     }
+    
+    private void mostrarPainelDetalhesTrabalho(boolean mostrar) {
+        CardLayout cl = (CardLayout) jPanel3.getLayout();
+
+        if (mostrar) {
+            cl.show(jPanel3, "painelTarefaSelecionada");
+        } else {
+            cl.show(jPanel3, "panelAvisoTrabalho");
+        }
+    }
+    
     public void atualizarTitulo(String nomeDaTarefa) {
         String textoFormatado = "<html><div style='text-align: center; width: 115px;'>" 
                                 + nomeDaTarefa + "</div></html>";
 
         titleTitulo.setText(textoFormatado);
     }
+    
     private void carregarComentarios(int idTarefa) {
         ComentarioBO bo = new ComentarioBO();
         List<Comentario> lista = bo.readByTarefaId(idTarefa);
@@ -170,9 +211,20 @@ public class TelaFuncionario extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         telaAvisoTrabalho = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        telaTarefaSelecionada = new javax.swing.JPanel();
+        telaDescricaoTarefa = new javax.swing.JPanel();
+        labelTitulo = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        textDescricao = new javax.swing.JTextArea();
+        labelTempoGasto = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        btnRemoveTarefa = new javax.swing.JButton();
+        btnDeixarPendente = new javax.swing.JButton();
+        telaCronometro = new javax.swing.JPanel();
+        labelCronometro = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -492,7 +544,14 @@ public class TelaFuncionario extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel2.setText("Tarefas Selecionadas");
 
+        jScrollPane6.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
         listaSelecionadas.setModel(new javax.swing.DefaultListModel<dto.Tarefa>());
+        listaSelecionadas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listaSelecionadasMouseClicked(evt);
+            }
+        });
         jScrollPane6.setViewportView(listaSelecionadas);
 
         btnMenu.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
@@ -558,56 +617,151 @@ public class TelaFuncionario extends javax.swing.JFrame {
                 .addContainerGap(381, Short.MAX_VALUE))
         );
 
-        jPanel3.add(telaAvisoTrabalho, "card2");
+        jPanel3.add(telaAvisoTrabalho, "panelAvisoTrabalho");
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        telaDescricaoTarefa.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 219, Short.MAX_VALUE)
-        );
+        labelTitulo.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        labelTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelTitulo.setText("Title");
 
-        jPanel6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Descrição", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 565, Short.MAX_VALUE)
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 331, Short.MAX_VALUE)
-        );
+        jScrollPane7.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        textDescricao.setEditable(false);
+        textDescricao.setColumns(20);
+        textDescricao.setLineWrap(true);
+        textDescricao.setRows(5);
+        textDescricao.setWrapStyleWord(true);
+        jScrollPane7.setViewportView(textDescricao);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(29, Short.MAX_VALUE))
+            .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(66, Short.MAX_VALUE))
+            .addComponent(jScrollPane7)
         );
 
-        jPanel3.add(jPanel4, "card3");
+        labelTempoGasto.setFont(new java.awt.Font("Dialog", 1, 60)); // NOI18N
+        labelTempoGasto.setText("00:00:00");
+
+        jLabel6.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        jLabel6.setText("Tempo total Gasto:");
+
+        btnRemoveTarefa.setText("❌");
+        btnRemoveTarefa.addActionListener(this::btnRemoveTarefaActionPerformed);
+
+        btnDeixarPendente.setText("Deixar Pendente");
+        btnDeixarPendente.addActionListener(this::btnDeixarPendenteActionPerformed);
+
+        javax.swing.GroupLayout telaDescricaoTarefaLayout = new javax.swing.GroupLayout(telaDescricaoTarefa);
+        telaDescricaoTarefa.setLayout(telaDescricaoTarefaLayout);
+        telaDescricaoTarefaLayout.setHorizontalGroup(
+            telaDescricaoTarefaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, telaDescricaoTarefaLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(telaDescricaoTarefaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(labelTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(telaDescricaoTarefaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(telaDescricaoTarefaLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(telaDescricaoTarefaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnRemoveTarefa)
+                            .addComponent(btnDeixarPendente))
+                        .addGap(16, 16, 16))
+                    .addGroup(telaDescricaoTarefaLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(telaDescricaoTarefaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(labelTempoGasto))
+                        .addGap(0, 51, Short.MAX_VALUE))))
+        );
+        telaDescricaoTarefaLayout.setVerticalGroup(
+            telaDescricaoTarefaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, telaDescricaoTarefaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(telaDescricaoTarefaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(labelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRemoveTarefa))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(telaDescricaoTarefaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(telaDescricaoTarefaLayout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(labelTempoGasto, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                        .addComponent(btnDeixarPendente))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        telaCronometro.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        labelCronometro.setFont(new java.awt.Font("Dialog", 1, 100)); // NOI18N
+        labelCronometro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelCronometro.setText("00:00:00");
+
+        jButton5.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        jButton5.setText("Pausa/Continua");
+        jButton5.addActionListener(this::jButton5ActionPerformed);
+
+        jButton6.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        jButton6.setText("Concluir Tarefa");
+        jButton6.addActionListener(this::jButton6ActionPerformed);
+
+        javax.swing.GroupLayout telaCronometroLayout = new javax.swing.GroupLayout(telaCronometro);
+        telaCronometro.setLayout(telaCronometroLayout);
+        telaCronometroLayout.setHorizontalGroup(
+            telaCronometroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, telaCronometroLayout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addComponent(jButton5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton6)
+                .addGap(49, 49, 49))
+            .addComponent(labelCronometro, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        telaCronometroLayout.setVerticalGroup(
+            telaCronometroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(telaCronometroLayout.createSequentialGroup()
+                .addContainerGap(60, Short.MAX_VALUE)
+                .addComponent(labelCronometro)
+                .addGap(33, 33, 33)
+                .addGroup(telaCronometroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton5)
+                    .addComponent(jButton6))
+                .addGap(55, 55, 55))
+        );
+
+        javax.swing.GroupLayout telaTarefaSelecionadaLayout = new javax.swing.GroupLayout(telaTarefaSelecionada);
+        telaTarefaSelecionada.setLayout(telaTarefaSelecionadaLayout);
+        telaTarefaSelecionadaLayout.setHorizontalGroup(
+            telaTarefaSelecionadaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(telaTarefaSelecionadaLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(telaTarefaSelecionadaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(telaCronometro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(telaDescricaoTarefa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        telaTarefaSelecionadaLayout.setVerticalGroup(
+            telaTarefaSelecionadaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(telaTarefaSelecionadaLayout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addComponent(telaDescricaoTarefa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addComponent(telaCronometro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(65, Short.MAX_VALUE))
+        );
+
+        jPanel3.add(telaTarefaSelecionada, "painelTarefaSelecionada");
 
         javax.swing.GroupLayout telaTrabalhoLayout = new javax.swing.GroupLayout(telaTrabalho);
         telaTrabalho.setLayout(telaTrabalhoLayout);
@@ -625,7 +779,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
             .addGroup(telaTrabalhoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(telaTrabalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 696, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelTarefasSelecionadas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -640,7 +794,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 708, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -689,47 +843,75 @@ public class TelaFuncionario extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         CardLayout cl = (CardLayout) jPanel1.getLayout();
+        mostrarPainelDetalhes(false);
         cl.show(jPanel1, "telaMenu");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnLixeiraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLixeiraActionPerformed
-        TarefaBO tBO = new TarefaBO();
-        
-        Tarefa t = new Tarefa(tarefaSelecionadaTarefa.getId(), tarefaSelecionadaTarefa.getTitulo(), tarefaSelecionadaTarefa.getDescricao(),
-        tarefaSelecionadaTarefa.getDataEntrega(), Estado.NA_LIXEIRA, tarefaSelecionadaTarefa.getDificuldade(), 
-        tarefaSelecionadaTarefa.getTipoAtividade());
-        if (tBO.update(t)) {
-            carregarListas();
+        if (tarefaSelecionadaTarefa.getEstado() != Estado.CONCLUIDA) {
+            JFrame = new JFrame("Exit");
+            
+            if (JOptionPane.showConfirmDialog(JFrame, "Você tem certeza que quer excluir a tarefa?\nVocê pode recuperar a tarefa acessando a lixeira.", "Atenção!",
+                    JOptionPane.OK_OPTION) == JOptionPane.OK_OPTION) {
+            
+                TarefaBO tBO = new TarefaBO();
+
+                Tarefa t = new Tarefa(tarefaSelecionadaTarefa.getId(), tarefaSelecionadaTarefa.getTitulo(), tarefaSelecionadaTarefa.getDescricao(),
+                tarefaSelecionadaTarefa.getDataEntrega(), Estado.NA_LIXEIRA, tarefaSelecionadaTarefa.getDificuldade(), 
+                tarefaSelecionadaTarefa.getTipoAtividade());
+                
+                if (tBO.update(t)) {
+                    carregarListas();
+                    JOptionPane.showMessageDialog(this, 
+                        "Tarefa movida para a Lixeira.", 
+                        "Aviso", 
+                        JOptionPane.PLAIN_MESSAGE
+                    );
+                    mostrarPainelDetalhes(false);
+                }
+                
+            }
+        } else {
             JOptionPane.showMessageDialog(this, 
-                "Tarefa movida para a Lixeira.", 
-                "Aviso", 
-                JOptionPane.PLAIN_MESSAGE
-            );
-            CardLayout cl = (CardLayout) centro.getLayout();
-            cl.show(centro, "painelAviso");
+                    "Não é possivel editar tarefas concluídas!", 
+                    "Aviso", 
+                    JOptionPane.PLAIN_MESSAGE);
         }
     }//GEN-LAST:event_btnLixeiraActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        AddComentario addC = new AddComentario(tarefaSelecionadaTarefa.getId());
-        addC.setVisible(true);
+        if (tarefaSelecionadaTarefa.getEstado() != Estado.CONCLUIDA) {
+            AddComentario addC = new AddComentario(tarefaSelecionadaTarefa.getId());
+            addC.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                    "Não é possivel editar tarefas concluídas!", 
+                    "Aviso", 
+                    JOptionPane.PLAIN_MESSAGE);
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void btnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarActionPerformed
-        TarefaBO tBO = new TarefaBO();
-        
-        Tarefa t = new Tarefa(tarefaSelecionadaTarefa.getId(), tarefaSelecionadaTarefa.getTitulo(), tarefaSelecionadaTarefa.getDescricao(),
-        tarefaSelecionadaTarefa.getDataEntrega(), Estado.EM_ATIVIDADE, tarefaSelecionadaTarefa.getDificuldade(), 
-        tarefaSelecionadaTarefa.getTipoAtividade());
-        if (tBO.update(t)) {
-            carregarListas();
+        if (tarefaSelecionadaTarefa.getEstado() != Estado.CONCLUIDA) {
+            TarefaBO tBO = new TarefaBO();
+
+            Tarefa t = new Tarefa(tarefaSelecionadaTarefa.getId(), tarefaSelecionadaTarefa.getTitulo(), tarefaSelecionadaTarefa.getDescricao(),
+            tarefaSelecionadaTarefa.getDataEntrega(), Estado.EM_ATIVIDADE, tarefaSelecionadaTarefa.getDificuldade(), 
+            tarefaSelecionadaTarefa.getTipoAtividade());
+            if (tBO.update(t)) {
+                carregarListas();
+                JOptionPane.showMessageDialog(this, 
+                    "Tarefa selecionada.", 
+                    "Aviso", 
+                    JOptionPane.PLAIN_MESSAGE
+                );
+                mostrarPainelDetalhes(false);
+            }
+        } else {
             JOptionPane.showMessageDialog(this, 
-                "Tarefa selecionada.", 
-                "Aviso", 
-                JOptionPane.PLAIN_MESSAGE
-            );
-            CardLayout cl = (CardLayout) centro.getLayout();
-            cl.show(centro, "painelAviso");
+                    "Não é possivel editar tarefas concluídas!", 
+                    "Aviso", 
+                    JOptionPane.PLAIN_MESSAGE);
         }
     }//GEN-LAST:event_btnSelecionarActionPerformed
 
@@ -743,20 +925,171 @@ public class TelaFuncionario extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTrabalhoActionPerformed
 
     private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
-        CardLayout cl = (CardLayout) jPanel1.getLayout();
-        cl.show(jPanel1, "telaMenu");
+        if (rodando == false) {
+            seg = 0;
+            min = 0;
+            hor = 0;
+            atualizarTempo();
+            
+            CardLayout cl = (CardLayout) jPanel1.getLayout();
+            mostrarPainelDetalhesTrabalho(false);
+            cl.show(jPanel1, "telaMenu");
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                    "Pause a Tarefa antes de Continuar!", 
+                    "Aviso", 
+                    JOptionPane.PLAIN_MESSAGE);
+        }
     }//GEN-LAST:event_btnMenuActionPerformed
 
     private void btnTelaTarefasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTelaTarefasActionPerformed
-        CardLayout cl = (CardLayout) jPanel1.getLayout();
-        cl.show(jPanel1, "telaTarefas");
+        if (rodando == false) {
+            seg = 0;
+            min = 0;
+            hor = 0;
+            atualizarTempo();
+            
+            CardLayout cl = (CardLayout) jPanel1.getLayout();
+            mostrarPainelDetalhesTrabalho(false);
+            cl.show(jPanel1, "telaTarefas");
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                    "Pause a Tarefa antes de Continuar!", 
+                    "Aviso", 
+                    JOptionPane.PLAIN_MESSAGE);
+        }
     }//GEN-LAST:event_btnTelaTarefasActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         CardLayout cl = (CardLayout) jPanel1.getLayout();
+        mostrarPainelDetalhes(false);
         cl.show(jPanel1, "telaTrabalho");
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void listaSelecionadasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaSelecionadasMouseClicked
+        if (rodando == false) {
+            seg = 0;
+            min = 0;
+            hor = 0;
+            atualizarTempo();
+            
+            Tarefa tarefaSelecionada = listaSelecionadas.getSelectedValue();
+
+            if (tarefaSelecionada != null) {
+
+                tarefaSelecionadaTrabalho = tarefaSelecionada;
+                mostrarPainelDetalhesTrabalho(true);
+                labelTitulo.setText(tarefaSelecionada.getTitulo());
+                textDescricao.setText(tarefaSelecionada.getDescricao());
+                rodando = false;
+
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                    "Pause a Tarefa antes de Continuar!", 
+                    "Aviso", 
+                    JOptionPane.PLAIN_MESSAGE);
+        }
+    }//GEN-LAST:event_listaSelecionadasMouseClicked
+
+    private void btnRemoveTarefaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveTarefaActionPerformed
+        if (rodando == false) {
+            seg = 0;
+            min = 0;
+            hor = 0;
+            atualizarTempo();
+            
+            mostrarPainelDetalhesTrabalho(false);
+            
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                    "Pause a Tarefa antes de Continuar!", 
+                    "Aviso", 
+                    JOptionPane.PLAIN_MESSAGE);
+        }
+    }//GEN-LAST:event_btnRemoveTarefaActionPerformed
+
+    private void btnDeixarPendenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeixarPendenteActionPerformed
+        if (rodando == false) {
+            seg = 0;
+            min = 0;
+            hor = 0;
+            atualizarTempo();
+            
+            TarefaBO tBO = new TarefaBO();
+
+            Tarefa t = new Tarefa(tarefaSelecionadaTrabalho.getId(), tarefaSelecionadaTrabalho.getTitulo(), tarefaSelecionadaTrabalho.getDescricao(),
+            tarefaSelecionadaTrabalho.getDataEntrega(), Estado.PENDENTE, tarefaSelecionadaTrabalho.getDificuldade(), 
+            tarefaSelecionadaTrabalho.getTipoAtividade());
+
+            if (tBO.update(t)) {
+                carregarListas();
+                JOptionPane.showMessageDialog(this, 
+                    "Tarefa pendente.", 
+                    "Aviso", 
+                    JOptionPane.PLAIN_MESSAGE
+                );
+                mostrarPainelDetalhesTrabalho(false);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                    "Pause a Tarefa antes de Continuar!", 
+                    "Aviso", 
+                    JOptionPane.PLAIN_MESSAGE);
+        }
+    }//GEN-LAST:event_btnDeixarPendenteActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        if (!rodando) {
+            timer.start();
+            rodando = !rodando;
+        } else if (rodando) {
+            timer.stop();
+            rodando = !rodando;
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        if (rodando == false) {
+            JFrame = new JFrame("Exit");
+            
+            if (JOptionPane.showConfirmDialog(JFrame, "Você tem certeza que quer concluir a tarefa?\nTarefas concluídas não podem ser alteradas.", "Atenção!",
+                    JOptionPane.OK_OPTION) == JOptionPane.OK_OPTION) {
+            
+                seg = 0;
+                min = 0;
+                hor = 0;
+                atualizarTempo();
+                
+                TarefaBO tBO = new TarefaBO();
+
+                Tarefa t = new Tarefa(tarefaSelecionadaTrabalho.getId(), tarefaSelecionadaTrabalho.getTitulo(), tarefaSelecionadaTrabalho.getDescricao(),
+                tarefaSelecionadaTrabalho.getDataEntrega(), Estado.CONCLUIDA, tarefaSelecionadaTrabalho.getDificuldade(), 
+                tarefaSelecionadaTrabalho.getTipoAtividade());
+
+                if (tBO.update(t)) {
+                    carregarListas();
+                    JOptionPane.showMessageDialog(this, 
+                        "Tarefa Concluida.", 
+                        "Aviso", 
+                        JOptionPane.PLAIN_MESSAGE
+                    );
+                    mostrarPainelDetalhesTrabalho(false);
+                }
+            }
+            
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                    "Pause a Tarefa antes de Continuar!", 
+                    "Aviso", 
+                    JOptionPane.PLAIN_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void atualizarTempo() {
+        labelCronometro.setText(String.format("%02d:%02d:%02d", hor, min, seg));
+    }
+    
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -781,9 +1114,11 @@ public class TelaFuncionario extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel areaTitulo;
+    private javax.swing.JButton btnDeixarPendente;
     private javax.swing.JButton btnLixeira;
     private javax.swing.JButton btnMenu;
     private javax.swing.JButton btnRefresh;
+    private javax.swing.JButton btnRemoveTarefa;
     private javax.swing.JButton btnSelecionar;
     private javax.swing.JButton btnTelaTarefas;
     private javax.swing.JButton btnTrabalho;
@@ -792,23 +1127,28 @@ public class TelaFuncionario extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JSplitPane jSplitPane3;
+    private javax.swing.JLabel labelCronometro;
+    private javax.swing.JLabel labelTempoGasto;
+    private javax.swing.JLabel labelTitulo;
     private javax.swing.JPanel ladoAFazer;
     private javax.swing.JPanel ladoConcluido;
     private javax.swing.JList<Tarefa> listaAFazer;
@@ -821,9 +1161,13 @@ public class TelaFuncionario extends javax.swing.JFrame {
     private javax.swing.JPanel panelComentarios;
     private javax.swing.JPanel panelTarefasSelecionadas;
     private javax.swing.JPanel telaAvisoTrabalho;
+    private javax.swing.JPanel telaCronometro;
+    private javax.swing.JPanel telaDescricaoTarefa;
     private javax.swing.JPanel telaMenu;
+    private javax.swing.JPanel telaTarefaSelecionada;
     private javax.swing.JPanel telaTarefas;
     private javax.swing.JPanel telaTrabalho;
+    private javax.swing.JTextArea textDescricao;
     private javax.swing.JTextArea textDetalhes;
     private javax.swing.JLabel titleTarefasConcluidas;
     private javax.swing.JLabel titleTarefasPendentes;

@@ -4,6 +4,7 @@ import dto.Tarefa;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.time.format.DateTimeFormatter;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -16,15 +17,27 @@ public class TarefaRenderer extends JPanel implements ListCellRenderer<Tarefa> {
     private JLabel lblTitulo = new JLabel();
     private JLabel lblData = new JLabel();
     private JLabel lblDificuldade = new JLabel();
+    private JLabel lblTipoTarefa = new JLabel();
 
     public TarefaRenderer() {
-        setLayout(new GridLayout(3, 1));
+        setLayout(new GridLayout(4, 1));
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); // Margem interna
         setOpaque(true);
 
         add(lblTitulo);
         add(lblData);
         add(lblDificuldade);
+        add(lblTipoTarefa);
+    }
+    
+    private String formatarData(java.time.LocalDateTime data) {
+        if (data == null) {
+            return "Sem data";
+        }
+        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        return data.format(formatter);
     }
 
     @Override
@@ -32,8 +45,9 @@ public class TarefaRenderer extends JPanel implements ListCellRenderer<Tarefa> {
         
         lblTitulo.setText(tarefa.getTitulo());
         lblTitulo.setFont(lblTitulo.getFont().deriveFont(java.awt.Font.BOLD, 14f));
-        lblData.setText("Data: " + tarefa.getDataEntrega().toString());
+        lblData.setText("Data Entrega: " + formatarData(tarefa.getDataEntrega()));
         lblDificuldade.setText("Dificuldade: " + tarefa.getDificuldade().name());
+        lblTipoTarefa.setText("Tipo: " + tarefa.getTipoAtividade().getNome());
 
         if (isSelected) {
             setBackground(list.getSelectionBackground());
