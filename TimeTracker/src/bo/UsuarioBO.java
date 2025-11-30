@@ -27,7 +27,21 @@ public class UsuarioBO {
 	
     public boolean addTarefa(Usuario usuario,Tarefa tarefa) {
 		UsuarioDAO dao = new UsuarioDAO();
-		return dao.addTarefa(usuario, tarefa);
+		
+		List<Usuario> lista = readByTarefaId(tarefa.getId());
+		
+		boolean allow = true;
+		for (Usuario u : lista) {
+			if (u.getId() == usuario.getId()) {
+				allow = false;
+				break;
+			}
+		}
+		if (allow) {
+			return dao.addTarefa(usuario, tarefa);
+		} else {
+			return false;
+		}
 	}
 
     public Usuario readBySenha(String nome, String senha) {
