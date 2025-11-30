@@ -10,11 +10,13 @@ import java.awt.CardLayout;
 import java.time.format.DateTimeFormatter;
 import dto.Usuario;
 import bo.UsuarioBO;
+import dto.Estado;
 
 public class TelaFuncionario extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaFuncionario.class.getName());
     private Usuario usuarioLogado;
+    private Tarefa tarefaSelecionadaTarefa;
 
     public TelaFuncionario(Usuario usuario) {
         this.usuarioLogado = usuario;
@@ -124,10 +126,12 @@ public class TelaFuncionario extends javax.swing.JFrame {
         painelDescricao = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         txtDescricao = new javax.swing.JTextArea();
-        labelDataEntrega = new javax.swing.JLabel();
-        labelEstado = new javax.swing.JLabel();
-        labelTipoAtividade = new javax.swing.JLabel();
-        labelDificuldade = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        textDetalhes = new javax.swing.JTextArea();
+        btnLixeira = new javax.swing.JButton();
+        btnSelecionar = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         painelAviso = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         ladoConcluido = new javax.swing.JPanel();
@@ -237,13 +241,32 @@ public class TelaFuncionario extends javax.swing.JFrame {
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
         );
 
-        labelDataEntrega.setText("Data de Entrega:");
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Detalhes", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
-        labelEstado.setText("Estado Atual:");
+        textDetalhes.setColumns(20);
+        textDetalhes.setRows(5);
+        jScrollPane4.setViewportView(textDetalhes);
 
-        labelTipoAtividade.setText("Tipo da Atividade:");
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane4)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+        );
 
-        labelDificuldade.setText("Dificuldade:");
+        btnLixeira.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        btnLixeira.setText("Lixeira");
+        btnLixeira.addActionListener(this::btnLixeiraActionPerformed);
+
+        btnSelecionar.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        btnSelecionar.setText("Selecionar");
+
+        jButton3.setText("+");
+        jButton3.addActionListener(this::jButton3ActionPerformed);
 
         javax.swing.GroupLayout painelDetalhesLayout = new javax.swing.GroupLayout(painelDetalhes);
         painelDetalhes.setLayout(painelDetalhesLayout);
@@ -251,40 +274,40 @@ public class TelaFuncionario extends javax.swing.JFrame {
             painelDetalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelDetalhesLayout.createSequentialGroup()
                 .addGap(56, 56, 56)
-                .addGroup(painelDetalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(painelDescricao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelComentarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(areaTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelDetalhesLayout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addGroup(painelDetalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelDataEntrega)
-                    .addComponent(labelTipoAtividade))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(painelDetalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelDificuldade)
-                    .addComponent(labelEstado))
-                .addGap(34, 34, 34))
+                .addGroup(painelDetalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(painelDetalhesLayout.createSequentialGroup()
+                        .addComponent(btnLixeira)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSelecionar))
+                    .addComponent(painelDescricao, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelComentarios, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(areaTitulo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton3)
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         painelDetalhesLayout.setVerticalGroup(
             painelDetalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelDetalhesLayout.createSequentialGroup()
-                .addGap(44, 44, 44)
+                .addGap(23, 23, 23)
                 .addComponent(areaTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(painelDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(painelDetalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(painelDetalhesLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(panelComentarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(painelDetalhesLayout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(jButton3)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelComentarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(painelDetalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelDataEntrega)
-                    .addComponent(labelDificuldade))
-                .addGap(18, 18, 18)
-                .addGroup(painelDetalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelEstado)
-                    .addComponent(labelTipoAtividade))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnSelecionar)
+                    .addComponent(btnLixeira))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         centro.add(painelDetalhes, "painelDetalhes");
@@ -333,12 +356,10 @@ public class TelaFuncionario extends javax.swing.JFrame {
         ladoConcluidoLayout.setHorizontalGroup(
             ladoConcluidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ladoConcluidoLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(ladoConcluidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
                     .addGroup(ladoConcluidoLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE))
-                    .addGroup(ladoConcluidoLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(jButton2)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -433,15 +454,16 @@ public class TelaFuncionario extends javax.swing.JFrame {
         Tarefa tarefaSelecionada = listaAFazer.getSelectedValue();
     
         if (tarefaSelecionada != null) {
+            tarefaSelecionadaTarefa = tarefaSelecionada;
             mostrarPainelDetalhes(true);
             atualizarTitulo(tarefaSelecionada.getTitulo());
             txtDescricao.setText(tarefaSelecionada.getDescricao());
             carregarComentarios(tarefaSelecionada.getId());  
             String dataBonita = formatarData(tarefaSelecionada.getDataEntrega());
-            labelDataEntrega.setText("Data de Entrega: "+dataBonita);
-            labelEstado.setText("Estado: "+tarefaSelecionada.getEstado().name());
-            labelDificuldade.setText("Dificuldade: "+tarefaSelecionada.getDificuldade().name());
-            labelTipoAtividade.setText("Tipo da Atividade: "+tarefaSelecionada.getTipoAtividade().getNome());
+            textDetalhes.setText("Data de Entrega: "+ dataBonita + "\n"
+                    + "Estado: " + tarefaSelecionada.getEstado().name() + "\n"
+                    + "Dificuldade: " + tarefaSelecionada.getDificuldade().name() + "\n"
+                    + "Tipo da Tarefa: " + tarefaSelecionada.getTipoAtividade().getNome());
         }
     }//GEN-LAST:event_listaAFazerMouseClicked
 
@@ -449,10 +471,16 @@ public class TelaFuncionario extends javax.swing.JFrame {
         Tarefa tarefaSelecionada = listaConcluidas.getSelectedValue();
     
         if (tarefaSelecionada != null) {
+            tarefaSelecionadaTarefa = tarefaSelecionada;
             mostrarPainelDetalhes(true);
             atualizarTitulo(tarefaSelecionada.getTitulo());
             txtDescricao.setText(tarefaSelecionada.getDescricao());
-            carregarComentarios(tarefaSelecionada.getId());  
+            carregarComentarios(tarefaSelecionada.getId());
+            String dataBonita = formatarData(tarefaSelecionada.getDataEntrega());
+            textDetalhes.setText("Data de Entrega: "+ dataBonita + "\n"
+                    + "Estado: " + tarefaSelecionada.getEstado().name() + "\n"
+                    + "Dificuldade: " + tarefaSelecionada.getDificuldade().name() + "\n"
+                    + "Tipo da Tarefa: " + tarefaSelecionada.getTipoAtividade().getNome());
         }
     }//GEN-LAST:event_listaConcluidasMouseClicked
 
@@ -465,6 +493,23 @@ public class TelaFuncionario extends javax.swing.JFrame {
         CardLayout cl = (CardLayout) jPanel1.getLayout();
         cl.show(jPanel1, "telaMenu");
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btnLixeiraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLixeiraActionPerformed
+        TarefaBO tBO = new TarefaBO();
+        
+        Tarefa t = new Tarefa(tarefaSelecionadaTarefa.getId(), tarefaSelecionadaTarefa.getTitulo(), tarefaSelecionadaTarefa.getDescricao(),
+        tarefaSelecionadaTarefa.getDataEntrega(), Estado.NA_LIXEIRA, tarefaSelecionadaTarefa.getDificuldade(), 
+        tarefaSelecionadaTarefa.getTipoAtividade());
+        if (tBO.update(t)) {
+            System.out.println("foi");
+        } else {
+            System.out.println("other.TelaFuncionario.btnLixeiraActionPerformed()");
+        }
+    }//GEN-LAST:event_btnLixeiraActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     public static void main(String args[]) {
         try {
@@ -490,21 +535,22 @@ public class TelaFuncionario extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel areaTitulo;
+    private javax.swing.JButton btnLixeira;
+    private javax.swing.JButton btnSelecionar;
     private javax.swing.JPanel centro;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JSplitPane jSplitPane3;
-    private javax.swing.JLabel labelDataEntrega;
-    private javax.swing.JLabel labelDificuldade;
-    private javax.swing.JLabel labelEstado;
-    private javax.swing.JLabel labelTipoAtividade;
     private javax.swing.JPanel ladoAFazer;
     private javax.swing.JPanel ladoConcluido;
     private javax.swing.JList<Tarefa> listaAFazer;
@@ -516,6 +562,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
     private javax.swing.JPanel panelComentarios;
     private javax.swing.JPanel telaMenu;
     private javax.swing.JPanel telaTarefas;
+    private javax.swing.JTextArea textDetalhes;
     private javax.swing.JLabel titleTarefasConcluidas;
     private javax.swing.JLabel titleTarefasPendentes;
     private javax.swing.JLabel titleTitulo;
