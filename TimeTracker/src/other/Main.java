@@ -46,7 +46,6 @@ public class Main {
         //cBO.create(c);
         */
     	
-<<<<<<< Updated upstream
     	UsuarioBO ubo = new UsuarioBO();
         TarefaBO tbo = new TarefaBO();
         Usuario usuario = ubo.readById(1);
@@ -57,16 +56,6 @@ public class Main {
         for (Usuario taf : lista) {
         	System.out.print("\n"+ taf.getNome() + "\n" + taf.getSenha() + "\n");
         }
-        
-=======
-    	
-    	UsuarioBO ubo = new UsuarioBO();
-        TarefaBO tbo = new TarefaBO();
-        Usuario usuario = ubo.readById(3);
-        
-    	
-        ubo.addTarefa(usuario, tbo.readById(1));
->>>>>>> Stashed changes
     }
         
 }
