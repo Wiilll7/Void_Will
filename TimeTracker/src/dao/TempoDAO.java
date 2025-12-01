@@ -124,7 +124,7 @@ public class TempoDAO {
             		+ "tempo.id AS id,"
             		+ "tempo.id_tarefa AS id_tarefa,"
             		+ "tempo.data_inicial AS data_inicial,"
-            		+ "tempo.data_final AS data_final,"
+            		+ "tempo.data_final AS data_final"
             		+ " FROM tempo"
             		+ " JOIN tarefa ON tarefa.id = tempo.id_tarefa"
             		+ " JOIN acesso ON acesso.id_tarefa = tarefa.id"
