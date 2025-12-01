@@ -153,7 +153,7 @@ public class Desempenho {
             }
             
             for (int i = 0; i < dificuldade_media.size(); i++) {
-            	dificuldade_media.set(i, dificuldade_media.get(i) / dificuldade_media.size());
+            	dificuldade_media.set(i, dificuldade_media.get(i) / tarefas.size());
             }
 
             return arraysToDataset(dificuldade_media,datas);
@@ -197,7 +197,7 @@ public class Desempenho {
             }
             
             for (int i = 0; i < dificuldade_media.size(); i++) {
-            	dificuldade_media.set(i, dificuldade_media.get(i) / dificuldade_media.size());
+            	dificuldade_media.set(i, dificuldade_media.get(i) / tarefas.size());
             }
 
             return arraysToDataset(dificuldade_media,tipo_atvs);
