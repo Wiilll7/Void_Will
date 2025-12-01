@@ -26,7 +26,6 @@ public class TempoDAO {
     }
     public static LocalDateTime stringToDate(String date) {
     	if (date != null) {
-	    	System.out.println(date);
 	    	String[] separate_ms = date.split("\\.");
 	    	return LocalDateTime.parse(separate_ms[0],formatter);
     	} else {

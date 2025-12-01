@@ -1,50 +1,77 @@
 @startuml
 
+
+Class Usuario {
+- id : int
+- nome : String
+- senha : String
+- tipo : TipoUsuario
+}
+
+Enum TipoUsuario {
+ADMIN = 1
+FUNCIONARIO = 2
+}
+
 Class Tarefa {
-- Tempo:tempo
-- String:titulo
-- String:descricao
-- LocalDateTime:data_entrega
-- String:tipo_atividade [enum]
-- String:estado [enum]
-- String:dificuldade [enum]
+- id : int
+- titulo : String
+- descricao : String
+- data_entrega : LocalDateTime
+-	estado : Estado
+-	dificuldade : Dificuldade
+-	tipo_atividade : TipoAtividade
 }
 
-
-Class GerenciadorTarefas {
-+ alterar_contagem(Tarefa:tarefa):Tempo
-+ mover_tarefa(Tarefa:tarefa,ListaTarefa:tarefas):void
+Class Comentario {
+- id : int
+- tarefa_id : int
+- descricao : String
 }
 
+Enum Dificuldade {
+FACIL = 1
+MEDIO = 2
+DIFICIL = 3
+}
+
+Enum Estado {
+PENDENTE = 2
+EM_ATIVIDADE = 3
+CONCLUIDO = 4
+}
+
+Class TipoAtividade {
+- id : int
+- nome : String
+- descricao : String
+}
+
+Class Desempenho {
++ getTempoTotalPorDia(usuarioId : int) : DefaultCategoryDataset
++ getTempoTotalPorTipoAtividade(usuarioId : int) : DefaultCategoryDataset
++ getDificuldadeMediaPorDia(usuarioId : int) : DefaultCategoryDataset
++ getDificuldadeMediaPorTipoAtividade(usuarioId : int) : DefaultCategoryDataset
+}
 
 Class Tempo {
-- LocalDateTime:data_inicial
-
-+ terminar_tempo():void
+- id : int
+- tarefa_id : int
+- data_inicial : LocalDateTime
+- data_final : LocalDateTime
 }
 
 
-Class ListaTarefa{
-- List<Tarefa>:tarefas
 
-+ adicionar_tarefa(Tarefa:tarefa,int:id):void
-}
-
-
-Class Calendario {
-- ListaTarefa[mes]:dias
-
-+ coletar_tarefas(int:mes):void
-}
+Tarefa *-- TipoAtividade
+Tarefa *-- Dificuldade
+Tarefa *-- Estado
+Usuario *-- TipoUsuario
+Desempenho --> Usuario
+Comentario *-- Tarefa
 
 
-Class Analise {
-- analisar(List<Tarefa>):???
-}
-
-
-Class Grafico {
-- 
-}
+Tempo *-- Tarefa
+Usuario .. Tarefa
 
 @enduml

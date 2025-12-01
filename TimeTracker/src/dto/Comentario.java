@@ -2,9 +2,9 @@ package dto;
 
 public class Comentario {
 	// Attributes
-	public int id;
-	public int tarefa_id;
-	public String descricao;
+	private int id;
+	private int tarefa_id;
+	private String descricao;
 	
 	// Constructor
 	public Comentario(int id,int tarefa_id,String descricao) {

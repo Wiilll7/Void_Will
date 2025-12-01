@@ -68,7 +68,6 @@ public class TempoBO {
         	
         	return time_separated;
         } else {
-                System.out.println("bo.TempoBO.readTotalTimeInTarefa()");
         	return time_separated;
         }
     }
@@ -82,7 +81,13 @@ public class TempoBO {
     	TempoDAO dao = new TempoDAO();
     	
     	if (tempo.getDataInicial() != null && tempo.getDataFinal() == null) {
-    		tempo = new Tempo(tempo.getId(),tempo.getTarefaId(),tempo.getDataInicial(),LocalDateTime.now());
+    		LocalDateTime time_now = LocalDateTime.now();
+    		if (time_now.isAfter(tempo.getDataInicial())) {
+    			tempo = new Tempo(tempo.getId(),tempo.getTarefaId(),tempo.getDataInicial(),LocalDateTime.now());
+    		} else {
+    			tempo = new Tempo(tempo.getId(),tempo.getTarefaId(),LocalDateTime.now(),tempo.getDataInicial());
+    		}
+    		
     		if (dao.update(tempo)) {
     			return tempo;
     		} else {
