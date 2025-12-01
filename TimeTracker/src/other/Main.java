@@ -24,25 +24,10 @@ public class Main {
         LocalDateTime ldt = LocalDateTime.now();
         Estado pendente = Estado.PENDENTE;
         Dificuldade medio = Dificuldade.FACIL;
-        
         TipoAtividadeBO taBO = new TipoAtividadeBO();
         
-        
-       // Tarefa t = new Tarefa(1, "Tarefa de Testeee e", "Esta tarefa esta sendo usada para testes apenas, porem preciso enrolar para dar mais linhas e testar se esta funcionando a descricao das tarefas, se funcionar me supreenderei pois é dificil fazer algo que nao da erro aparentemente, ou eu que nao sei so.", ldt, pendente, medio, taBO.readById(4));
-        TarefaBO tarefaBO = new TarefaBO();
-        Tarefa t = tarefaBO.readById(5);
-        //if (tarefaBO.create(t)) {
-        //    System.out.println("nice");
-        //} else {
-        //    System.out.println("other.Main.main()");
-        //}
-        
-        UsuarioBO uBO = new UsuarioBO();
-        Usuario u = uBO.readById(3);
-        
-        if (uBO.addTarefa(u, t)) {
-            System.out.println("concetada");
-        }
+        TipoAtividade ta = new TipoAtividade(1, "php", "fazer sites");
+        taBO.create(ta);
     	
     }
         

@@ -22,11 +22,13 @@ public class UserControl extends javax.swing.JFrame {
     public UserControl() {
         initComponents();
         pnGraficoContainer.removeAll();
-    
-        JPanel graficoTempoDia = criarGraficoBarras(Desempenho.getTempoTotalPorDia(), "Tempo por dia", "dia", "tempo(s)");
-        JPanel graficoDificuldadeDia = criarGraficoBarras(Desempenho.getDificuldadeMediaPorDia(), "Dificuldade por dia", "dia", "Dificuldade");
-        JPanel graficoDificuldadeTipo = criarGraficoBarras(Desempenho.getDificuldadeMediaPorTipoAtividade(), "Dificuldade por tipo", "tipo", "dificuldade");
-        JPanel graficoTempoAtividade = criarGraficoBarras(Desempenho.getTempoTotalPorTipoAtividade(), "Tempo por TipoAtividade", "tipoAtividade", "Tempo");
+        
+        int id = 3;
+        
+        JPanel graficoTempoDia = criarGraficoBarras(Desempenho.getTempoTotalPorDia(id), "Tempo por dia", "dia", "tempo(s)");
+        JPanel graficoDificuldadeDia = criarGraficoBarras(Desempenho.getDificuldadeMediaPorDia(id), "Dificuldade por dia", "dia", "Dificuldade");
+        JPanel graficoDificuldadeTipo = criarGraficoBarras(Desempenho.getDificuldadeMediaPorTipoAtividade(id), "Dificuldade por tipo", "tipo", "dificuldade");
+        JPanel graficoTempoAtividade = criarGraficoBarras(Desempenho.getTempoTotalPorTipoAtividade(id), "Tempo por TipoAtividade", "tipoAtividade", "Tempo");
         
         pnGraficoContainer.add(graficoTempoDia, BorderLayout.CENTER);
         pnGraficoContainer.validate();
