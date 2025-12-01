@@ -260,7 +260,6 @@ public class TelaFuncionario extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         textDetalhes = new javax.swing.JTextArea();
-        btnLixeira = new javax.swing.JButton();
         btnSelecionar = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         btnRefresh = new javax.swing.JButton();
@@ -594,10 +593,6 @@ public class TelaFuncionario extends javax.swing.JFrame {
             .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
         );
 
-        btnLixeira.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        btnLixeira.setText("Deletar");
-        btnLixeira.addActionListener(this::btnLixeiraActionPerformed);
-
         btnSelecionar.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         btnSelecionar.setText("Selecionar");
         btnSelecionar.addActionListener(this::btnSelecionarActionPerformed);
@@ -615,10 +610,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
             .addGroup(painelDetalhesLayout.createSequentialGroup()
                 .addGap(56, 56, 56)
                 .addGroup(painelDetalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(painelDetalhesLayout.createSequentialGroup()
-                        .addComponent(btnLixeira)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSelecionar))
+                    .addComponent(btnSelecionar)
                     .addComponent(painelDescricao, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelComentarios, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(areaTitulo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -648,9 +640,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(painelDetalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSelecionar)
-                    .addComponent(btnLixeira))
+                .addComponent(btnSelecionar)
                 .addContainerGap(57, Short.MAX_VALUE))
         );
 
@@ -1144,34 +1134,6 @@ public class TelaFuncionario extends javax.swing.JFrame {
         atualizarUltimaTarefa();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void btnLixeiraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLixeiraActionPerformed
-        if (tarefaSelecionadaTarefa.getEstado() != Estado.CONCLUIDA) {
-            JFrame = new JFrame("Exit");
-            
-            if (JOptionPane.showConfirmDialog(JFrame, "Você tem certeza que quer deletar a tarefa?\nVocê não poderá recupera-la novamente.", "Atenção!",
-                    JOptionPane.OK_OPTION) == JOptionPane.OK_OPTION) {
-            
-                TarefaBO tBO = new TarefaBO();
-                
-                if (tBO.delete(tarefaSelecionadaTarefa.getId())) {
-                    carregarListas();
-                    JOptionPane.showMessageDialog(this, 
-                        "Tarefa deletada com sucesso.", 
-                        "Aviso", 
-                        JOptionPane.PLAIN_MESSAGE
-                    );
-                    mostrarPainelDetalhes(false);
-                }
-                
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, 
-                    "Não é possivel editar tarefas concluídas!", 
-                    "Aviso", 
-                    JOptionPane.PLAIN_MESSAGE);
-        }
-    }//GEN-LAST:event_btnLixeiraActionPerformed
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         if (tarefaSelecionadaTarefa.getEstado() != Estado.CONCLUIDA) {
             AddComentario addC = new AddComentario(tarefaSelecionadaTarefa.getId());
@@ -1456,7 +1418,6 @@ public class TelaFuncionario extends javax.swing.JFrame {
     private javax.swing.JPanel areaTitulo;
     private javax.swing.JButton btnCalendario;
     private javax.swing.JButton btnDeixarPendente;
-    private javax.swing.JButton btnLixeira;
     private javax.swing.JButton btnMenu;
     private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnRemoveTarefa;

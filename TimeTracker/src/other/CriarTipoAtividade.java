@@ -9,6 +9,7 @@ public class CriarTipoAtividade extends javax.swing.JFrame {
 
     public CriarTipoAtividade() {
         initComponents();
+        aplicarEstiloGlobal(this);
     }
 
     @SuppressWarnings("unchecked")
@@ -23,7 +24,7 @@ public class CriarTipoAtividade extends javax.swing.JFrame {
         textDescricao = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -94,6 +95,7 @@ public class CriarTipoAtividade extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -107,16 +109,29 @@ public class CriarTipoAtividade extends javax.swing.JFrame {
                     "Tipo de Atividade criado com sucesso!",
                     "Aviso",
                     JOptionPane.PLAIN_MESSAGE);
-                this.dispose();
         } else {
             JOptionPane.showMessageDialog(this,
                     "Algo de errado aconteceu.",
                     "Aviso",
                     JOptionPane.PLAIN_MESSAGE);
-                this.dispose();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void aplicarEstiloGlobal(java.awt.Container container) {
+        for (java.awt.Component c : container.getComponents()) {
+
+            if (c instanceof javax.swing.JScrollPane) {
+                javax.swing.JScrollPane scroll = (javax.swing.JScrollPane) c;
+                scroll.getVerticalScrollBar().setUI(new other.ModernScrollBarUI());
+                scroll.getHorizontalScrollBar().setUI(new other.ModernScrollBarUI());
+            }
+
+            else if (c instanceof java.awt.Container) {
+                aplicarEstiloGlobal((java.awt.Container) c);
+            }
+        }
+    }
+    
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
