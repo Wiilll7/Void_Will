@@ -117,6 +117,35 @@ public class TempoDAO {
             return null;
         }
     }
+    public List<Tempo> readByUsuarioId(int usuarioId) {
+        try {
+            Connection conn = Conexao.conectar();
+            String sql = "SELECT "
+            		+ "tempo.id AS id,"
+            		+ "tempo.id_tarefa AS id_tarefa,"
+            		+ "tempo.data_inicial AS data_inicial,"
+            		+ "tempo.data_final AS data_final,"
+            		+ " FROM tempo"
+            		+ " JOIN tarefa ON tarefa.id = tempo.id_tarefa"
+            		+ " JOIN acesso ON acesso.id_tarefa = tarefa.id"
+            		+ " WHERE acesso.id_usuario = ?;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, usuarioId);
+
+            ResultSet rs = ps.executeQuery();
+            List<Tempo> lista = createListFromSelect(rs);
+			ps.close();
+            conn.close();
+			if (lista.size() > 0) {
+				return lista;
+			} else {
+				return null;
+			}
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     public Tempo readLastAdded(int tarefaId) {
     	try {
             Connection conn = Conexao.conectar();

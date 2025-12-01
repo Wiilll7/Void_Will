@@ -35,6 +35,11 @@ public class TempoBO {
     	}
     }
 
+    public List<Tempo> readByUsuarioId(int usuarioId) {
+    	TempoDAO dao = new TempoDAO();
+        return dao.readByUsuarioId(usuarioId);
+    }
+    
     public List<Tempo> readByTarefaId(int tarefaId) {
         TempoDAO dao = new TempoDAO();
         return dao.readByTarefaId(tarefaId);

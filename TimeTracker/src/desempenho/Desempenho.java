@@ -18,11 +18,6 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 public class Desempenho {
 	
-    Usuario usuarioSelecionado;
-    
-    public Desempenho(Usuario usuarioSelecionado) {
-        this.usuarioSelecionado = usuarioSelecionado;
-    }
     // String -- Date conversion
     static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     public static String dateToString(LocalDateTime date) {
@@ -43,10 +38,10 @@ public class Desempenho {
     }
 	
     // Tempo total / Dia
-    public static DefaultCategoryDataset getTempoTotalPorDia() {
+    public static DefaultCategoryDataset getTempoTotalPorDia(int usuarioId) {
 
         TempoBO tempoBO = new TempoBO();
-        List<Tempo> tempos = tempoBO.readAll();
+        List<Tempo> tempos = tempoBO.readByUsuarioId(usuarioId);
         List<String> datas = new ArrayList<String>();
         List<Double> tempo_gasto = new ArrayList<Double>();
 
@@ -81,12 +76,11 @@ public class Desempenho {
         }
     }
 	
-    // Tempo total / TipoAtividade
-    public static DefaultCategoryDataset getTempoTotalPorTipoAtividade() {
-
+	// Tempo total / TipoAtividade
+    public static DefaultCategoryDataset getTempoTotalPorTipoAtividade(int usuarioId) {
         TempoBO tempoBO = new TempoBO();
         TarefaBO taBO = new TarefaBO();
-        List<Tempo> tempos = tempoBO.readAll();
+        List<Tempo> tempos = tempoBO.readByUsuarioId(usuarioId);
         List<String> tipo_atvs = new ArrayList<String>();
         List<Double> tempo_gasto = new ArrayList<Double>();
 
@@ -122,11 +116,11 @@ public class Desempenho {
     }
 	
     // DificuldadeMedia / Dia
-    public static DefaultCategoryDataset getDificuldadeMediaPorDia() {
+    public static DefaultCategoryDataset getDificuldadeMediaPorDia(int usuarioId) {
 
         TarefaBO tarefaBO = new TarefaBO();
         TempoBO tempoBO = new TempoBO();
-        List<Tarefa> tarefas = tarefaBO.readAll();
+        List<Tarefa> tarefas = tarefaBO.readByUsuarioId(usuarioId);
         List<String> datas = new ArrayList<String>();
         List<Double> dificuldade_media = new ArrayList<Double>();
 
@@ -170,10 +164,10 @@ public class Desempenho {
     }
     
     // DificuldadeMedia / TipoAtividade
-    public DefaultCategoryDataset getDificuldadeMediaPorTipoAtividade() {
+    public static DefaultCategoryDataset getDificuldadeMediaPorTipoAtividade(int usuarioId) {
 
         TarefaBO tarefaBO = new TarefaBO();
-        List<Tarefa> tarefas = tarefaBO.readByUsuarioId(usuarioSelecionado.getId());
+        List<Tarefa> tarefas = tarefaBO.readByUsuarioId(usuarioId);
         List<String> tipo_atvs = new ArrayList<String>();
         List<Double> dificuldade_media = new ArrayList<Double>();
 
