@@ -123,6 +123,7 @@ public class Desempenho {
         List<Tarefa> tarefas = tarefaBO.readByUsuarioId(usuarioId);
         List<String> datas = new ArrayList<String>();
         List<Double> dificuldade_media = new ArrayList<Double>();
+        List<Integer> tarefa_count = new ArrayList<Integer>();
 
         if (tarefas != null) {
             for (Tarefa t : tarefas) {
@@ -144,16 +145,18 @@ public class Desempenho {
                     double dificuldade_parcial = t.getDificuldade().getId();
 
                     if (exists != -1) {
-                            dificuldade_media.set(exists, dificuldade_media.get(exists) + dificuldade_parcial);
-                    } else {
-                        datas.add(data_tarefa);
-                        dificuldade_media.add(dificuldade_parcial);
-                    }
+    	            	dificuldade_media.set(exists, dificuldade_media.get(exists) + dificuldade_parcial);
+    	            	tarefa_count.set(exists, tarefa_count.get(exists) + 1);
+    	            } else {
+    	            	datas.add(data_tarefa);
+    	                dificuldade_media.add(dificuldade_parcial);
+    	                tarefa_count.add(1);
+    	            }
                 }
             }
             
             for (int i = 0; i < dificuldade_media.size(); i++) {
-            	dificuldade_media.set(i, dificuldade_media.get(i) / tarefas.size());
+            	dificuldade_media.set(i, dificuldade_media.get(i) / tarefa_count.get(i));
             }
 
             return arraysToDataset(dificuldade_media,datas);
@@ -170,6 +173,7 @@ public class Desempenho {
         List<Tarefa> tarefas = tarefaBO.readByUsuarioId(usuarioId);
         List<String> tipo_atvs = new ArrayList<String>();
         List<Double> dificuldade_media = new ArrayList<Double>();
+        List<Integer> tarefa_count = new ArrayList<Integer>();
 
         if (tarefas != null) {
             for (Tarefa t : tarefas) {
@@ -190,14 +194,16 @@ public class Desempenho {
 	
 	            if (exists != -1) {
 	            	dificuldade_media.set(exists, dificuldade_media.get(exists) + dificuldade_parcial);
+	            	tarefa_count.set(exists, tarefa_count.get(exists) + 1);
 	            } else {
 	                tipo_atvs.add(tipo_atv_tarefa);
 	                dificuldade_media.add(dificuldade_parcial);
+	                tarefa_count.add(1);
 	            }
             }
             
             for (int i = 0; i < dificuldade_media.size(); i++) {
-            	dificuldade_media.set(i, dificuldade_media.get(i) / tarefas.size());
+            	dificuldade_media.set(i, dificuldade_media.get(i) / tarefa_count.get(i));
             }
 
             return arraysToDataset(dificuldade_media,tipo_atvs);
