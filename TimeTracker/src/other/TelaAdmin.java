@@ -778,7 +778,8 @@ public class TelaAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        ////////////
+        EditarTarefa et = new EditarTarefa(tarefaSelecionadaTarefa);
+        et.setVisible(true);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void btnRemoveTarefaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveTarefaActionPerformed

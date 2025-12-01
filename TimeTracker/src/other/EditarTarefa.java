@@ -6,6 +6,11 @@ import dto.Dificuldade;
 import dto.TipoAtividade;
 import bo.TipoAtividadeBO;
 import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
+import javax.swing.JOptionPane;
 
 public class EditarTarefa extends javax.swing.JFrame {
     
@@ -17,8 +22,24 @@ public class EditarTarefa extends javax.swing.JFrame {
         initComponents();
         preencherDadosDaTarefa(tarefaSelecionada);
         carregarCombos();
+        aplicarEstiloGlobal(this);
     }
 
+    private void aplicarEstiloGlobal(java.awt.Container container) {
+        for (java.awt.Component c : container.getComponents()) {
+
+            if (c instanceof javax.swing.JScrollPane) {
+                javax.swing.JScrollPane scroll = (javax.swing.JScrollPane) c;
+                scroll.getVerticalScrollBar().setUI(new other.ModernScrollBarUI());
+                scroll.getHorizontalScrollBar().setUI(new other.ModernScrollBarUI());
+            }
+
+            else if (c instanceof java.awt.Container) {
+                aplicarEstiloGlobal((java.awt.Container) c);
+            }
+        }
+    }
+    
     private String formatarData(java.time.LocalDateTime data) {
         if (data == null) {
             return "Sem data";
@@ -90,6 +111,24 @@ public class EditarTarefa extends javax.swing.JFrame {
         }
     }
     
+    public LocalDateTime converterParaLocalDateTime(String dataEmTexto) {
+        try {
+            
+            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate apenasData = LocalDate.parse(dataEmTexto, formatador);
+            LocalDateTime dataCompleta = apenasData.atStartOfDay();
+
+            return dataCompleta;
+
+        } catch (DateTimeParseException e) {
+            JOptionPane.showMessageDialog(this, 
+                    "Insira o formato da data válido (dd/mm/yyyy)", 
+                    "Aviso", 
+                    JOptionPane.PLAIN_MESSAGE);
+            return null; 
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -147,6 +186,7 @@ public class EditarTarefa extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jButton1.setText("Salvar");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
@@ -209,6 +249,24 @@ public class EditarTarefa extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        String nome = txtNome.getText();
+        String descricao = txtDescricao.getText();
+        String dataEntrega = txtData.getText();
+        Estado e = (Estado) cmbEstado.getSelectedItem();
+        Dificuldade d = (Dificuldade) cmbDificuldade.getSelectedItem();
+        TipoAtividade ta = (TipoAtividade) cmbTipoAtividade.getSelectedItem();
+        LocalDateTime dataFormatada = converterParaLocalDateTime(dataEntrega);
+        
+        if (true) {
+            
+        }
+
+        Tarefa t = new Tarefa(tarefaSelecionada.getId(), nome, descricao, dataFormatada, e, d, ta);
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

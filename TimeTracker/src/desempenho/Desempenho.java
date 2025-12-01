@@ -12,11 +12,17 @@ import bo.TempoBO;
 import bo.TipoAtividadeBO;
 import dto.Tarefa;
 import dto.Tempo;
+import dto.Usuario;
 
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public class Desempenho {
 	
+    Usuario usuarioSelecionado;
+    
+    public Desempenho(Usuario usuarioSelecionado) {
+        this.usuarioSelecionado = usuarioSelecionado;
+    }
     // String -- Date conversion
     static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     public static String dateToString(LocalDateTime date) {
@@ -75,7 +81,7 @@ public class Desempenho {
         }
     }
 	
-	// Tempo total / TipoAtividade
+    // Tempo total / TipoAtividade
     public static DefaultCategoryDataset getTempoTotalPorTipoAtividade() {
 
         TempoBO tempoBO = new TempoBO();
@@ -127,25 +133,28 @@ public class Desempenho {
         if (tarefas != null) {
             for (Tarefa t : tarefas) {
                 int exists = -1;
-                Tempo tarefa_tempo = tempoBO.readByTarefaId(t.getId()).get(0);
-                String data_tarefa = dateToString(tarefa_tempo.getDataInicial());
+                List<Tempo> lista_tarefa_tempo = tempoBO.readByTarefaId(t.getId());
+                if (lista_tarefa_tempo != null && lista_tarefa_tempo.size() > 0) {
+                    Tempo tarefa_tempo = lista_tarefa_tempo.get(0);
+                    String data_tarefa = dateToString(tarefa_tempo.getDataInicial());
 
-                for (int i = 0; i < datas.size(); i++) {
-                    String data = datas.get(i);
+                    for (int i = 0; i < datas.size(); i++) {
+                        String data = datas.get(i);
 
-                    if (data.equals(data_tarefa)) {
-                            exists = i;
-                            break;
+                        if (data.equals(data_tarefa)) {
+                                exists = i;
+                                break;
+                        }
                     }
-                }
 
-                double dificuldade_parcial = t.getDificuldade().getId();
+                    double dificuldade_parcial = t.getDificuldade().getId();
 
-                if (exists != -1) {
-                	dificuldade_media.set(exists, dificuldade_media.get(exists) + dificuldade_parcial);
-                } else {
-                    datas.add(data_tarefa);
-                    dificuldade_media.add(dificuldade_parcial);
+                    if (exists != -1) {
+                            dificuldade_media.set(exists, dificuldade_media.get(exists) + dificuldade_parcial);
+                    } else {
+                        datas.add(data_tarefa);
+                        dificuldade_media.add(dificuldade_parcial);
+                    }
                 }
             }
             
@@ -161,10 +170,10 @@ public class Desempenho {
     }
     
     // DificuldadeMedia / TipoAtividade
-    public static DefaultCategoryDataset getDificuldadeMediaPorDia() {
+    public DefaultCategoryDataset getDificuldadeMediaPorTipoAtividade() {
 
         TarefaBO tarefaBO = new TarefaBO();
-        List<Tarefa> tarefas = tarefaBO.readAll();
+        List<Tarefa> tarefas = tarefaBO.readByUsuarioId(usuarioSelecionado.getId());
         List<String> tipo_atvs = new ArrayList<String>();
         List<Double> dificuldade_media = new ArrayList<Double>();
 
