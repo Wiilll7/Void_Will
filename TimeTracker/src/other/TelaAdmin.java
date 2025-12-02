@@ -29,6 +29,22 @@ public class TelaAdmin extends javax.swing.JFrame {
         initComponents();
         carregarListas();
         aplicarEstiloGlobal(this);
+        
+        telaCalendario.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentShown(java.awt.event.ComponentEvent e) {
+
+                areaCalendario.removeAll();
+                areaCalendario.setLayout(new java.awt.BorderLayout());
+
+                CalendarioPanel novoCalendario = new CalendarioPanel(usuarioLogado);
+
+                areaCalendario.add(novoCalendario, java.awt.BorderLayout.CENTER);
+
+                areaCalendario.revalidate();
+                areaCalendario.repaint();
+            }
+        });
     }
 
     private String formatarData(java.time.LocalDateTime data) {
@@ -156,10 +172,13 @@ public class TelaAdmin extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         listaConcluida = new javax.swing.JList<>();
         jLabel3 = new javax.swing.JLabel();
+        btnRefresh4 = new javax.swing.JButton();
         panelTarefa = new javax.swing.JPanel();
         telaAviso = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jButton15 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
+        jButton10 = new javax.swing.JButton();
         telaDetalhes = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -187,6 +206,11 @@ public class TelaAdmin extends javax.swing.JFrame {
         btnRefresh3 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton14 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        telaCalendario = new javax.swing.JPanel();
+        areaCalendario = new javax.swing.JPanel();
+        jButton7 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -266,7 +290,7 @@ public class TelaAdmin extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                .addComponent(jScrollPane2)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
@@ -312,25 +336,37 @@ public class TelaAdmin extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Tarefas Concluidas");
 
+        btnRefresh4.setText("🗘");
+        btnRefresh4.addActionListener(this::btnRefresh4ActionPerformed);
+
         javax.swing.GroupLayout panelListasLayout = new javax.swing.GroupLayout(panelListas);
         panelListas.setLayout(panelListasLayout);
         panelListasLayout.setHorizontalGroup(
             panelListasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelListasLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(panelListasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panelListasLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(panelListasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(panelListasLayout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnRefresh4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(6, 6, 6)))
                 .addContainerGap())
         );
         panelListasLayout.setVerticalGroup(
             panelListasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelListasLayout.createSequentialGroup()
-                .addComponent(jLabel1)
+                .addGroup(panelListasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(btnRefresh4))
                 .addGap(3, 3, 3)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -355,25 +391,39 @@ public class TelaAdmin extends javax.swing.JFrame {
         jButton15.setText("📊");
         jButton15.addActionListener(this::jButton15ActionPerformed);
 
+        jButton9.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
+        jButton9.setText("Calendario");
+        jButton9.addActionListener(this::jButton9ActionPerformed);
+
+        jButton10.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
+        jButton10.setText("Trocar Usuario");
+        jButton10.addActionListener(this::jButton10ActionPerformed);
+
         javax.swing.GroupLayout telaAvisoLayout = new javax.swing.GroupLayout(telaAviso);
         telaAviso.setLayout(telaAvisoLayout);
         telaAvisoLayout.setHorizontalGroup(
             telaAvisoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(telaAvisoLayout.createSequentialGroup()
-                .addGroup(telaAvisoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(telaAvisoLayout.createSequentialGroup()
-                        .addGap(112, 112, 112)
-                        .addComponent(jLabel4))
-                    .addGroup(telaAvisoLayout.createSequentialGroup()
-                        .addGap(522, 522, 522)
-                        .addComponent(jButton15, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addGap(112, 112, 112)
+                .addComponent(jLabel4)
+                .addContainerGap(130, Short.MAX_VALUE))
+            .addGroup(telaAvisoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton15, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton10)
+                .addGap(18, 18, 18))
         );
         telaAvisoLayout.setVerticalGroup(
             telaAvisoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(telaAvisoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton15)
+                .addGroup(telaAvisoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton15)
+                    .addComponent(jButton9)
+                    .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(256, 256, 256)
                 .addComponent(jLabel4)
                 .addContainerGap(365, Short.MAX_VALUE))
@@ -566,7 +616,7 @@ public class TelaAdmin extends javax.swing.JFrame {
                                 .addComponent(btnRefresh1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnRefresh3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(btnRefresh2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 60, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -612,29 +662,44 @@ public class TelaAdmin extends javax.swing.JFrame {
         jButton14.setText("📊");
         jButton14.addActionListener(this::jButton14ActionPerformed);
 
+        jButton1.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
+        jButton1.setText("Trocar Usuario");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
+
+        jButton2.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
+        jButton2.setText("Calendario");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
+
         javax.swing.GroupLayout telaDetalhesLayout = new javax.swing.GroupLayout(telaDetalhes);
         telaDetalhes.setLayout(telaDetalhesLayout);
         telaDetalhesLayout.setHorizontalGroup(
             telaDetalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(telaDetalhesLayout.createSequentialGroup()
                 .addGroup(telaDetalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(telaDetalhesLayout.createSequentialGroup()
-                        .addGap(522, 522, 522)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, telaDetalhesLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 14, Short.MAX_VALUE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)
+                        .addGap(12, 12, 12)))
                 .addContainerGap())
             .addGroup(telaDetalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(telaDetalhesLayout.createSequentialGroup()
                     .addGap(243, 243, 243)
                     .addComponent(jButton3)
-                    .addContainerGap(244, Short.MAX_VALUE)))
+                    .addContainerGap(259, Short.MAX_VALUE)))
         );
         telaDetalhesLayout.setVerticalGroup(
             telaDetalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(telaDetalhesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton14)
+                .addGroup(telaDetalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton14)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23))
@@ -653,7 +718,7 @@ public class TelaAdmin extends javax.swing.JFrame {
         TelaTarefas.setLayout(TelaTarefasLayout);
         TelaTarefasLayout.setHorizontalGroup(
             TelaTarefasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 915, Short.MAX_VALUE)
         );
         TelaTarefasLayout.setVerticalGroup(
             TelaTarefasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -661,6 +726,38 @@ public class TelaAdmin extends javax.swing.JFrame {
         );
 
         jPanel1.add(TelaTarefas, "telaTarefas");
+
+        areaCalendario.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        areaCalendario.setLayout(new java.awt.BorderLayout());
+
+        jButton7.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        jButton7.setText("Menu");
+        jButton7.addActionListener(this::jButton7ActionPerformed);
+
+        javax.swing.GroupLayout telaCalendarioLayout = new javax.swing.GroupLayout(telaCalendario);
+        telaCalendario.setLayout(telaCalendarioLayout);
+        telaCalendarioLayout.setHorizontalGroup(
+            telaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(telaCalendarioLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(telaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(areaCalendario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, telaCalendarioLayout.createSequentialGroup()
+                        .addGap(0, 846, Short.MAX_VALUE)
+                        .addComponent(jButton7)))
+                .addContainerGap())
+        );
+        telaCalendarioLayout.setVerticalGroup(
+            telaCalendarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, telaCalendarioLayout.createSequentialGroup()
+                .addContainerGap(11, Short.MAX_VALUE)
+                .addComponent(jButton7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(areaCalendario, javax.swing.GroupLayout.PREFERRED_SIZE, 604, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33))
+        );
+
+        jPanel1.add(telaCalendario, "telaCalendario");
 
         jMenu1.setText("Tarefas");
 
@@ -899,6 +996,37 @@ public class TelaAdmin extends javax.swing.JFrame {
         dta.setVisible(true);
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        CardLayout cl = (CardLayout) jPanel1.getLayout();
+        cl.show(jPanel1, "telaCalendario");
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        CardLayout cl = (CardLayout) jPanel1.getLayout();
+        cl.show(jPanel1, "telaTarefas");
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        CardLayout cl = (CardLayout) jPanel1.getLayout();
+        cl.show(jPanel1, "telaCalendario");
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        TelaLogin tl = new TelaLogin();
+        tl.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        TelaLogin tl = new TelaLogin();
+        tl.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnRefresh4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefresh4ActionPerformed
+        carregarListas();
+    }//GEN-LAST:event_btnRefresh4ActionPerformed
+
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -924,18 +1052,25 @@ public class TelaAdmin extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel TelaTarefas;
+    private javax.swing.JPanel areaCalendario;
     private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnRefresh1;
     private javax.swing.JButton btnRefresh2;
     private javax.swing.JButton btnRefresh3;
+    private javax.swing.JButton btnRefresh4;
     private javax.swing.JButton btnRemoveTarefa;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -977,6 +1112,7 @@ public class TelaAdmin extends javax.swing.JFrame {
     private javax.swing.JPanel panelListas;
     private javax.swing.JPanel panelTarefa;
     private javax.swing.JPanel telaAviso;
+    private javax.swing.JPanel telaCalendario;
     private javax.swing.JPanel telaDetalhes;
     private javax.swing.JTextArea textDescricao;
     private javax.swing.JTextArea textDetalhes;

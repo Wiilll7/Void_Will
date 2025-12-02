@@ -17,7 +17,16 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import bo.TempoBO;
+import desempenho.Desempenho;
 import dto.Tempo;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import javax.swing.JPanel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 public class TelaFuncionario extends javax.swing.JFrame {
     
@@ -95,6 +104,35 @@ public class TelaFuncionario extends javax.swing.JFrame {
                 panelMiniCalendario.repaint();
             }
         });
+        
+        graficoMenu.removeAll();
+        telaGraficoTempoDia.removeAll();
+        telaGraficoDificuldadeDia.removeAll();
+        telaGraficoDificuldadeTipoAtv.removeAll();
+        telaGraficoTempoTipoAtv.removeAll();
+        
+        JPanel graficoTempoDiaMenu = criarGraficoBarras(Desempenho.getTempoTotalPorDia(usuarioLogado.getId()), "Tempo por dia", "dia", "tempo(h)");
+        JPanel graficoTempoDia = criarGraficoBarras(Desempenho.getTempoTotalPorDia(usuarioLogado.getId()), "Tempo por dia", "dia", "tempo(h)");
+        JPanel graficoDificuldadeDia = criarGraficoBarras(Desempenho.getDificuldadeMediaPorDia(usuarioLogado.getId()), "Dificuldade por dia", "dia", "Dificuldade");
+        JPanel graficoDificuldadeTipo = criarGraficoBarras(Desempenho.getDificuldadeMediaPorTipoAtividade(usuarioLogado.getId()), "Dificuldade por tipo", "tipo", "dificuldade");
+        JPanel graficoTempoAtividade = criarGraficoBarras(Desempenho.getTempoTotalPorTipoAtividade(usuarioLogado.getId()), "Tempo por TipoAtividade", "tipoAtividade", "Tempo");
+        
+        graficoMenu.add(graficoTempoDiaMenu, BorderLayout.CENTER);
+        graficoMenu.validate();
+        graficoMenu.repaint();
+        telaGraficoTempoDia.add(graficoTempoDia, BorderLayout.CENTER);
+        telaGraficoTempoDia.validate();
+        telaGraficoTempoDia.repaint();
+        telaGraficoDificuldadeDia.add(graficoDificuldadeDia, BorderLayout.CENTER);
+        telaGraficoDificuldadeDia.validate();
+        telaGraficoDificuldadeDia.repaint();
+        telaGraficoDificuldadeTipoAtv.add(graficoDificuldadeTipo, BorderLayout.CENTER);
+        telaGraficoDificuldadeTipoAtv.validate();
+        telaGraficoDificuldadeTipoAtv.repaint();
+        telaGraficoTempoTipoAtv.add(graficoTempoAtividade, BorderLayout.CENTER);
+        telaGraficoTempoTipoAtv.validate();
+        telaGraficoTempoTipoAtv.repaint();
+        
     }
     
     private String formatarData(java.time.LocalDateTime data) {
@@ -217,6 +255,30 @@ public class TelaFuncionario extends javax.swing.JFrame {
         listaPendentesMenu.setCellRenderer(new TarefaRenderer());
     }
     
+    public JPanel criarGraficoBarras(DefaultCategoryDataset dataset, String titulo, String baixo, String lado) {
+    
+        JFreeChart grafico = ChartFactory.createBarChart(
+                titulo,  
+                baixo,            
+                lado,    
+                dataset,                    
+                PlotOrientation.VERTICAL,   
+                true,                       
+                true,                      
+                false                       
+        );
+
+        org.jfree.chart.plot.CategoryPlot plot = grafico.getCategoryPlot();
+        plot.setBackgroundPaint(Color.WHITE);
+        plot.setRangeGridlinePaint(Color.GRAY);
+
+        ChartPanel painelGrafico = new ChartPanel(grafico);
+
+        painelGrafico.setPreferredSize(new java.awt.Dimension(400, 300));
+
+        return painelGrafico;
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -233,6 +295,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
         jScrollPane9 = new javax.swing.JScrollPane();
         listaPendentesMenu = new javax.swing.JList<>();
         jPanel6 = new javax.swing.JPanel();
+        graficoMenu = new javax.swing.JPanel();
         jButton7 = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane10 = new javax.swing.JScrollPane();
@@ -303,6 +366,19 @@ public class TelaFuncionario extends javax.swing.JFrame {
         areaCalendario = new javax.swing.JPanel();
         jButton8 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
+        telaDesempenho = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        telaSelect = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        telaGraficoDificuldadeTipoAtv = new javax.swing.JPanel();
+        telaGraficoDificuldadeDia = new javax.swing.JPanel();
+        telaGraficoTempoTipoAtv = new javax.swing.JPanel();
+        telaGraficoTempoDia = new javax.swing.JPanel();
+        jButton12 = new javax.swing.JButton();
+        jButton13 = new javax.swing.JButton();
+        jButton14 = new javax.swing.JButton();
+        jButton15 = new javax.swing.JButton();
+        jButton16 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -369,18 +445,28 @@ public class TelaFuncionario extends javax.swing.JFrame {
 
         jPanel6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        graficoMenu.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        graficoMenu.setLayout(new java.awt.BorderLayout());
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(graficoMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 272, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(graficoMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jButton7.setText("Ir para Desempenho");
+        jButton7.addActionListener(this::jButton7ActionPerformed);
 
         jPanel7.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -426,7 +512,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
                 .addComponent(jLabel7)
                 .addGap(4, 4, 4)
                 .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelTempoTotalMenu)
@@ -459,7 +545,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
                     .addGroup(telaMenuLayout.createSequentialGroup()
                         .addGroup(telaMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE))
+                            .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(telaMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnTrabalho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -557,6 +643,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
 
         jScrollPane5.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
+        txtDescricao.setEditable(false);
         txtDescricao.setColumns(20);
         txtDescricao.setLineWrap(true);
         txtDescricao.setRows(5);
@@ -578,8 +665,11 @@ public class TelaFuncionario extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Detalhes", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
+        textDetalhes.setEditable(false);
         textDetalhes.setColumns(20);
+        textDetalhes.setLineWrap(true);
         textDetalhes.setRows(5);
+        textDetalhes.setWrapStyleWord(true);
         jScrollPane4.setViewportView(textDetalhes);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -696,7 +786,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
             .addGroup(ladoConcluidoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(ladoConcluidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
                     .addGroup(ladoConcluidoLayout.createSequentialGroup()
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -763,9 +853,9 @@ public class TelaFuncionario extends javax.swing.JFrame {
         telaTarefas.setLayout(telaTarefasLayout);
         telaTarefasLayout.setHorizontalGroup(
             telaTarefasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 936, Short.MAX_VALUE)
+            .addGap(0, 911, Short.MAX_VALUE)
             .addGroup(telaTarefasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jSplitPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 936, Short.MAX_VALUE))
+                .addComponent(jSplitPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 911, Short.MAX_VALUE))
         );
         telaTarefasLayout.setVerticalGroup(
             telaTarefasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -844,7 +934,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
             .addGroup(telaAvisoTrabalhoLayout.createSequentialGroup()
                 .addGap(138, 138, 138)
                 .addComponent(jLabel3)
-                .addContainerGap(173, Short.MAX_VALUE))
+                .addContainerGap(148, Short.MAX_VALUE))
         );
         telaAvisoTrabalhoLayout.setVerticalGroup(
             telaAvisoTrabalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1054,7 +1144,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
                     .addComponent(areaCalendario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(telaCalendarioLayout.createSequentialGroup()
                         .addComponent(jButton8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 793, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 768, Short.MAX_VALUE)
                         .addComponent(jButton9)))
                 .addContainerGap())
         );
@@ -1071,6 +1161,100 @@ public class TelaFuncionario extends javax.swing.JFrame {
         );
 
         jPanel1.add(telaCalendario, "telaCalendario");
+
+        jPanel8.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel8.setLayout(new java.awt.CardLayout());
+
+        jLabel8.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel8.setText("Escolha um tipo de Gráfico para Exibir");
+
+        javax.swing.GroupLayout telaSelectLayout = new javax.swing.GroupLayout(telaSelect);
+        telaSelect.setLayout(telaSelectLayout);
+        telaSelectLayout.setHorizontalGroup(
+            telaSelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(telaSelectLayout.createSequentialGroup()
+                .addGap(211, 211, 211)
+                .addComponent(jLabel8)
+                .addContainerGap(213, Short.MAX_VALUE))
+        );
+        telaSelectLayout.setVerticalGroup(
+            telaSelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(telaSelectLayout.createSequentialGroup()
+                .addGap(273, 273, 273)
+                .addComponent(jLabel8)
+                .addContainerGap(310, Short.MAX_VALUE))
+        );
+
+        jPanel8.add(telaSelect, "card6");
+
+        telaGraficoDificuldadeTipoAtv.setLayout(new java.awt.BorderLayout());
+        jPanel8.add(telaGraficoDificuldadeTipoAtv, "telaGraficoDificuldadeTipoAtv");
+
+        telaGraficoDificuldadeDia.setLayout(new java.awt.BorderLayout());
+        jPanel8.add(telaGraficoDificuldadeDia, "telaGraficoDificuldadeDia");
+
+        telaGraficoTempoTipoAtv.setLayout(new java.awt.BorderLayout());
+        jPanel8.add(telaGraficoTempoTipoAtv, "telaGraficoTempoTipoAtv");
+
+        telaGraficoTempoDia.setLayout(new java.awt.BorderLayout());
+        jPanel8.add(telaGraficoTempoDia, "telaGraficoTempoDia");
+
+        jButton12.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
+        jButton12.setText("Tempo total por Dia");
+        jButton12.addActionListener(this::jButton12ActionPerformed);
+
+        jButton13.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
+        jButton13.setText("Tempo total por Tipo de Atividade");
+        jButton13.addActionListener(this::jButton13ActionPerformed);
+
+        jButton14.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
+        jButton14.setText("Dificuldade média por Dia");
+        jButton14.addActionListener(this::jButton14ActionPerformed);
+
+        jButton15.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
+        jButton15.setText("Dificuldade média por Tipo de Atividade");
+        jButton15.addActionListener(this::jButton15ActionPerformed);
+
+        jButton16.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
+        jButton16.setText("Menu");
+        jButton16.addActionListener(this::jButton16ActionPerformed);
+
+        javax.swing.GroupLayout telaDesempenhoLayout = new javax.swing.GroupLayout(telaDesempenho);
+        telaDesempenho.setLayout(telaDesempenhoLayout);
+        telaDesempenhoLayout.setHorizontalGroup(
+            telaDesempenhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(telaDesempenhoLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(telaDesempenhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton16)
+                    .addGroup(telaDesempenhoLayout.createSequentialGroup()
+                        .addComponent(jButton12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton15, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 872, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+        telaDesempenhoLayout.setVerticalGroup(
+            telaDesempenhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(telaDesempenhoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton16)
+                .addGap(15, 15, 15)
+                .addGroup(telaDesempenhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton12)
+                    .addComponent(jButton13)
+                    .addComponent(jButton14)
+                    .addComponent(jButton15))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanel1.add(telaDesempenho, "telaDesempenho");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1387,6 +1571,36 @@ public class TelaFuncionario extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton10ActionPerformed
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        CardLayout cl = (CardLayout) jPanel1.getLayout();
+        cl.show(jPanel1, "telaDesempenho");
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+        CardLayout cl = (CardLayout) jPanel8.getLayout();
+        cl.show(jPanel8, "telaGraficoTempoDia");
+    }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        CardLayout cl = (CardLayout) jPanel8.getLayout();
+        cl.show(jPanel8, "telaGraficoTempoTipoAtv");
+    }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        CardLayout cl = (CardLayout) jPanel8.getLayout();
+        cl.show(jPanel8, "telaGraficoDificuldadeDia");
+    }//GEN-LAST:event_jButton14ActionPerformed
+
+    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
+        CardLayout cl = (CardLayout) jPanel8.getLayout();
+        cl.show(jPanel8, "telaGraficoDificuldadeTipoAtv");
+    }//GEN-LAST:event_jButton15ActionPerformed
+
+    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
+        CardLayout cl = (CardLayout) jPanel1.getLayout();
+        cl.show(jPanel1, "telaMenu");
+    }//GEN-LAST:event_jButton16ActionPerformed
+
     private void atualizarTempo() {
         labelCronometro.setText(String.format("%02d:%02d:%02d", hor, min, seg));
     }
@@ -1425,9 +1639,15 @@ public class TelaFuncionario extends javax.swing.JFrame {
     private javax.swing.JButton btnTelaTarefas;
     private javax.swing.JButton btnTrabalho;
     private javax.swing.JPanel centro;
+    private javax.swing.JPanel graficoMenu;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
+    private javax.swing.JButton jButton13;
+    private javax.swing.JButton jButton14;
+    private javax.swing.JButton jButton15;
+    private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -1443,6 +1663,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -1451,6 +1672,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane2;
@@ -1485,7 +1707,13 @@ public class TelaFuncionario extends javax.swing.JFrame {
     private javax.swing.JPanel telaCalendario;
     private javax.swing.JPanel telaCronometro;
     private javax.swing.JPanel telaDescricaoTarefa;
+    private javax.swing.JPanel telaDesempenho;
+    private javax.swing.JPanel telaGraficoDificuldadeDia;
+    private javax.swing.JPanel telaGraficoDificuldadeTipoAtv;
+    private javax.swing.JPanel telaGraficoTempoDia;
+    private javax.swing.JPanel telaGraficoTempoTipoAtv;
     private javax.swing.JPanel telaMenu;
+    private javax.swing.JPanel telaSelect;
     private javax.swing.JPanel telaTarefaSelecionada;
     private javax.swing.JPanel telaTarefas;
     private javax.swing.JPanel telaTrabalho;

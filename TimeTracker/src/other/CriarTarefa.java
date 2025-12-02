@@ -240,6 +240,17 @@ public class CriarTarefa extends javax.swing.JFrame {
             
             DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate apenasData = LocalDate.parse(dataEmTexto, formatador);
+            
+            LocalDate hoje = LocalDate.now();
+
+            if (apenasData.isBefore(hoje)) {
+                JOptionPane.showMessageDialog(this, 
+                    "A data de entrega não pode ser no passado.", 
+                    "Data Inválida", 
+                    JOptionPane.WARNING_MESSAGE);
+                return null;
+            }
+            
             LocalDateTime dataCompleta = apenasData.atStartOfDay();
 
             return dataCompleta;

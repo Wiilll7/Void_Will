@@ -50,12 +50,13 @@ public class ComentarioRenderer extends JPanel implements ListCellRenderer<Comen
         } else {
             this.setPreferredSize(new Dimension(larguraList, 60));
         }
-
-        // Cores
-        if (index % 2 == 0) {
-            setBackground(new Color(245, 245, 245));
+        
+        if (isSelected) {
+            setBackground(list.getSelectionBackground());
+            setForeground(list.getSelectionForeground());
         } else {
             setBackground(Color.WHITE);
+            setForeground(list.getForeground());
         }
         
         setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));

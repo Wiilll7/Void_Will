@@ -2,6 +2,7 @@ package other;
 
 import bo.TarefaBO;
 import dto.Tarefa;
+import dto.TipoUsuario;
 import dto.Usuario;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -80,7 +81,13 @@ public class CalendarioPanel extends JPanel {
         lblMesAno.setText(mesAtual.getMonth().toString() + " / " + mesAtual.getYear());
 
         TarefaBO bo = new TarefaBO();
-        List<Tarefa> todasTarefas = bo.readByUsuarioId(usuarioLogado.getId()); 
+        List<Tarefa> todasTarefas = new ArrayList<Tarefa>();
+        
+        if (usuarioLogado.getTipo() == TipoUsuario.FUNCIONARIO) {
+            todasTarefas = bo.readByUsuarioId(usuarioLogado.getId()); 
+        } else {
+            todasTarefas = bo.readAll();
+        }
         
         if (todasTarefas == null) {
             todasTarefas = new ArrayList<Tarefa>();

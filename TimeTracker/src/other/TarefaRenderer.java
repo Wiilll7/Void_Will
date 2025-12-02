@@ -21,7 +21,7 @@ public class TarefaRenderer extends JPanel implements ListCellRenderer<Tarefa> {
 
     public TarefaRenderer() {
         setLayout(new GridLayout(4, 1));
-        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); // Margem interna
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setOpaque(true);
 
         add(lblTitulo);

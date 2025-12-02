@@ -154,9 +154,7 @@ public class EditarTipoAtv extends javax.swing.JFrame {
                     "Aviso",
                     JOptionPane.PLAIN_MESSAGE);
 
-                carregarTiposAtividade(); 
-                txtNome.setText("");
-                txtDescricao.setText("");
+                carregarTiposAtividade();
             } else {
                 JOptionPane.showMessageDialog(this,
                     "Algo de errado Aconteceu",

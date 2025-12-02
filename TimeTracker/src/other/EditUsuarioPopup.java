@@ -1,7 +1,9 @@
 package other;
 
+import bo.TarefaBO;
 import dto.Usuario;
 import bo.UsuarioBO;
+import dto.Tarefa;
 import dto.TipoUsuario;
 import java.util.List;
 
@@ -287,7 +289,14 @@ public class EditUsuarioPopup extends javax.swing.JFrame {
                         pswConfirmaSenha1.setText(null);
                         titleRetorno1.setForeground(java.awt.Color.decode("#28a745"));
                         titleRetorno1.setText("Usuário editado com sucesso!");
-                        carregarUsuariosNoCombo() ;
+                        carregarUsuariosNoCombo();
+                        TarefaBO tBO = new TarefaBO();
+                        List<Tarefa> tarefas = tBO.readByUsuarioId(usuario1.getId());
+                        if (tarefas != null) {
+                            for (Tarefa t : tarefas) {
+                                uBO.removeTarefa(usuario1, t);
+                            }
+                        }
                     } else {
                         titleRetorno1.setForeground(new java.awt.Color(200, 0, 0));
                         titleRetorno1.setText("Já existe outro usuário com esse login.");

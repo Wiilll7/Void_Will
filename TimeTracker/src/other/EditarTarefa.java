@@ -291,10 +291,9 @@ public class EditarTarefa extends javax.swing.JFrame {
                 this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this, 
-                        "Algo de errado aconteceu.", 
+                        "Algo de errado aconteceu, verifique se o nome da tarefa nao esta duplicada.", 
                         "Aviso", 
                         JOptionPane.PLAIN_MESSAGE);
-                this.dispose();
             }
         }
         
