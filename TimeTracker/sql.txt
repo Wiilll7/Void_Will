@@ -1,26 +1,100 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Tempo de geração: 02/12/2025 às 02:58
+-- Versão do servidor: 10.4.32-MariaDB
+-- Versão do PHP: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Banco de dados: `time_tracker`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `acesso`
+--
+
 CREATE TABLE `acesso` (
   `id` int(11) NOT NULL,
   `id_tarefa` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Despejando dados para a tabela `acesso`
+--
+
+INSERT INTO `acesso` (`id`, `id_tarefa`, `id_usuario`) VALUES
+(16, 17, 2),
+(17, 17, 3),
+(18, 16, 3),
+(19, 15, 3),
+(20, 15, 2),
+(21, 14, 2),
+(22, 13, 2),
+(23, 12, 3),
+(24, 11, 2),
+(25, 10, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `comentario`
+--
+
+CREATE TABLE `comentario` (
+  `id` int(11) NOT NULL,
+  `id_tarefa` int(11) NOT NULL,
+  `descricao` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `dificuldade`
+--
 
 CREATE TABLE `dificuldade` (
   `id` int(11) NOT NULL,
   `nome` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Despejando dados para a tabela `dificuldade`
+--
 
 INSERT INTO `dificuldade` (`id`, `nome`) VALUES
 (1, 'FACIL'),
 (2, 'MEDIO'),
 (3, 'DIFICIL');
 
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `estado`
+--
 
 CREATE TABLE `estado` (
   `id` int(11) NOT NULL,
   `nome` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `estado`
+--
 
 INSERT INTO `estado` (`id`, `nome`) VALUES
 (1, 'NA_LIXEIRA'),
@@ -28,17 +102,77 @@ INSERT INTO `estado` (`id`, `nome`) VALUES
 (3, 'EM_ATIVIDADE'),
 (4, 'CONCLUIDA');
 
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `tarefa`
+--
 
 CREATE TABLE `tarefa` (
   `id` int(11) NOT NULL,
   `titulo` varchar(30) NOT NULL,
   `descricao` text NOT NULL,
-  `data_entrega` timestamp NULL DEFAULT NULL,
+  `data_entrega` datetime DEFAULT NULL,
   `id_estado` int(11) NOT NULL,
   `id_dificuldade` int(11) NOT NULL,
   `id_tipo_atividade` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Despejando dados para a tabela `tarefa`
+--
+
+INSERT INTO `tarefa` (`id`, `titulo`, `descricao`, `data_entrega`, `id_estado`, `id_dificuldade`, `id_tipo_atividade`) VALUES
+(10, 'Criar classe Auxiliar', 'Criar a classe auxiliar para controle de calculos mais precisos.', '2025-12-01 00:00:00', 4, 1, 12),
+(11, 'Criar classe principal', 'Criar a classe principal para controle de estoque', '2025-12-06 00:00:00', 3, 3, 12),
+(12, 'Criar site inicial', 'Fazer o esboco de um site de PetShop', '2025-12-10 00:00:00', 3, 1, 6),
+(13, 'Adicionar CRUD', 'Fazer o CRUD para uma loja de PetShop, com base nos animais:\nCavalo\nPorco\nCao\nGato', '2025-12-11 00:00:00', 2, 2, 6),
+(14, 'Criar tela Inicial', 'Criar a tela do menu principal de um jogo de turno de tabuleiro', '2025-12-20 00:00:00', 2, 2, 10),
+(15, 'Implementar Jogo', 'Implementar um jogo de turno de tabuleiro ao html', '2025-12-05 00:00:00', 4, 3, 10),
+(16, 'Adicionar tema escuro', 'Implementar a opcao de tema escuro no site de PetShop', '2025-12-07 00:00:00', 3, 1, 11),
+(17, 'Adicionar estilo Diagrama', 'Adicionar estilo baseado no diagrama proposto', '2025-12-23 00:00:00', 2, 3, 11);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `tempo`
+--
+
+CREATE TABLE `tempo` (
+  `id` int(11) NOT NULL,
+  `id_tarefa` int(11) NOT NULL,
+  `data_inicial` datetime DEFAULT NULL,
+  `data_final` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `tempo`
+--
+
+INSERT INTO `tempo` (`id`, `id_tarefa`, `data_inicial`, `data_final`) VALUES
+(48, 17, '2025-12-01 22:17:02', '2025-12-01 23:59:04'),
+(49, 17, '2025-12-03 20:17:07', '2025-12-03 23:17:08'),
+(56, 16, '2025-11-23 18:17:35', '2025-11-23 23:17:37'),
+(57, 16, '2025-11-26 22:17:39', '2025-11-26 23:59:41'),
+(60, 15, '2025-11-10 10:17:50', '2025-11-10 20:17:52'),
+(61, 15, '2025-11-16 12:17:54', '2025-11-16 17:17:55'),
+(62, 15, '2025-11-23 18:17:56', '2025-11-23 22:17:59'),
+(71, 11, '2025-12-01 13:19:18', '2025-12-01 20:19:20'),
+(72, 11, '2025-12-03 14:19:22', '2025-12-03 17:19:23'),
+(73, 11, '2025-12-05 10:19:24', '2025-12-05 22:19:25'),
+(86, 14, '2025-12-12 18:21:06', '2025-12-12 22:21:08'),
+(87, 14, '2025-12-13 20:21:10', '2025-12-13 22:21:11'),
+(97, 13, '2025-11-28 10:21:35', '2025-11-28 15:21:37'),
+(98, 13, '2025-11-29 18:21:38', '2025-11-29 19:21:39'),
+(110, 10, '2025-11-30 10:23:07', '2025-11-30 12:23:10'),
+(120, 12, '2025-12-07 10:23:32', '2025-12-07 14:23:33'),
+(121, 12, '2025-12-09 10:23:34', '2025-12-09 13:23:35');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `tipoatividade`
+--
 
 CREATE TABLE `tipoatividade` (
   `id` int(11) NOT NULL,
@@ -46,16 +180,40 @@ CREATE TABLE `tipoatividade` (
   `descricao` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Despejando dados para a tabela `tipoatividade`
+--
+
+INSERT INTO `tipoatividade` (`id`, `nome`, `descricao`) VALUES
+(6, 'Php', 'Backend de sites'),
+(10, 'JavaScript', 'Logica do site'),
+(11, 'Css', 'Estilos para sites'),
+(12, 'Java', 'Linguagem geral');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `tipousuario`
+--
 
 CREATE TABLE `tipousuario` (
   `id` int(11) NOT NULL,
   `nome` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Despejando dados para a tabela `tipousuario`
+--
+
 INSERT INTO `tipousuario` (`id`, `nome`) VALUES
 (1, 'ADMIN'),
 (2, 'FUNCIONARIO');
 
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `usuario`
+--
 
 CREATE TABLE `usuario` (
   `id` int(11) NOT NULL,
@@ -64,81 +222,180 @@ CREATE TABLE `usuario` (
   `id_tipo_usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE `tempo` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `id_tarefa` INT NOT NULL ,
-  `data_inicial` DATETIME NOT NULL ,
-  `data_final` DATETIME NOT NULL ,
-  PRIMARY KEY (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+--
+-- Despejando dados para a tabela `usuario`
+--
 
+INSERT INTO `usuario` (`id`, `nome`, `senha`, `id_tipo_usuario`) VALUES
+(1, 'Admin', '123', 1),
+(2, 'James', '123', 2),
+(3, 'Carlos', '123', 2);
 
+--
+-- Índices para tabelas despejadas
+--
+
+--
+-- Índices de tabela `acesso`
+--
 ALTER TABLE `acesso`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_tarefa` (`id_tarefa`),
   ADD KEY `id_usuario` (`id_usuario`);
 
+--
+-- Índices de tabela `comentario`
+--
+ALTER TABLE `comentario`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `comentario_ibfk_1` (`id_tarefa`);
+
+--
+-- Índices de tabela `dificuldade`
+--
 ALTER TABLE `dificuldade`
   ADD PRIMARY KEY (`id`);
 
+--
+-- Índices de tabela `estado`
+--
 ALTER TABLE `estado`
   ADD PRIMARY KEY (`id`);
 
+--
+-- Índices de tabela `tarefa`
+--
 ALTER TABLE `tarefa`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `titulo` (`titulo`),
   ADD KEY `id_dificuldade` (`id_dificuldade`),
   ADD KEY `id_estado` (`id_estado`),
   ADD KEY `id_tipo_atividade` (`id_tipo_atividade`);
 
+--
+-- Índices de tabela `tempo`
+--
+ALTER TABLE `tempo`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `tempo_ibfk_1` (`id_tarefa`);
+
+--
+-- Índices de tabela `tipoatividade`
+--
 ALTER TABLE `tipoatividade`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `nome` (`nome`);
 
+--
+-- Índices de tabela `tipousuario`
+--
 ALTER TABLE `tipousuario`
   ADD PRIMARY KEY (`id`);
 
+--
+-- Índices de tabela `usuario`
+--
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `nome` (`nome`),
   ADD KEY `id_tipo_usuario` (`id_tipo_usuario`);
 
+--
+-- AUTO_INCREMENT para tabelas despejadas
+--
 
-
+--
+-- AUTO_INCREMENT de tabela `acesso`
+--
 ALTER TABLE `acesso`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
+--
+-- AUTO_INCREMENT de tabela `comentario`
+--
+ALTER TABLE `comentario`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT de tabela `dificuldade`
+--
 ALTER TABLE `dificuldade`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
+--
+-- AUTO_INCREMENT de tabela `estado`
+--
 ALTER TABLE `estado`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
+--
+-- AUTO_INCREMENT de tabela `tarefa`
+--
 ALTER TABLE `tarefa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
+--
+-- AUTO_INCREMENT de tabela `tempo`
+--
+ALTER TABLE `tempo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
+
+--
+-- AUTO_INCREMENT de tabela `tipoatividade`
+--
 ALTER TABLE `tipoatividade`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
+--
+-- AUTO_INCREMENT de tabela `tipousuario`
+--
 ALTER TABLE `tipousuario`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
+--
+-- AUTO_INCREMENT de tabela `usuario`
+--
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
+--
+-- Restrições para tabelas despejadas
+--
 
-
+--
+-- Restrições para tabelas `acesso`
+--
 ALTER TABLE `acesso`
-  ADD CONSTRAINT `acesso_ibfk_1` FOREIGN KEY (`id_tarefa`) REFERENCES `tarefa` (`id`),
-  ADD CONSTRAINT `acesso_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`);
+  ADD CONSTRAINT `acesso_ibfk_1` FOREIGN KEY (`id_tarefa`) REFERENCES `tarefa` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `acesso_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+--
+-- Restrições para tabelas `comentario`
+--
+ALTER TABLE `comentario`
+  ADD CONSTRAINT `comentario_ibfk_1` FOREIGN KEY (`id_tarefa`) REFERENCES `tarefa` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Restrições para tabelas `tarefa`
+--
 ALTER TABLE `tarefa`
   ADD CONSTRAINT `tarefa_ibfk_1` FOREIGN KEY (`id_dificuldade`) REFERENCES `dificuldade` (`id`),
   ADD CONSTRAINT `tarefa_ibfk_2` FOREIGN KEY (`id_estado`) REFERENCES `estado` (`id`),
   ADD CONSTRAINT `tarefa_ibfk_3` FOREIGN KEY (`id_tipo_atividade`) REFERENCES `tipoatividade` (`id`);
 
+--
+-- Restrições para tabelas `tempo`
+--
+ALTER TABLE `tempo`
+  ADD CONSTRAINT `tempo_ibfk_1` FOREIGN KEY (`id_tarefa`) REFERENCES `tarefa` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Restrições para tabelas `usuario`
+--
 ALTER TABLE `usuario`
   ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`id_tipo_usuario`) REFERENCES `tipousuario` (`id`);
+COMMIT;
 
-ALTER TABLE `tempo`
-  ADD FOREIGN KEY (`id_tarefa`) REFERENCES `tarefa`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
-
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
