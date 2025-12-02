@@ -59,7 +59,7 @@ public class Desempenho {
                     }
                 }
 
-                double time_count = Duration.between(t.getDataInicial(), t.getDataFinal()).toSeconds();
+                double time_count = Duration.between(t.getDataInicial(), t.getDataFinal()).toMinutes();
 
                 if (exists != -1) {
                         tempo_gasto.set(exists, tempo_gasto.get(exists) + time_count);
@@ -98,7 +98,7 @@ public class Desempenho {
                     }
                 }
 
-                double time_count = Duration.between(t.getDataInicial(), t.getDataFinal()).toSeconds();
+                double time_count = Duration.between(t.getDataInicial(), t.getDataFinal()).toMinutes();
 
                 if (exists != -1) {
                         tempo_gasto.set(exists, tempo_gasto.get(exists) + time_count);
