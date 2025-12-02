@@ -11,7 +11,15 @@ public class TempoBO {
 
     public boolean create(Tempo tempo) {
         TempoDAO dao = new TempoDAO();
-        return dao.create(tempo);
+        
+		if (tempo.getDataFinal().isAfter(tempo.getDataInicial())) {
+			return dao.create(tempo);
+		} else {
+			LocalDateTime tempo_temp = tempo.getDataInicial();
+			tempo.setDataInicial(tempo.getDataFinal());
+			tempo.setDataFinal(tempo_temp);
+			return dao.create(tempo);
+		}
     }
 
     public Tempo readById(int id) {
@@ -74,19 +82,22 @@ public class TempoBO {
 
     public boolean update(Tempo tempo) {
         TempoDAO dao = new TempoDAO();
-        return dao.update(tempo);
+        
+        if (tempo.getDataFinal().isAfter(tempo.getDataInicial())) {
+        	return dao.update(tempo);
+		} else {
+			LocalDateTime tempo_temp = tempo.getDataInicial();
+			tempo.setDataInicial(tempo.getDataFinal());
+			tempo.setDataFinal(tempo_temp);
+			return dao.update(tempo);
+		}
     }
     
     public Tempo toggleCounting(Tempo tempo) {
     	TempoDAO dao = new TempoDAO();
     	
     	if (tempo.getDataInicial() != null && tempo.getDataFinal() == null) {
-    		LocalDateTime time_now = LocalDateTime.now();
-    		if (time_now.isAfter(tempo.getDataInicial())) {
-    			tempo = new Tempo(tempo.getId(),tempo.getTarefaId(),tempo.getDataInicial(),LocalDateTime.now());
-    		} else {
-    			tempo = new Tempo(tempo.getId(),tempo.getTarefaId(),LocalDateTime.now(),tempo.getDataInicial());
-    		}
+    		tempo = new Tempo(tempo.getId(),tempo.getTarefaId(),tempo.getDataInicial(),LocalDateTime.now());
     		
     		if (dao.update(tempo)) {
     			return tempo;
