@@ -1,0 +1,35 @@
+aplicação utilizando os conceitos de POO que manipule uma grande quantidade de dados estatísticos
+
+Dados escolhidos:
+- like,views,publicação,comentários
+
+informações extraídas dos dados:
+- média
+- moda
+- mediana
+- variância
+- desvio padrão
+
+entrada: txt ou web
+saída: html
+
+funcionalidade:
+- persistência em outra base (banco de dados, xml, json)
+
+- se o html não foi mudado, o programa não gera novamente
+
+para 6/3/2026
+
+
+Classes necessárias
+[processamento estatístico]:
+-- métodos: média, moda, mediana, variância, desvio padrão (list<int> -> double)
+[MVC]:
+-- dto: dadosVideo
+-- dao: mysql // xml // json
+[Processamento html]:
+-- exportarHtml(dados antigos, dados novos):
+--- verificar se dados são diferentes (html antigo vs novo)
+--- caso sim, criar (se html antigo não existir) // sobrescrever dados
+--- caso não, não mudar html
+--- criar um segundo arquivo para armazenar dados
