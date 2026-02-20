@@ -21,15 +21,28 @@ funcionalidade:
 para 6/3/2026
 
 
-Classes necessárias
+                      <>[ Classes necessárias ]<>
+
 [processamento estatístico]:
 -- métodos: média, moda, mediana, variância, desvio padrão (list<int> -> double)
+
 [MVC]:
 -- dto: dadosVideo
 -- dao: mysql // xml // json
+
 [Processamento html]:
--- exportarHtml(dados antigos, dados novos):
---- verificar se dados são diferentes (html antigo vs novo)
---- caso sim, criar (se html antigo não existir) // sobrescrever dados
---- caso não, não mudar html
---- criar um segundo arquivo para armazenar dados
+* exportarHtml(dados antigos, dados novos):
+-- verificar se dados são diferentes (html antigo vs novo)
+-- caso sim, criar (se html antigo não existir) // sobrescrever dados
+-- caso não, não mudar html
+-- criar um segundo arquivo para armazenar dados
+
+[Coleta de Dados]:
+- baseado na api do youtube e armazenamento
+* coletarDadosYoutube(prompt,qtd) -> DadoVideo (classe dto)
+-- coletar resposta de pesquisa (títulos de vídeos)
+-- coletar dados de cada vídeo para JSON
+-- retornar lista de DadoVideo
+* coletarDadosArmazenados(prompt,qtd,tipo) -> JSON ou List<DadoVideo>
+-- coletar dado de um armazenamento (json,xml,mysql)
+-- retornar lista de DadoVideo
