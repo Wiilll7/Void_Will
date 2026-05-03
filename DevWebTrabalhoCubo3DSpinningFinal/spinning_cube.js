@@ -49,9 +49,8 @@ var main = function() {
                 velocityX = 0.5;
             } else {
                 velocityX *= 0.95;
-                velocityY *= 0.95;
             }
-
+            velocityY *= 0.95;
             rotationX += velocityX;
             rotationY += velocityY;
             $cube.css('transform', 'rotateX(' + -rotationY + 'deg)' + ' rotateY(' + rotationX + 'deg)');
