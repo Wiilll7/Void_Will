@@ -5,7 +5,7 @@ import java.util.Set;
 
 
 public class Lexer {
-	private final String input;
+	private String input;
     private int pos = 0;
 
     public Lexer(String input) {
@@ -43,7 +43,7 @@ public class Lexer {
         List<Token> tokens = new ArrayList<>();
         
         while (pos < input.length()) {
-
+        	
             // Skip blank space
             if (Character.isWhitespace(input.charAt(pos))) {
                 pos++;
@@ -65,6 +65,7 @@ public class Lexer {
             }
             
             
+            // Special operation characters
             switch (input.charAt(pos)) {
 	            case '+':
 	            	tokens.add(new Token(TokenType.PLUS, "+"));
@@ -90,11 +91,40 @@ public class Lexer {
 	            case '}':
 	            	tokens.add(new Token(TokenType.RBRACE, "}"));
 	            	break;
+	            case '.':
+	            	tokens.add(new Token(TokenType.POINT, "."));
+	            	break;
+	            case ';':
+	            	tokens.add(new Token(TokenType.SEMICOLON, ";"));
+	            	break;
+	            case '!':
+	            	if (input.charAt(pos + 1) == '=') {
+	            		tokens.add(new Token(TokenType.DIFFERENT,"!="));
+	            		pos += 2;
+	            		break;
+	            	}
+	            	tokens.add(new Token(TokenType.NOT,"!"));
+            		break;
+	            case '=':
+	            	if (input.charAt(++pos) == '=') {
+	            		tokens.add(new Token(TokenType.DIFFERENT,"=="));
+	            		pos++;
+	            		break;
+	            	}
+	            	tokens.add(new Token(TokenType.ASSIGN,"="));
+	            	break;
+	            case '<':
+	            	tokens.add(new Token(TokenType.LESSER,"<"));
+	            	break;
+	            case '>':
+	            	tokens.add(new Token(TokenType.GREATER,"<"));
+	            	break;
 	        }
             
+            
             // Literal detector // Reserved keywords detector
-            StringBuilder sb = new StringBuilder();
             if (input.charAt(pos) == '\'') {
+            	StringBuilder sb = new StringBuilder();
             	sb.append(input.charAt(pos++));
             	while (pos < input.length() && input.charAt(pos) != '\'') {
             		sb.append(input.charAt(pos++));
@@ -102,12 +132,43 @@ public class Lexer {
             	sb.append(input.charAt(pos++));
             	
             	tokens.add(new Token(TokenType.LITERAL, sb.toString()));
+            	if (pos >= input.length()) continue;
             }
-            if (pos >= input.length()) continue;
             
+            
+            // Reserved keywords detector
+            if (Character.isJavaIdentifierStart(input.charAt(pos))) {
+            	StringBuilder sb = new StringBuilder();
+            	sb.append(input.charAt(pos++));
+            	while (pos < input.length() && Character.isJavaIdentifierPart(input.charAt(pos))) {
+            		sb.append(input.charAt(pos++));
+            	}
+            	
+            	String unidentified_token = sb.toString();
+            	switch (unidentified_token) {
+            		case "while":
+            			tokens.add(new Token(TokenType.WHILE,"while"));
+            			continue;
+            		case "if":
+            		    tokens.add(new Token(TokenType.IF, "if"));
+            		    continue;
+            		case "else":
+            		    tokens.add(new Token(TokenType.ELSE, "else"));
+            		    continue;
+            		case "for":
+            		    tokens.add(new Token(TokenType.FOR, "for"));
+            		    continue;
+            		default:
+            			tokens.add(new Token(TokenType.NAME, unidentified_token));
+            			continue;
+            	}
+            }
 
             pos++;
         }
+        if (numbers.inFinalState()) {
+			tokens.add(new Token(TokenType.NUMBER,numbers.returnTokenAndReset()));
+		}
         tokens.add(new Token(TokenType.EOF, ""));
         return tokens;
     }

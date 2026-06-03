@@ -1,7 +1,10 @@
 
 public enum TokenType {
 	// Delimiters
-	LPAREN, RPAREN, LBRACE, RBRACE, EOF,
+	LPAREN, RPAREN, LBRACE, RBRACE, POINT, SEMICOLON, EOF,
+	
+	// No category
+	ASSIGN,
 	
 	// Keywords
 	WHILE, IF, ELSE, FOR,
@@ -13,5 +16,5 @@ public enum TokenType {
 	PLUS, MINUS, MULTIPLY, DIVIDE,
 	
 	// Operators (Binary)
-	GREATER, LESSER, EQUAL, DIFFERENT,
+	GREATER, LESSER, EQUAL, DIFFERENT, NOT
 }
