@@ -1,4 +1,17 @@
 
 public enum TokenType {
-	NUMBER, PLUS, MINUS, MULTIPLY, DIVIDE, LPAREN, RPAREN, EOF
+	// Delimiters
+	LPAREN, RPAREN, LBRACE, RBRACE, EOF,
+	
+	// Keywords
+	WHILE, IF, ELSE, FOR,
+	
+	// Numbers and letters
+	NUMBER, NAME, LITERAL,
+	
+	// Operators (Math)
+	PLUS, MINUS, MULTIPLY, DIVIDE,
+	
+	// Operators (Binary)
+	GREATER, LESSER, EQUAL, DIFFERENT,
 }
