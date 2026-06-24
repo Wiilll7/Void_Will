@@ -1,6 +1,6 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 
@@ -39,8 +39,8 @@ public class Lexer {
     
     
 
-    public List<Token> tokenize() {
-        List<Token> tokens = new ArrayList<>();
+    public Queue<Token> tokenize() {
+        Queue<Token> tokens = new LinkedList<Token>();
         
         while (pos < input.length()) {
         	
@@ -62,6 +62,37 @@ public class Lexer {
             } else {
             	pos++;
             	continue;
+            }
+            
+            // Reserved keywords detector
+            if (Character.isJavaIdentifierStart(input.charAt(pos))) {
+            	StringBuilder sb = new StringBuilder();
+            	sb.append(input.charAt(pos++));
+            	while (pos < input.length() && Character.isJavaIdentifierPart(input.charAt(pos))) {
+            		sb.append(input.charAt(pos++));
+            	}
+            	
+            	String unidentified_token = sb.toString();
+            	switch (unidentified_token) {
+            		case "while":
+            			tokens.add(new Token(TokenType.WHILE,"while"));
+            			continue;
+            		case "if":
+            		    tokens.add(new Token(TokenType.IF, "if"));
+            		    continue;
+            		case "else":
+            		    tokens.add(new Token(TokenType.ELSE, "else"));
+            		    continue;
+            		case "for":
+            		    tokens.add(new Token(TokenType.FOR, "for"));
+            		    continue;
+            		case "int","char","string","boolean","void":
+            		    tokens.add(new Token(TokenType.TYPE, unidentified_token));
+            			continue;
+            		default:
+            			tokens.add(new Token(TokenType.NAME, unidentified_token));
+            			continue;
+            	}
             }
             
             
@@ -94,6 +125,9 @@ public class Lexer {
 	            case '.':
 	            	tokens.add(new Token(TokenType.POINT, "."));
 	            	break;
+	            case ',':
+	            	tokens.add(new Token(TokenType.COMMA, ","));
+	            	break;
 	            case ';':
 	            	tokens.add(new Token(TokenType.SEMICOLON, ";"));
 	            	break;
@@ -107,63 +141,47 @@ public class Lexer {
             		break;
 	            case '=':
 	            	if (input.charAt(++pos) == '=') {
-	            		tokens.add(new Token(TokenType.DIFFERENT,"=="));
+	            		tokens.add(new Token(TokenType.EQUAL,"=="));
 	            		pos++;
 	            		break;
 	            	}
 	            	tokens.add(new Token(TokenType.ASSIGN,"="));
 	            	break;
 	            case '<':
+	            	if (input.charAt(++pos) == '=') {
+	            		tokens.add(new Token(TokenType.LESSER_EQUAL,"<="));
+	            		pos++;
+	            		break;
+	            	}
 	            	tokens.add(new Token(TokenType.LESSER,"<"));
 	            	break;
 	            case '>':
+	            	if (input.charAt(++pos) == '=') {
+	            		tokens.add(new Token(TokenType.GREATER_EQUAL,">="));
+	            		pos++;
+	            		break;
+	            	}
 	            	tokens.add(new Token(TokenType.GREATER,"<"));
 	            	break;
+	            case '|':
+	            	if (input.charAt(++pos) == '|') {
+	            		tokens.add(new Token(TokenType.OR,"||"));
+	            		pos++;
+	            		break;
+	            	} else {
+	            		throw new RuntimeException("Lexing Error: Expected character |. Character position: "+ pos);
+	            	}
+	            case '&':
+	            	if (input.charAt(++pos) == '&') {
+	            		tokens.add(new Token(TokenType.AND,"&&"));
+	            		pos++;
+	            		break;
+	            	} else {
+	            		throw new RuntimeException("Lexing Error: Expected character &. Character position: "+ pos);
+	            	}
+	            default:
+	            	throw new RuntimeException("Lexing Error: Unexpected character "+ input.charAt(pos) +". Character position: "+ pos);
 	        }
-            
-            
-            // Literal detector // Reserved keywords detector
-            if (input.charAt(pos) == '\'') {
-            	StringBuilder sb = new StringBuilder();
-            	sb.append(input.charAt(pos++));
-            	while (pos < input.length() && input.charAt(pos) != '\'') {
-            		sb.append(input.charAt(pos++));
-            	}
-            	sb.append(input.charAt(pos++));
-            	
-            	tokens.add(new Token(TokenType.LITERAL, sb.toString()));
-            	if (pos >= input.length()) continue;
-            }
-            
-            
-            // Reserved keywords detector
-            if (Character.isJavaIdentifierStart(input.charAt(pos))) {
-            	StringBuilder sb = new StringBuilder();
-            	sb.append(input.charAt(pos++));
-            	while (pos < input.length() && Character.isJavaIdentifierPart(input.charAt(pos))) {
-            		sb.append(input.charAt(pos++));
-            	}
-            	
-            	String unidentified_token = sb.toString();
-            	switch (unidentified_token) {
-            		case "while":
-            			tokens.add(new Token(TokenType.WHILE,"while"));
-            			continue;
-            		case "if":
-            		    tokens.add(new Token(TokenType.IF, "if"));
-            		    continue;
-            		case "else":
-            		    tokens.add(new Token(TokenType.ELSE, "else"));
-            		    continue;
-            		case "for":
-            		    tokens.add(new Token(TokenType.FOR, "for"));
-            		    continue;
-            		default:
-            			tokens.add(new Token(TokenType.NAME, unidentified_token));
-            			continue;
-            	}
-            }
-
             pos++;
         }
         if (numbers.inFinalState()) {
