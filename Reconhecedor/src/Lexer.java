@@ -55,6 +55,9 @@ public class Lexer {
             if (Character.isDigit(input.charAt(pos))) temp = 'n';
             if (!numbers.nextInput(temp,input.charAt(pos))) {
             	if (numbers.inFinalState()) {
+            		if (pos < input.length() && Character.isJavaIdentifierPart(input.charAt(pos))) {
+            			throw new RuntimeException("Lexer Error: Numbers cannot be immediately followed by letters. Position: "+ pos);
+                    }
         			tokens.add(new Token(TokenType.NUMBER,numbers.returnTokenAndReset()));
         		} else {
         			numbers.returnTokenAndReset();
