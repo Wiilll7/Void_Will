@@ -50,6 +50,19 @@ public class Lexer {
                 continue;
             }
             
+            // Literal detector
+            if (input.charAt(pos) == '\'') {
+            	StringBuilder sb = new StringBuilder();
+            	sb.append(input.charAt(pos++));
+            	while (pos < input.length() && input.charAt(pos) != '\'') {
+            		sb.append(input.charAt(pos++));
+            	}
+            	sb.append(input.charAt(pos++));
+            	
+            	tokens.add(new Token(TokenType.LITERAL, sb.toString()));
+            	if (pos >= input.length()) continue;
+            }
+            
             // Number Detector
             char temp = input.charAt(pos);
             if (Character.isDigit(input.charAt(pos))) temp = 'n';
